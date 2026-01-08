@@ -1,5 +1,7 @@
-import { HTMLAttributes, forwardRef } from 'react';
-import { motion, HTMLMotionProps } from 'framer-motion';
+import type { HTMLAttributes } from 'react';
+import { forwardRef } from 'react';
+import type { HTMLMotionProps } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface CardProps extends HTMLMotionProps<'div'> {
   variant?: 'default' | 'elevated' | 'bordered' | 'glass';

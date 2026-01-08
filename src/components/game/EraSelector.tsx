@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Era } from '../../types/game';
+import type { Era } from '../../types/game';
 
 interface EraSelectorProps {
   onSelectEra: (era: Era) => void;

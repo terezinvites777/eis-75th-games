@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase, isConfigured } from '../lib/supabase';
-import { LeaderboardEntry, LeaderboardFilters } from '../types/player';
+import type { LeaderboardEntry, LeaderboardFilters } from '../types/player';
 
 // Demo data for when Supabase isn't configured
 const DEMO_LEADERBOARD: LeaderboardEntry[] = [
@@ -66,8 +66,8 @@ export function useLeaderboard(initialFilters?: Partial<LeaderboardFilters>): Us
       const leaderboard: LeaderboardEntry[] = (data || []).map((entry, index) => ({
         rank: index + 1,
         playerId: entry.player_id,
-        displayName: (entry.players as { display_name: string })?.display_name || 'Anonymous',
-        avatarUrl: (entry.players as { avatar_url?: string })?.avatar_url,
+        displayName: (entry.players as unknown as { display_name: string } | null)?.display_name || 'Anonymous',
+        avatarUrl: (entry.players as unknown as { avatar_url?: string } | null)?.avatar_url,
         score: entry.total_score,
         gamesCompleted: entry.games_completed,
         badges: [],

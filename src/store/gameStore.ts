@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Era, GameType, Case, Mission, Clue, GameProgress, GameStatus } from '../types/game';
-import { Player, PlayerStats, Badge, PlayerBadge } from '../types/player';
+import type { Era, GameType, Case, Mission, GameStatus } from '../types/game';
+import type { Player, PlayerStats, PlayerBadge } from '../types/player';
 
 interface GameState {
   // Player

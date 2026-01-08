@@ -1,4 +1,4 @@
-import { Case, GameProgress } from '../types/game';
+import type { Case } from '../types/game';
 
 export interface ScoreBreakdown {
   basePoints: number;
@@ -59,7 +59,7 @@ export function calculateDetectiveScore(
 }
 
 export function calculateCommandScore(
-  missionId: string,
+  _missionId: string,
   turnsUsed: number,
   totalTurns: number,
   outcome: 'victory' | 'partial' | 'failure',

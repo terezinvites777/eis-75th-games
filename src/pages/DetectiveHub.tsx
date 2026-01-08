@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Search, Star, Clock, Trophy } from 'lucide-react';
+import { ArrowLeft, Search, Star, Trophy } from 'lucide-react';
 import { MobileFrame } from '../components/layout';
 import { EraSelector } from '../components/game';
 import { Card } from '../components/ui';
-import { Era } from '../types/game';
+import type { Era } from '../types/game';
 import { useGameStore } from '../store/gameStore';
 
 export function DetectiveHub() {

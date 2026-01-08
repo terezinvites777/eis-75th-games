@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Check, AlertTriangle } from 'lucide-react';
-import { DiagnosisOption } from '../../types/game';
+import type { DiagnosisOption } from '../../types/game';
 import { Button } from '../ui/Button';
 
 interface DiagnosisPanelProps {

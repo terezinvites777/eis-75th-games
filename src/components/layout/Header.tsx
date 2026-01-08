@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Trophy, User, Menu } from 'lucide-react';
+import { Trophy, User } from 'lucide-react';
 import { useGameStore } from '../../store/gameStore';
 import { formatScore } from '../../lib/scoring';
 

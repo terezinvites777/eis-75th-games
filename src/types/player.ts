@@ -1,4 +1,4 @@
-import { Era, GameType } from './game';
+import type { Era, GameType } from './game';
 
 export interface Player {
   id: string;

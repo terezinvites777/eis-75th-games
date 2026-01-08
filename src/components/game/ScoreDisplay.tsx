@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Trophy, Star, Zap, Target, Clock } from 'lucide-react';
-import { ScoreBreakdown } from '../../lib/scoring';
+import type { ScoreBreakdown } from '../../lib/scoring';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 

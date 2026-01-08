@@ -35,13 +35,6 @@ export function ProgressBar({
     lg: 'h-4',
   };
 
-  // Determine color based on percentage for dynamic coloring
-  const getAutoColor = () => {
-    if (percentage > 66) return 'bg-green-500';
-    if (percentage > 33) return 'bg-yellow-500';
-    return 'bg-red-500';
-  };
-
   const barColor = variant === 'default' ? variants.default : variants[variant];
 
   return (

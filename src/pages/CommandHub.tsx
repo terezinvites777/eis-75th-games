@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Target, Users, DollarSign, Clock } from 'lucide-react';
 import { MobileFrame } from '../components/layout';
-import { Card, Button } from '../components/ui';
+import { Card } from '../components/ui';
 import { useGameStore } from '../store/gameStore';
 
 const missions = [

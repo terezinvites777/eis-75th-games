@@ -8,7 +8,7 @@ import {
   Lock,
   Eye
 } from 'lucide-react';
-import { Clue } from '../../types/game';
+import type { Clue } from '../../types/game';
 
 interface ClueCardProps {
   clue: Clue;

@@ -1,0 +1,241 @@
+{
+  "cases": [
+    {
+      "id": "1950s-polio-cutter",
+      "era": "1950s",
+      "title": "The Cutter Incident",
+      "year": 1955,
+      "location": "Berkeley, California",
+      "description": "Children who received the new polio vaccine are developing paralytic polio. Parents are panicking, and the vaccination program may be in jeopardy.",
+      "difficulty": "medium",
+      "timeLimit": 300,
+      "basePoints": 500,
+      "clues": [
+        {
+          "id": "clue-1",
+          "type": "clinical",
+          "title": "Patient Presentation",
+          "content": "Affected children developed paralysis 7-10 days after vaccination, with weakness beginning in the arm where the injection was given.",
+          "revealed": false,
+          "order": 1
+        },
+        {
+          "id": "clue-2",
+          "type": "epi",
+          "title": "Epidemiological Pattern",
+          "content": "All cases received vaccine from a single manufacturer: Cutter Laboratories. No cases from other manufacturers.",
+          "revealed": false,
+          "order": 2
+        },
+        {
+          "id": "clue-3",
+          "type": "lab",
+          "title": "Laboratory Analysis",
+          "content": "Testing of vaccine lots shows live, virulent poliovirus in some batches. The inactivation process appears to have failed.",
+          "revealed": false,
+          "order": 3
+        },
+        {
+          "id": "clue-4",
+          "type": "historical",
+          "title": "Manufacturing Records",
+          "content": "Cutter used different filtration methods than other manufacturers, potentially allowing viral clumps to survive inactivation.",
+          "revealed": false,
+          "order": 4
+        }
+      ],
+      "diagnosisOptions": [
+        {
+          "id": "opt-1",
+          "name": "Vaccine-Derived Poliovirus",
+          "description": "The vaccine virus mutated back to a virulent form",
+          "isCorrect": false
+        },
+        {
+          "id": "opt-2",
+          "name": "Contaminated Vaccine Lots",
+          "description": "Live poliovirus survived the inactivation process in certain vaccine batches",
+          "isCorrect": true
+        },
+        {
+          "id": "opt-3",
+          "name": "Coincidental Wild Polio",
+          "description": "Normal polio outbreak coinciding with vaccination campaign",
+          "isCorrect": false
+        },
+        {
+          "id": "opt-4",
+          "name": "Allergic Reaction",
+          "description": "Severe immune reaction to vaccine components causing paralysis",
+          "isCorrect": false
+        }
+      ],
+      "correctDiagnosis": "opt-2",
+      "realOutcome": "The Cutter Incident resulted in 40,000 cases of polio, 200 children with paralysis, and 10 deaths. It led to the creation of modern vaccine safety regulations and the establishment of what would become the FDA's biologics oversight.",
+      "historicalContext": "In 1955, the Salk polio vaccine was licensed after successful trials. Five companies rushed to produce millions of doses. EIS officers were among the first to identify the pattern linking cases to a single manufacturer.",
+      "lessons": [
+        "Manufacturing quality control is as important as vaccine development",
+        "Rapid epidemiological investigation can identify patterns that save lives",
+        "This incident led to modern vaccine safety monitoring systems"
+      ]
+    },
+    {
+      "id": "1980s-hiv-blood",
+      "era": "1980s",
+      "title": "The Blood Supply Crisis",
+      "year": 1982,
+      "location": "Nationwide",
+      "description": "Hemophilia patients who rely on clotting factor transfusions are developing a mysterious immune deficiency syndrome. The blood supply may be at risk.",
+      "difficulty": "hard",
+      "timeLimit": 360,
+      "basePoints": 750,
+      "clues": [
+        {
+          "id": "clue-1",
+          "type": "clinical",
+          "title": "Patient Symptoms",
+          "content": "Hemophilia patients presenting with opportunistic infections like Pneumocystis pneumonia and Kaposi's sarcoma - same as the new syndrome seen in gay men.",
+          "revealed": false,
+          "order": 1
+        },
+        {
+          "id": "clue-2",
+          "type": "epi",
+          "title": "Risk Factor Analysis",
+          "content": "Affected hemophiliacs have no other risk factors besides receiving pooled clotting factor concentrates derived from thousands of donors.",
+          "revealed": false,
+          "order": 2
+        },
+        {
+          "id": "clue-3",
+          "type": "lab",
+          "title": "Immunological Testing",
+          "content": "Patients show severely depleted CD4+ T-cells, matching the immune profile of AIDS patients from other risk groups.",
+          "revealed": false,
+          "order": 3
+        },
+        {
+          "id": "clue-4",
+          "type": "environmental",
+          "title": "Blood Product Source",
+          "content": "Clotting factor concentrates are pooled from up to 20,000 donors per batch. Even rare infections would likely contaminate most batches.",
+          "revealed": false,
+          "order": 4
+        }
+      ],
+      "diagnosisOptions": [
+        {
+          "id": "opt-1",
+          "name": "Blood-Borne Transmission of AIDS Agent",
+          "description": "The causative agent of AIDS is transmitted through contaminated blood products",
+          "isCorrect": true
+        },
+        {
+          "id": "opt-2",
+          "name": "Immune Overload from Transfusions",
+          "description": "Multiple transfusions causing immune system exhaustion",
+          "isCorrect": false
+        },
+        {
+          "id": "opt-3",
+          "name": "Hepatitis B Variant",
+          "description": "A new strain of hepatitis affecting the immune system",
+          "isCorrect": false
+        },
+        {
+          "id": "opt-4",
+          "name": "Chemical Contaminant",
+          "description": "Toxic substance introduced during manufacturing",
+          "isCorrect": false
+        }
+      ],
+      "correctDiagnosis": "opt-1",
+      "realOutcome": "By 1985, approximately 90% of severe hemophiliacs in the US had been infected with HIV. This tragedy led to mandatory blood screening, heat treatment of clotting factors, and eventually the development of synthetic alternatives.",
+      "historicalContext": "Before HIV testing was available, EIS officers used epidemiological evidence to argue that AIDS could be transmitted through blood products, facing resistance from blood banks and manufacturers.",
+      "lessons": [
+        "Public health sometimes requires action before scientific proof is complete",
+        "Commercial interests can delay response to emerging threats",
+        "Surveillance of vulnerable populations can reveal emerging patterns"
+      ]
+    },
+    {
+      "id": "2010s-ebola-dallas",
+      "era": "2010s",
+      "title": "Ebola in America",
+      "year": 2014,
+      "location": "Dallas, Texas",
+      "description": "A traveler from Liberia has presented to a Dallas ER with fever and was sent home. Now he's back, critically ill, and the hospital staff may have been exposed.",
+      "difficulty": "easy",
+      "timeLimit": 240,
+      "basePoints": 400,
+      "clues": [
+        {
+          "id": "clue-1",
+          "type": "clinical",
+          "title": "Initial Presentation",
+          "content": "Patient presented with 103°F fever, headache, and abdominal pain. Later developed vomiting, diarrhea, and became increasingly confused.",
+          "revealed": false,
+          "order": 1
+        },
+        {
+          "id": "clue-2",
+          "type": "historical",
+          "title": "Travel History",
+          "content": "Patient arrived from Liberia 4 days before symptoms. Liberia is experiencing the largest Ebola outbreak in history.",
+          "revealed": false,
+          "order": 2
+        },
+        {
+          "id": "clue-3",
+          "type": "epi",
+          "title": "Contact Investigation",
+          "content": "Patient helped care for a pregnant woman in Liberia who later died. He had direct contact with her bodily fluids.",
+          "revealed": false,
+          "order": 3
+        },
+        {
+          "id": "clue-4",
+          "type": "lab",
+          "title": "Laboratory Results",
+          "content": "Blood sample sent to CDC tests positive for Ebola virus by PCR. This is the first case diagnosed in the United States.",
+          "revealed": false,
+          "order": 4
+        }
+      ],
+      "diagnosisOptions": [
+        {
+          "id": "opt-1",
+          "name": "Ebola Virus Disease",
+          "description": "Infection with Ebola virus acquired in West Africa",
+          "isCorrect": true
+        },
+        {
+          "id": "opt-2",
+          "name": "Malaria",
+          "description": "Plasmodium infection from mosquito bite in Liberia",
+          "isCorrect": false
+        },
+        {
+          "id": "opt-3",
+          "name": "Typhoid Fever",
+          "description": "Bacterial infection from contaminated food or water",
+          "isCorrect": false
+        },
+        {
+          "id": "opt-4",
+          "name": "Viral Gastroenteritis",
+          "description": "Common stomach virus with fever",
+          "isCorrect": false
+        }
+      ],
+      "correctDiagnosis": "opt-1",
+      "realOutcome": "Thomas Eric Duncan died on October 8, 2014. Two nurses who cared for him became infected but survived. The case revealed gaps in US healthcare system preparedness and led to enhanced protocols for high-consequence pathogens.",
+      "historicalContext": "The 2014-2016 West African Ebola epidemic killed over 11,000 people. EIS officers deployed to West Africa and worked domestically on contact tracing and hospital preparedness.",
+      "lessons": [
+        "Travel history is critical in identifying imported diseases",
+        "Healthcare workers need proper PPE and training for emerging threats",
+        "Even developed healthcare systems can have gaps in preparedness"
+      ]
+    }
+  ]
+}

@@ -416,6 +416,9 @@
 */
 
 /* --- Detective Page Background: Wood Desk Texture --- */
+/* Using !important to override eis-brand.css defaults */
+[data-theme="detective"].eis-bg,
+.eis-bg[data-theme="detective"],
 [data-theme="detective"] .eis-bg {
   background:
     /* Wood grain overlay */
@@ -434,9 +437,12 @@
       #4a3728 55%,
       #3d2b1f 75%,
       #2e1f15 100%
-    );
+    ) !important;
+  background-image: none !important;
 }
 
+[data-theme="detective"].eis-bg::before,
+.eis-bg[data-theme="detective"]::before,
 [data-theme="detective"] .eis-bg::before {
   background-image:
     /* Subtle wood knots/variations */
@@ -450,9 +456,9 @@
       transparent 8px,
       rgba(0,0,0,0.04) 8px,
       rgba(0,0,0,0.04) 9px
-    );
-  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%;
-  opacity: 1;
+    ) !important;
+  background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100% !important;
+  opacity: 1 !important;
 }
 
 /* --- Detective Stat Cards: Brass Plaques --- */
@@ -629,12 +635,59 @@
     inset 0 1px 0 rgba(255,255,255,0.5);
 }
 
-/* --- Detective Era Cards: Period Banners --- */
-[data-theme="detective"] .eis-bg [class*="bg-gradient-to-r"] {
-  border: 2px solid rgba(212,175,55,0.5);
+/* --- Detective Era Cards: Vintage Parchment Style --- */
+/* Override Tailwind gradient classes with vintage styling */
+[data-theme="detective"] button[class*="bg-gradient-to-r"],
+[data-theme="detective"] [class*="bg-gradient-to-r"] {
+  background:
+    /* Paper texture */
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E"),
+    linear-gradient(180deg,
+      #d4c4a0 0%,
+      #c9b78f 30%,
+      #bfaa7f 70%,
+      #b49d6f 100%
+    ) !important;
+  border: 3px solid #8b7355 !important;
   box-shadow:
-    0 4px 12px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.2);
+    0 6px 20px rgba(0,0,0,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.3),
+    inset 0 0 0 1px rgba(139,115,85,0.4) !important;
+}
+
+[data-theme="detective"] button[class*="bg-gradient-to-r"]:hover,
+[data-theme="detective"] [class*="bg-gradient-to-r"]:hover {
+  border-color: #d4af37 !important;
+  box-shadow:
+    0 8px 28px rgba(0,0,0,0.45),
+    0 0 20px rgba(212,175,55,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.4) !important;
+}
+
+/* Text colors for era cards in detective theme */
+[data-theme="detective"] button[class*="bg-gradient-to-r"] .text-white,
+[data-theme="detective"] button[class*="bg-gradient-to-r"] h3,
+[data-theme="detective"] button[class*="bg-gradient-to-r"] p,
+[data-theme="detective"] button[class*="bg-gradient-to-r"] span,
+[data-theme="detective"] button[class*="bg-gradient-to-r"] div {
+  color: #3d2b1f !important;
+  text-shadow: none !important;
+}
+
+[data-theme="detective"] button[class*="bg-gradient-to-r"] .text-white\/80,
+[data-theme="detective"] button[class*="bg-gradient-to-r"] .text-white\/90 {
+  color: #5c4a36 !important;
+}
+
+/* Era card icon circle */
+[data-theme="detective"] button[class*="bg-gradient-to-r"] .bg-white\/20,
+[data-theme="detective"] button[class*="bg-gradient-to-r"] .bg-white\/25 {
+  background: linear-gradient(135deg, #d4af37, #8b6914) !important;
+}
+
+/* Progress bar */
+[data-theme="detective"] button[class*="bg-gradient-to-r"] .bg-white\/60 {
+  background: #d4af37 !important;
 }
 
 /* --- Detective Content Area Padding --- */

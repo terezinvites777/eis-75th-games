@@ -111,8 +111,10 @@
   position: relative;
   min-height: 100vh;
   color: var(--ink);
-  background:
-    linear-gradient(180deg, #e8e4dc 0%, #f5f3ef 30%, #f8f7f4 100%);
+  background: #d8d4c8;
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% 0%, rgba(255,255,255,0.7) 0%, transparent 60%),
+    linear-gradient(180deg, #cec9bb 0%, #d8d4c8 20%, #e2dfd5 50%, #ebe9e2 100%);
 }
 
 .app-bg::before {
@@ -121,10 +123,9 @@
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-image:
-    radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
-    radial-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px);
-  background-size: 100% 100%, 24px 24px;
+  background-image: radial-gradient(circle, rgba(0,0,0,0.12) 1px, transparent 1px);
+  background-size: 20px 20px;
+  opacity: 0.5;
 }
 
 .app-bg > * {
@@ -186,31 +187,31 @@
 
 /* ---------- Surfaces / Cards ---------- */
 .surface {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: linear-gradient(180deg, #ffffff 0%, #f8f7f5 100%);
+  border: 2px solid rgba(180, 170, 150, 0.3);
   border-radius: var(--radius-xl);
   box-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.05),
-    0 10px 20px rgba(0, 0, 0, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    0 2px 0 rgba(180, 170, 150, 0.2),
+    0 8px 24px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .surface-solid {
-  background: #ffffff;
-  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: #fefefe;
+  border: 2px solid rgba(180, 170, 150, 0.25);
   border-radius: var(--radius-xl);
   box-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.05),
-    0 10px 20px rgba(0, 0, 0, 0.08);
+    0 2px 0 rgba(180, 170, 150, 0.15),
+    0 8px 20px rgba(0, 0, 0, 0.10);
 }
 
 .panel {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(250, 250, 250, 0.88) 100%);
-  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: linear-gradient(180deg, #fefefe 0%, #f9f8f6 100%);
+  border: 2px solid rgba(180, 170, 150, 0.25);
   border-radius: var(--radius-lg);
   box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.04),
-    0 6px 12px rgba(0, 0, 0, 0.06);
+    0 2px 0 rgba(180, 170, 150, 0.15),
+    0 6px 16px rgba(0, 0, 0, 0.08);
   padding: 1rem;
 }
 
@@ -318,15 +319,15 @@
 
 /* ---------- Stat Cards ---------- */
 .stat-card {
-  background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: linear-gradient(180deg, #ffffff 0%, #f9f8f6 100%);
+  border: 2px solid rgba(180, 170, 150, 0.25);
   border-radius: var(--radius-lg);
   padding: 16px 12px;
   text-align: center;
   box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.04),
-    0 4px 8px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    0 2px 0 rgba(180, 170, 150, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .stat-value {
@@ -347,26 +348,26 @@
 /* ---------- Game Cards ---------- */
 .game-card {
   position: relative;
-  background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
-  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: linear-gradient(180deg, #ffffff 0%, #f9f8f6 100%);
+  border: 2px solid rgba(180, 170, 150, 0.3);
   border-radius: var(--radius-xl);
   padding: 20px;
   box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.04),
-    0 8px 16px rgba(0, 0, 0, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    0 2px 0 rgba(180, 170, 150, 0.2),
+    0 8px 20px rgba(0, 0, 0, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
   cursor: pointer;
   overflow: hidden;
   transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
 }
 
 .game-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(15, 23, 42, 0.15);
+  transform: translateY(-4px);
+  border-color: rgba(150, 140, 120, 0.4);
   box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.06),
-    0 12px 24px rgba(0, 0, 0, 0.10),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    0 4px 0 rgba(180, 170, 150, 0.15),
+    0 12px 28px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .game-card::before {
@@ -375,8 +376,8 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--theme-primary, #0057B8), var(--theme-secondary, #0077B6));
+  height: 4px;
+  background: linear-gradient(90deg, var(--theme-primary, #D4AF37), var(--theme-secondary, #B8860B));
   opacity: 0;
   transition: opacity 200ms;
 }

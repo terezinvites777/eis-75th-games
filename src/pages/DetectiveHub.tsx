@@ -48,10 +48,9 @@ export function DetectiveHub() {
       <ExhibitStagePlate
         src={DETECTIVE_PLATES.caseSelect.src}
         alt={DETECTIVE_PLATES.caseSelect.alt}
-        eyebrow={DETECTIVE_PLATES.caseSelect.eyebrow}
-        title={eraInfo ? eraInfo.title : "Disease Detective"}
-        subtitle={eraInfo ? eraInfo.description : "Solve historical outbreak mysteries"}
         height="md"
+        mode="bleed"
+        showCaption={false}
       />
 
       <div className="p-5 space-y-6">

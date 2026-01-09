@@ -1,24 +1,28 @@
 // src/components/exhibit/ExhibitStagePlate.tsx
 // Museum-grade cinematic phase plate for Disease Detective (and other games)
-// Displays narrative background images with proper framing and caption overlays
+// Displays narrative background images with proper framing and bleed effects
 
-import type { ReactNode } from 'react';
+import type { ReactNode, CSSProperties } from 'react';
 
 type Props = {
   src: string;
   alt: string;
-  eyebrow?: string;     // small label above title
-  title?: string;       // optional overlay title
-  subtitle?: string;    // optional overlay subtitle
-  badgeRight?: ReactNode; // optional chip/badge on right
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+  badgeRight?: ReactNode;
   height?: 'sm' | 'md' | 'lg';
+  /** Display mode: "bleed" paints blurred plate into page background, "framed" is a centered card */
+  mode?: 'framed' | 'bleed';
+  /** Show caption overlay (disable if image has baked-in text) */
+  showCaption?: boolean;
   className?: string;
 };
 
 const HEIGHT: Record<NonNullable<Props['height']>, string> = {
-  sm: 'h-[180px] md:h-[220px]',
-  md: 'h-[220px] md:h-[280px]',
-  lg: 'h-[260px] md:h-[340px]',
+  sm: 'h-[170px] md:h-[210px]',
+  md: 'h-[210px] md:h-[270px]',
+  lg: 'h-[250px] md:h-[330px]',
 };
 
 export function ExhibitStagePlate({
@@ -29,10 +33,24 @@ export function ExhibitStagePlate({
   subtitle,
   badgeRight,
   height = 'md',
+  mode = 'bleed',
+  showCaption = true,
   className = '',
 }: Props) {
+  const hasCaption = showCaption && (eyebrow || title || subtitle || badgeRight);
+
+  const sectionStyle: CSSProperties | undefined =
+    mode === 'bleed' ? { ['--plate-url' as string]: `url(${src})` } : undefined;
+
   return (
-    <section className={`eis-stagePlate ${className}`}>
+    <section
+      className={[
+        'eis-stagePlate',
+        mode === 'bleed' ? 'eis-stagePlate--bleed' : 'eis-stagePlate--framed',
+        className,
+      ].join(' ')}
+      style={sectionStyle}
+    >
       <div className={`eis-stagePlate__frame ${HEIGHT[height]}`}>
         <img
           src={src}
@@ -41,12 +59,9 @@ export function ExhibitStagePlate({
           loading="eager"
           decoding="async"
         />
-
-        {/* vignette + readability */}
         <div className="eis-stagePlate__vignette" />
 
-        {/* bottom caption band */}
-        {(eyebrow || title || subtitle || badgeRight) && (
+        {hasCaption && (
           <div className="eis-stagePlate__caption">
             <div className="min-w-0">
               {eyebrow && <div className="eis-stagePlate__eyebrow">{eyebrow}</div>}

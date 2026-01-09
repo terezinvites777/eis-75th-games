@@ -121,10 +121,9 @@ export function DetectiveGame() {
       <ExhibitStagePlate
         src={plate.src}
         alt={plate.alt}
-        eyebrow={plate.eyebrow}
-        title={caseData.title}
-        subtitle={caseData.subtitle}
         height="md"
+        mode="bleed"
+        showCaption={false}
       />
 
       {(phase === 'investigation' || phase === 'diagnosis') && (

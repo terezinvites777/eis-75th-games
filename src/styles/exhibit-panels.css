@@ -935,4 +935,138 @@
     0 6px 14px rgba(0,0,0,0.35);
 }
 
-/* Cache bust: 1736500000 - Clue card vintage styling */
+/* ===============================
+   COMMAND THEME - Victorian Brass Frame
+   ===============================
+   Ornate museum-style framing for Outbreak Command
+*/
+
+/* --- Command Page Background: Parchment with brass frame --- */
+.eis-bg[data-theme="command"] {
+  background: url('/images/textures/parchment-dark.png') center/cover fixed !important;
+  position: relative;
+}
+
+.eis-bg[data-theme="command"]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  /* Inner shadow for depth */
+  box-shadow:
+    inset 0 0 100px rgba(0,0,0,0.4),
+    inset 0 0 200px rgba(0,0,0,0.2);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* --- Ornate Victorian Frame Border --- */
+.eis-bg[data-theme="command"]::after {
+  content: "";
+  position: fixed;
+  inset: 8px;
+  border: 8px solid;
+  border-image: linear-gradient(145deg, #d4af37, #8b6914, #d4af37, #c9a227) 1;
+  border-radius: 12px;
+  box-shadow:
+    0 0 0 4px rgba(139, 105, 20, 0.6),
+    inset 0 0 0 4px rgba(139, 105, 20, 0.4),
+    0 0 30px rgba(0,0,0,0.5),
+    inset 0 0 60px rgba(0,0,0,0.3);
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* --- Command Header Bar --- */
+.eis-bg[data-theme="command"] .hero-strip,
+.eis-bg[data-theme="command"] [class*="bg-slate-800"] {
+  background:
+    linear-gradient(180deg, #3d2b1f 0%, #2a1f15 50%, #1a140d 100%) !important;
+  border-bottom: 3px solid;
+  border-image: linear-gradient(90deg, transparent, #d4af37, #f0d060, #d4af37, transparent) 1;
+}
+
+.eis-bg[data-theme="command"] .hero-strip h1,
+.eis-bg[data-theme="command"] [class*="text-white"] {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: #f4e4c1 !important;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* --- Command Panels: Brass-framed parchment --- */
+.eis-bg[data-theme="command"] .bg-white,
+.eis-bg[data-theme="command"] [class*="bg-white"] {
+  background: url('/images/textures/parchment-light.png') center/cover !important;
+  border: 2px solid #8b7355 !important;
+  box-shadow:
+    0 6px 20px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.4),
+    inset 0 0 0 1px rgba(139,115,85,0.3) !important;
+}
+
+/* --- Command Stats Cards --- */
+.eis-bg[data-theme="command"] [class*="bg-red-50"],
+.eis-bg[data-theme="command"] [class*="bg-green-50"],
+.eis-bg[data-theme="command"] [class*="bg-blue-50"],
+.eis-bg[data-theme="command"] [class*="bg-slate-50"] {
+  background:
+    linear-gradient(145deg, rgba(248,240,210,0.95), rgba(217,193,132,0.90)) !important;
+  border: 1px solid rgba(139,115,85,0.4) !important;
+}
+
+.eis-bg[data-theme="command"] [class*="text-red-600"] {
+  color: #8b2020 !important;
+}
+
+.eis-bg[data-theme="command"] [class*="text-green-600"] {
+  color: #2d5a2d !important;
+}
+
+.eis-bg[data-theme="command"] [class*="text-blue-600"] {
+  color: #2a4769 !important;
+}
+
+/* --- Command text styling --- */
+.eis-bg[data-theme="command"] [class*="text-slate-800"],
+.eis-bg[data-theme="command"] [class*="text-slate-700"],
+.eis-bg[data-theme="command"] .font-bold {
+  color: #2d1f10 !important;
+  font-weight: 700 !important;
+}
+
+.eis-bg[data-theme="command"] [class*="text-slate-600"],
+.eis-bg[data-theme="command"] [class*="text-slate-500"] {
+  color: #4a3728 !important;
+}
+
+/* --- Command Action Cards --- */
+.eis-bg[data-theme="command"] [class*="rounded-xl"][class*="border-2"] {
+  background: url('/images/textures/parchment-light.png') center/cover !important;
+  border-color: #8b7355 !important;
+}
+
+.eis-bg[data-theme="command"] [class*="rounded-xl"][class*="border-2"]:hover {
+  border-color: #d4af37 !important;
+}
+
+/* --- Command Buttons --- */
+.eis-bg[data-theme="command"] [class*="bg-blue-600"] {
+  background:
+    radial-gradient(ellipse 60% 40% at 30% 20%, rgba(255,255,255,0.3), transparent),
+    linear-gradient(145deg, #2a4769 0%, #1a3552 50%, #142a44 100%) !important;
+  border: 1px solid rgba(255,255,255,0.2) !important;
+}
+
+.eis-bg[data-theme="command"] [class*="bg-blue-600"]:hover {
+  background:
+    radial-gradient(ellipse 60% 40% at 30% 20%, rgba(255,255,255,0.4), transparent),
+    linear-gradient(145deg, #3a5779 0%, #2a4562 50%, #1a3554 100%) !important;
+}
+
+/* --- Map container vintage styling --- */
+.eis-bg[data-theme="command"] [class*="from-slate-50"] {
+  background:
+    linear-gradient(180deg, rgba(248,240,210,0.95), rgba(230,218,180,0.90)) !important;
+  border: 2px solid #8b7355 !important;
+}
+
+/* Cache bust: 1736510000 - Command theme Victorian frame */

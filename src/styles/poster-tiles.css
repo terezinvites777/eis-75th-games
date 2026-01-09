@@ -315,3 +315,135 @@
     font-size: 17px;
   }
 }
+
+
+/* ============================================
+   STAGE PLATE (Narrative Phase Backgrounds)
+   ============================================
+   Full-width cinematic image plates that set
+   the narrative mood for each game phase.
+   Used in Disease Detective phases:
+   - Case Select (archive desk)
+   - Briefing (phone memo)
+   - Evidence (folder spreads)
+   - Analysis (map board with pins)
+   - Diagnosis (illuminated clipboard)
+   - Reveal (gold EIS legacy plaque)
+*/
+
+.eis-stagePlate {
+  padding: 0 18px 18px;
+  margin-bottom: 12px;
+}
+
+.eis-stagePlate__inner {
+  position: relative;
+  margin: 0 auto;
+  border-radius: 22px;
+  overflow: hidden;
+
+  /* Heavy museum frame effect */
+  box-shadow:
+    0 22px 55px rgba(0,0,0,0.28),
+    0 8px 20px rgba(0,0,0,0.22),
+    inset 0 0 0 1px rgba(255,255,255,0.15);
+
+  /* Subtle brass frame */
+  border: 2px solid rgba(180, 145, 75, 0.30);
+
+  /* Base background for loading state */
+  background: linear-gradient(180deg, #2a2015, #1a150d);
+}
+
+.eis-stagePlate__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: 200px;
+  object-fit: cover;
+  object-position: center;
+
+  /* Slight vintage photo treatment */
+  filter: saturate(1.05) contrast(1.02);
+}
+
+/* Cinematic vignette for depth and focus */
+.eis-stagePlate__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    /* Radial vignette from center */
+    radial-gradient(120% 100% at 50% 40%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.18) 50%, rgba(0,0,0,0.45) 100%),
+    /* Bottom gradient for any overlay text */
+    linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35) 100%);
+}
+
+/* Content overlay area (for titles, buttons, etc) */
+.eis-stagePlate__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px;
+  pointer-events: none;
+}
+
+.eis-stagePlate__overlay > * {
+  pointer-events: auto;
+}
+
+/* Phase title overlay styling */
+.eis-stagePlate__title {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.96);
+  text-shadow:
+    0 3px 12px rgba(0,0,0,0.55),
+    0 1px 3px rgba(0,0,0,0.45);
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.eis-stagePlate__subtitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.82);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.50);
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 720px) {
+  .eis-stagePlate {
+    padding: 0 12px 14px;
+  }
+
+  .eis-stagePlate__inner {
+    border-radius: 16px;
+  }
+
+  .eis-stagePlate__img {
+    min-height: 160px;
+  }
+
+  .eis-stagePlate__title {
+    font-size: 22px;
+  }
+
+  .eis-stagePlate__subtitle {
+    font-size: 12px;
+  }
+}
+
+/* Larger screens get more dramatic plates */
+@media (min-width: 1200px) {
+  .eis-stagePlate__img {
+    min-height: 280px;
+  }
+}

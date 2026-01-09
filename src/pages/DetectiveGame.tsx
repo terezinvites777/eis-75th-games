@@ -11,8 +11,10 @@ import {
 } from 'lucide-react';
 import { GameShell } from '../components/layout/GameShell';
 import { ClueCard } from '../components/detective/ClueCard';
+import { ExhibitStagePlate } from '../components/exhibit/ExhibitStagePlate';
 import { EraBadge, DifficultyStars } from '../components/brand/BrandMarks';
 import { getCaseById } from '../data/detective';
+import { DETECTIVE_PLATES, DETECTIVE_PHASE_NARRATIVE } from '../data/detectivePlates';
 import { useGameStore } from '../store/gameStore';
 
 type GamePhase = 'briefing' | 'investigation' | 'diagnosis' | 'result';
@@ -93,6 +95,27 @@ export function DetectiveGame() {
 
   const availablePoints = caseData.basePoints - pointsSpent;
 
+  // Get the appropriate plate based on current phase
+  const getPlateSrc = () => {
+    switch (phase) {
+      case 'briefing': return DETECTIVE_PLATES.briefing;
+      case 'investigation': return DETECTIVE_PLATES.evidence;
+      case 'diagnosis': return DETECTIVE_PLATES.diagnosis;
+      case 'result': return DETECTIVE_PLATES.reveal;
+      default: return DETECTIVE_PLATES.briefing;
+    }
+  };
+
+  const getPlateAlt = () => {
+    switch (phase) {
+      case 'briefing': return DETECTIVE_PHASE_NARRATIVE.briefing;
+      case 'investigation': return DETECTIVE_PHASE_NARRATIVE.evidence;
+      case 'diagnosis': return DETECTIVE_PHASE_NARRATIVE.diagnosis;
+      case 'result': return DETECTIVE_PHASE_NARRATIVE.reveal;
+      default: return DETECTIVE_PHASE_NARRATIVE.briefing;
+    }
+  };
+
   return (
     <GameShell
       theme="detective"
@@ -100,7 +123,17 @@ export function DetectiveGame() {
       heroSubtitle={caseData.subtitle}
       backPath={`/detective/${era}`}
       showNav={phase === 'briefing' || phase === 'result'}
+      showHero={false}
     >
+      {/* Phase Plate - Changes based on current game phase */}
+      <ExhibitStagePlate
+        backgroundSrc={getPlateSrc()}
+        alt={getPlateAlt()}
+      >
+        <h2 className="eis-stagePlate__title">{caseData.title}</h2>
+        <p className="eis-stagePlate__subtitle">{caseData.subtitle}</p>
+      </ExhibitStagePlate>
+
       {(phase === 'investigation' || phase === 'diagnosis') && (
         <div className="sticky top-0 z-20 bg-white/90 backdrop-blur-sm border-b border-gray-100 px-5 py-3">
           <div className="flex items-center justify-between">

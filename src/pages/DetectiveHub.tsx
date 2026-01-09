@@ -7,7 +7,9 @@ import { BookOpen } from 'lucide-react';
 import { GameShell } from '../components/layout/GameShell';
 import { EraCard } from '../components/detective/EraCard';
 import { CaseCard } from '../components/detective/CaseCard';
+import { ExhibitStagePlate } from '../components/exhibit/ExhibitStagePlate';
 import { ERA_INFO, getCasesByEra, allCases } from '../data/detective';
+import { DETECTIVE_PLATES, DETECTIVE_PHASE_NARRATIVE } from '../data/detectivePlates';
 import type { Era } from '../types/detective';
 import { useGameStore } from '../store/gameStore';
 
@@ -15,7 +17,7 @@ export function DetectiveHub() {
   const navigate = useNavigate();
   const { era } = useParams<{ era?: string }>();
   const { completedCases, streak } = useGameStore();
-  
+
   // If an era is selected, show cases for that era
   const selectedEra = era as Era | undefined;
   const cases = selectedEra ? getCasesByEra(selectedEra) : [];
@@ -40,7 +42,21 @@ export function DetectiveHub() {
       heroTitle={eraInfo ? eraInfo.title : "Disease Detective"}
       heroSubtitle={eraInfo ? eraInfo.description : "Solve historical outbreak mysteries"}
       backPath={selectedEra ? '/detective' : '/'}
+      showHero={false}
     >
+      {/* Phase Plate: Case Select - "You're in the archive" */}
+      <ExhibitStagePlate
+        backgroundSrc={DETECTIVE_PLATES.caseSelect}
+        alt={DETECTIVE_PHASE_NARRATIVE.caseSelect}
+      >
+        <h2 className="eis-stagePlate__title">
+          {eraInfo ? eraInfo.title : "Disease Detective"}
+        </h2>
+        <p className="eis-stagePlate__subtitle">
+          {eraInfo ? eraInfo.description : "Solve historical outbreak mysteries"}
+        </p>
+      </ExhibitStagePlate>
+
       <div className="p-5 space-y-6">
         {/* Stats Bar */}
         <div className="grid grid-cols-3 gap-3">
@@ -54,7 +70,7 @@ export function DetectiveHub() {
             </div>
             <div className="stat-label">Cases Solved</div>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -66,7 +82,7 @@ export function DetectiveHub() {
             </div>
             <div className="stat-label">Win Streak</div>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}

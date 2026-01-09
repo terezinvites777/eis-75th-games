@@ -12,13 +12,13 @@ interface ClueCardProps {
   canAfford?: boolean;
 }
 
-const clueTypeConfig: Record<ClueType, { icon: typeof FlaskConical; label: string; color: string }> = {
-  epidemiologic: { icon: Activity, label: 'Epidemiologic', color: 'text-blue-600 bg-blue-50' },
-  laboratory: { icon: FlaskConical, label: 'Laboratory', color: 'text-purple-600 bg-purple-50' },
-  environmental: { icon: MapPin, label: 'Environmental', color: 'text-green-600 bg-green-50' },
-  clinical: { icon: FileText, label: 'Clinical', color: 'text-rose-600 bg-rose-50' },
-  timeline: { icon: Clock, label: 'Timeline', color: 'text-orange-600 bg-orange-50' },
-  historical: { icon: FileText, label: 'Historical', color: 'text-gray-600 bg-gray-50' },
+const clueTypeConfig: Record<ClueType, { icon: typeof FlaskConical; label: string }> = {
+  epidemiologic: { icon: Activity, label: 'Epidemiologic' },
+  laboratory: { icon: FlaskConical, label: 'Laboratory' },
+  environmental: { icon: MapPin, label: 'Environmental' },
+  clinical: { icon: FileText, label: 'Clinical' },
+  timeline: { icon: Clock, label: 'Timeline' },
+  historical: { icon: FileText, label: 'Historical' },
 };
 
 export function ClueCard({ clue, isRevealed, onReveal, canAfford = true }: ClueCardProps) {
@@ -34,16 +34,16 @@ export function ClueCard({ clue, isRevealed, onReveal, canAfford = true }: ClueC
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <span className={`p-1.5 rounded-lg ${config.color}`}>
+          <span className={`clue-type-badge clue-type-${clue.type}`}>
             <Icon size={16} />
           </span>
-          <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+          <span className="clue-type-label">
             {config.label}
           </span>
         </div>
-        
+
         {clue.isCritical && isRevealed && (
-          <span className="flex items-center gap-1 text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
+          <span className="clue-critical-badge">
             <Sparkles size={12} />
             Critical
           </span>

@@ -121,8 +121,8 @@ export function DetectiveGame() {
       <ExhibitStagePlate
         src={plate.src}
         alt={plate.alt}
-        height="md"
-        mode="bleed"
+        height="lg"
+        mode="framed"
         showCaption={false}
       />
 

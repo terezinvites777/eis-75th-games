@@ -48,8 +48,8 @@ export function DetectiveHub() {
       <ExhibitStagePlate
         src={DETECTIVE_PLATES.caseSelect.src}
         alt={DETECTIVE_PLATES.caseSelect.alt}
-        height="md"
-        mode="bleed"
+        height="lg"
+        mode="framed"
         showCaption={false}
       />
 

@@ -1,73 +1,97 @@
-# React + TypeScript + Vite
+# EIS 75th Anniversary Games
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interactive games celebrating 75 years of the CDC Epidemic Intelligence Service (1951-2026).
 
-Currently, two official plugins are available:
+🎮 **Live Demo**: https://eis-75th-games.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Games
 
-## React Compiler
+### 🔍 Disease Detective
+Solve real outbreak mysteries from EIS history. Each case is based on actual EIS investigations with authentic epidemiologic data.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**10 Cases across 3 Eras:**
 
-## Expanding the ESLint configuration
+| Era | Cases | Description |
+|-----|-------|-------------|
+| **1950s - Shoe Leather Era** | 3 cases | The birth of disease detection |
+| **1980s - Laboratory Revolution** | 3 cases | New tools for new threats |
+| **2010s - Genomic Age** | 4 cases | Global health security |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Featured Cases:**
+- Oswego Church Supper (1940) - The first EIS training case
+- Cutter Incident (1955) - Vaccine safety origins
+- Toxic Shock Syndrome (1980) - Consumer product epidemiology
+- Legionnaires' in Bogalusa (1989) - When obvious sources are wrong
+- Peanut Butter Salmonella (2009) - Ingredient-driven outbreaks
+- Fungal Meningitis (2012) - Compounding pharmacy catastrophe
+- Ebola in Dallas (2014) - First U.S. case
+- Zika on Yap Island (2007) - Emergence of a pandemic virus
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 🎯 Outbreak Command (Coming Soon)
+Lead outbreak response operations. Manage resources, make critical decisions, and contain emerging threats.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 👥 EpiConnect (Coming Soon)
+Network with fellow EIS officers and complete social challenges.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Tech Stack
+
+- **Frontend**: React 18 + TypeScript + Vite
+- **Styling**: Tailwind CSS + Custom Design System
+- **Animation**: Framer Motion
+- **State**: Zustand
+- **Database**: Supabase (PostgreSQL)
+- **Hosting**: Vercel
+
+## Design System
+
+Custom "75th Anniversary" design language featuring:
+- CDC official colors (Blue #0057B8, Teal #0077B6)
+- Anniversary gold/bronze accents (#D4AF37, #B8860B)
+- Era-specific theming (1950s gold, 1980s blue, 2010s purple)
+- Glassmorphism surfaces
+- Embossed button treatments
+- Responsive mobile-first layout
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Project Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+src/
+├── components/
+│   ├── brand/          # Logo, badges, branding
+│   ├── detective/      # Disease Detective components
+│   ├── layout/         # GameShell, navigation
+│   └── ui/             # Buttons, cards, modals
+├── data/
+│   └── detective/      # Real case study data
+├── pages/              # Route components
+├── store/              # Zustand state management
+├── styles/             # brand.css design system
+└── types/              # TypeScript definitions
+```
+
+## Case Study Sources
+
+All cases are based on real EIS investigations from:
+- CDC Case Studies in Applied Epidemiology
+- EPICC Training Materials
+- MMWR Reports
+- EIS Summer Course SCORE Exercises
+
+## Credits
+
+Built for the EIS 75th Anniversary Summit (2026) by Exquisite Events.
+
+Educational use only. Not for clinical decision-making.

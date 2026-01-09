@@ -1,18 +1,22 @@
+// src/pages/Leaderboard.tsx
+// Leaderboard showing top Disease Detectives
+
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, Medal, Award, RefreshCw } from 'lucide-react';
-import { MobileFrame } from '../components/layout';
-import { Card, Button } from '../components/ui';
-import { useLeaderboard } from '../hooks/useLeaderboard';
-import { formatScore, getRankTitle } from '../lib/scoring';
+import { Trophy, Medal, Award, Users } from 'lucide-react';
+import { GameShell } from '../components/layout/GameShell';
 import { useGameStore } from '../store/gameStore';
 
-type TimeFrame = 'all_time' | 'weekly' | 'daily';
-
-const timeframes: { id: TimeFrame; label: string }[] = [
-  { id: 'all_time', label: 'All Time' },
-  { id: 'weekly', label: 'Weekly' },
-  { id: 'daily', label: 'Today' },
+// Mock leaderboard data
+const mockLeaderboard = [
+  { id: '1', name: 'Dr. Sarah Chen', score: 2450, gamesCompleted: 8, streak: 5 },
+  { id: '2', name: 'Dr. Marcus Johnson', score: 2180, gamesCompleted: 7, streak: 3 },
+  { id: '3', name: 'Dr. Emily Park', score: 1890, gamesCompleted: 6, streak: 4 },
+  { id: '4', name: 'Dr. James Wilson', score: 1650, gamesCompleted: 5, streak: 2 },
+  { id: '5', name: 'Dr. Lisa Rodriguez', score: 1420, gamesCompleted: 5, streak: 1 },
+  { id: '6', name: 'Dr. Michael Brown', score: 1200, gamesCompleted: 4, streak: 0 },
+  { id: '7', name: 'Dr. Amanda Lee', score: 980, gamesCompleted: 3, streak: 2 },
+  { id: '8', name: 'Dr. David Kim', score: 750, gamesCompleted: 3, streak: 1 },
 ];
 
 function getRankIcon(rank: number) {
@@ -30,127 +34,106 @@ function getRankStyle(rank: number) {
 }
 
 export function Leaderboard() {
-  const [timeframe, setTimeframe] = useState<TimeFrame>('all_time');
-  const { entries, loading, error, refresh } = useLeaderboard({ timeframe });
-  const { player } = useGameStore();
+  const [timeframe, setTimeframe] = useState<'all' | 'week' | 'today'>('all');
+  const { completedCases, streak } = useGameStore();
+
+  const currentPlayerScore = completedCases.length * 100;
 
   return (
-    <MobileFrame>
-      <div className="p-4 space-y-4">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Leaderboard</h1>
-            <p className="text-gray-500">Top Disease Detectives</p>
-          </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={refresh}
-            disabled={loading}
-          >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-          </Button>
-        </div>
-
-        {/* Timeframe tabs */}
-        <div className="flex gap-2 bg-gray-100 p-1 rounded-lg">
-          {timeframes.map((tf) => (
+    <GameShell theme="default" heroTitle="Leaderboard" heroSubtitle="Top Disease Detectives">
+      <div className="p-5 space-y-6">
+        {/* Timeframe Tabs */}
+        <div className="flex gap-2 p-1 bg-gray-100 rounded-xl">
+          {['all', 'week', 'today'].map((tf) => (
             <button
-              key={tf.id}
-              onClick={() => setTimeframe(tf.id)}
-              className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all ${
-                timeframe === tf.id
+              key={tf}
+              onClick={() => setTimeframe(tf as typeof timeframe)}
+              className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                timeframe === tf
                   ? 'bg-white text-gray-900 shadow-sm'
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              {tf.label}
+              {tf === 'all' ? 'All Time' : tf === 'week' ? 'This Week' : 'Today'}
             </button>
           ))}
         </div>
 
-        {/* Leaderboard list */}
-        {error && (
-          <Card className="bg-red-50 border-red-200 text-center">
-            <p className="text-red-600">{error}</p>
-          </Card>
+        {/* Your Ranking */}
+        {currentPlayerScore > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="panel-themed"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-[var(--theme-primary)]/10 flex items-center justify-center">
+                <Users className="w-6 h-6 text-[var(--theme-primary)]" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm text-gray-500">Your Ranking</p>
+                <p className="font-bold text-gray-900">#{mockLeaderboard.length + 1} of {mockLeaderboard.length + 50}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-2xl font-bold text-[var(--anniv-gold)]">{currentPlayerScore}</p>
+                <p className="text-xs text-gray-500">points</p>
+              </div>
+            </div>
+          </motion.div>
         )}
 
-        <div className="space-y-2">
-          {entries.map((entry, index) => {
-            const isCurrentPlayer = player?.id === entry.playerId;
+        {/* Leaderboard List */}
+        <div className="space-y-3">
+          {mockLeaderboard.map((entry, index) => (
+            <motion.div
+              key={entry.id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.05 }}
+              className={`surface p-4 border ${getRankStyle(index + 1)}`}
+            >
+              <div className="flex items-center gap-3">
+                {/* Rank */}
+                <div className="w-8 flex justify-center">
+                  {getRankIcon(index + 1)}
+                </div>
 
-            return (
-              <motion.div
-                key={entry.playerId}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.05 }}
-              >
-                <Card
-                  padding="sm"
-                  className={`border ${getRankStyle(entry.rank)} ${
-                    isCurrentPlayer ? 'ring-2 ring-cdc-blue' : ''
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    {/* Rank */}
-                    <div className="w-8 flex justify-center">
-                      {getRankIcon(entry.rank)}
-                    </div>
+                {/* Avatar */}
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                  <span className="text-lg font-bold text-gray-500">
+                    {entry.name.split(' ').map(n => n[0]).join('')}
+                  </span>
+                </div>
 
-                    {/* Avatar */}
-                    <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-                      {entry.avatarUrl ? (
-                        <img
-                          src={entry.avatarUrl}
-                          alt={entry.displayName}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <span className="text-lg font-bold text-gray-400">
-                          {entry.displayName.charAt(0).toUpperCase()}
-                        </span>
-                      )}
-                    </div>
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-gray-900 truncate">
+                    {entry.name}
+                  </h3>
+                  <p className="text-xs text-gray-500">
+                    {entry.gamesCompleted} cases • {entry.streak > 0 ? `${entry.streak}🔥` : ''}
+                  </p>
+                </div>
 
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-gray-900 truncate">
-                        {entry.displayName}
-                        {isCurrentPlayer && (
-                          <span className="ml-2 text-xs bg-cdc-blue text-white px-2 py-0.5 rounded-full">
-                            You
-                          </span>
-                        )}
-                      </h3>
-                      <p className="text-xs text-gray-500">
-                        {getRankTitle(entry.score)} - {entry.gamesCompleted} games
-                      </p>
-                    </div>
-
-                    {/* Score */}
-                    <div className="text-right">
-                      <p className="font-bold text-gray-900">
-                        {formatScore(entry.score)}
-                      </p>
-                      <p className="text-xs text-gray-500">pts</p>
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            );
-          })}
+                {/* Score */}
+                <div className="text-right">
+                  <p className="font-bold text-gray-900">
+                    {entry.score.toLocaleString()}
+                  </p>
+                  <p className="text-xs text-gray-500">pts</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
-        {entries.length === 0 && !loading && (
-          <Card className="text-center py-8">
-            <Trophy className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-            <p className="text-gray-500">No rankings yet. Be the first!</p>
-          </Card>
-        )}
+        {/* Note */}
+        <p className="text-center text-xs text-gray-400 pt-4">
+          Rankings update in real-time during the 75th Anniversary Summit
+        </p>
       </div>
-    </MobileFrame>
+    </GameShell>
   );
 }
+
+export default Leaderboard;

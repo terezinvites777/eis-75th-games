@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Home, DetectiveHub, CommandHub, Leaderboard, Profile } from './pages';
+import { DetectiveGame } from './pages/DetectiveGame';
 
 function App() {
   return (
@@ -11,11 +12,14 @@ function App() {
         {/* Detective mode routes */}
         <Route path="/detective" element={<DetectiveHub />} />
         <Route path="/detective/:era" element={<DetectiveHub />} />
-        <Route path="/detective/:era/:caseId" element={<DetectiveHub />} />
+        <Route path="/detective/:era/:caseId" element={<DetectiveGame />} />
 
         {/* Command mode routes */}
         <Route path="/command" element={<CommandHub />} />
         <Route path="/command/:missionId" element={<CommandHub />} />
+
+        {/* Connect mode (placeholder) */}
+        <Route path="/connect" element={<Home />} />
 
         {/* Other routes */}
         <Route path="/leaderboard" element={<Leaderboard />} />

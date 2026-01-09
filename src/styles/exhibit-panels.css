@@ -725,16 +725,17 @@
   border-color: #6b5344;
 }
 
-/* --- Detective Card Text: Darker/Bolder for legibility --- */
+/* --- Detective Card Text: Larger, Darker, Bolder for legibility --- */
 .eis-bg[data-theme="detective"] .clue-card h4,
 .eis-bg[data-theme="detective"] .clue-card-locked h4,
 .eis-bg[data-theme="detective"] .panel h3,
 .eis-bg[data-theme="detective"] .panel h4,
 .eis-bg[data-theme="detective"] .case-card h3,
 .eis-bg[data-theme="detective"] .game-card h3 {
-  color: #1a1208 !important;
-  font-weight: 700 !important;
-  text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+  color: #0d0804 !important;
+  font-weight: 800 !important;
+  font-size: 1.25rem !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.35);
 }
 
 .eis-bg[data-theme="detective"] .clue-card p,
@@ -747,18 +748,21 @@
 .eis-bg[data-theme="detective"] .case-card p,
 .eis-bg[data-theme="detective"] .case-card span,
 .eis-bg[data-theme="detective"] .game-card p {
-  color: #2d1f10 !important;
-  font-weight: 500 !important;
+  color: #1a0f08 !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
 }
 
 /* Override ALL gray text in detective theme */
 .eis-bg[data-theme="detective"] [class*="text-gray-"] {
-  color: #2d1f10 !important;
-  font-weight: 500 !important;
+  color: #1a0f08 !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
 }
 
 .eis-bg[data-theme="detective"] .text-sm {
-  font-weight: 500 !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
 }
 
 /* --- Typography in Detective Theme --- */

@@ -1,6 +1,6 @@
 // src/pages/Home.tsx
 // Main landing page for EIS 75th Anniversary Games
-// Uses Exhibit Panel system for museum-style layout
+// Museum exhibit wall with poster plate tiles
 
 import { PosterPanel } from '../components/exhibit/PosterPanel';
 import { GameShell } from '../components/layout/GameShell';
@@ -11,59 +11,42 @@ export function Home() {
       <div className="eis-exhibitGrid">
         <PosterPanel
           number={1}
-          title="Disease Detective Challenge"
-          subtitle="Solve bite-sized outbreak puzzles from the 1950s to today!"
-          description="Choose an era and crack a case using real investigation clues."
-          cta="Solve a Case!"
+          title="Disease Detective"
+          subtitle="Outbreak Investigation Puzzle Game"
+          description="Solve historical outbreak mysteries using real EIS case studies."
+          cta="Solve a Case"
           href="/detective"
           bgImageUrl="/images/exhibits/panel-1.png"
           dataTheme="detective"
-        >
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <span className="eis-pill">1950s</span>
-            <span className="eis-pill">1980s</span>
-            <span className="eis-pill">2010s</span>
-          </div>
-        </PosterPanel>
+        />
 
         <PosterPanel
           number={2}
           title="Outbreak Command"
-          subtitle="Lead response operations under pressure!"
-          description="Make critical decisions and manage resources in real outbreak scenarios."
-          cta="Take Command!"
+          subtitle="Epidemic Response Simulation"
+          description="Lead response operations and make critical decisions under pressure."
+          cta="Take Command"
           href="/command"
           bgImageUrl="/images/exhibits/panel-2.png"
           dataTheme="command"
-        >
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <span className="eis-pill">Strategy</span>
-            <span className="eis-pill">Resource Management</span>
-          </div>
-        </PosterPanel>
+        />
 
         <PosterPanel
           number={3}
-          title="EpiConnect Networking"
-          subtitle="Meet fellow EIS officers, alumni, and supervisors."
-          description="Run 5-minute rounds, earn points for matches, unlock challenges."
+          title="EpiConnect"
+          subtitle="Speed Networking"
+          description="Meet fellow EIS officers, alumni, and supervisors."
           cta="Find My Matches"
           href="/connect"
           bgImageUrl="/images/exhibits/panel-3.png"
           dataTheme="connect"
-        >
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <span className="eis-pill">New Officers</span>
-            <span className="eis-pill">Alumni</span>
-            <span className="eis-pill">By Topic</span>
-          </div>
-        </PosterPanel>
+        />
 
         <PosterPanel
           number={4}
           title="75 Years, 75 Stories"
-          subtitle="Watch stories from 75 years of EIS."
-          description="Explore featured decades and share your own memory."
+          subtitle="Video Archive"
+          description="Watch stories from 75 years of EIS and share your own memory."
           cta="Watch Stories"
           href="/stories"
           bgImageUrl="/images/exhibits/panel-4.png"
@@ -72,22 +55,22 @@ export function Home() {
 
         <PosterPanel
           number={5}
-          title="Leaderboard"
-          subtitle="Top Disease Detectives"
-          description="See who's solved the most cases and earned the highest scores."
-          cta="View Rankings"
-          href="/leaderboard"
+          title="Patient Zero"
+          subtitle="Multi-Day Mystery"
+          description="Follow daily clues to identify historic outbreak sources."
+          cta="Investigate"
+          href="/patient-zero"
           bgImageUrl="/images/exhibits/panel-5.png"
-          dataTheme="default"
+          dataTheme="detective"
         />
 
         <PosterPanel
           number={6}
-          title="About EIS"
-          subtitle="75 years of protecting public health."
-          description="Learn about the history and mission of the Epidemic Intelligence Service."
-          cta="Learn More"
-          href="/about"
+          title="Predict the Outbreak"
+          subtitle="Forecast Challenge"
+          description="Use partial data to predict outbreak outcomes."
+          cta="Make Predictions"
+          href="/predict"
           bgImageUrl="/images/exhibits/panel-6.png"
           dataTheme="default"
         />

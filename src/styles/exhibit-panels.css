@@ -726,37 +726,39 @@
 }
 
 /* --- Detective Card Text: Darker/Bolder for legibility --- */
-[data-theme="detective"] .clue-card h4,
-[data-theme="detective"] .clue-card-locked h4,
-[data-theme="detective"] .panel h3,
-[data-theme="detective"] .panel h4,
-[data-theme="detective"] .case-card h3,
-[data-theme="detective"] .game-card h3 {
+.eis-bg[data-theme="detective"] .clue-card h4,
+.eis-bg[data-theme="detective"] .clue-card-locked h4,
+.eis-bg[data-theme="detective"] .panel h3,
+.eis-bg[data-theme="detective"] .panel h4,
+.eis-bg[data-theme="detective"] .case-card h3,
+.eis-bg[data-theme="detective"] .game-card h3 {
   color: #1a1208 !important;
-  font-weight: 700;
+  font-weight: 700 !important;
   text-shadow: 0 1px 0 rgba(255,255,255,0.3);
 }
 
-[data-theme="detective"] .clue-card p,
-[data-theme="detective"] .clue-card-locked p,
-[data-theme="detective"] .clue-card span,
-[data-theme="detective"] .clue-card-locked span,
-[data-theme="detective"] .panel p,
-[data-theme="detective"] .panel li,
-[data-theme="detective"] .case-card p,
-[data-theme="detective"] .game-card p {
+.eis-bg[data-theme="detective"] .clue-card p,
+.eis-bg[data-theme="detective"] .clue-card-locked p,
+.eis-bg[data-theme="detective"] .clue-card span,
+.eis-bg[data-theme="detective"] .clue-card-locked span,
+.eis-bg[data-theme="detective"] .panel p,
+.eis-bg[data-theme="detective"] .panel li,
+.eis-bg[data-theme="detective"] .panel span,
+.eis-bg[data-theme="detective"] .case-card p,
+.eis-bg[data-theme="detective"] .case-card span,
+.eis-bg[data-theme="detective"] .game-card p {
   color: #2d1f10 !important;
-  font-weight: 500;
+  font-weight: 500 !important;
 }
 
-[data-theme="detective"] .text-gray-500,
-[data-theme="detective"] .text-gray-600,
-[data-theme="detective"] .text-gray-700 {
-  color: #3d2a18 !important;
+/* Override ALL gray text in detective theme */
+.eis-bg[data-theme="detective"] [class*="text-gray-"] {
+  color: #2d1f10 !important;
+  font-weight: 500 !important;
 }
 
-[data-theme="detective"] .text-sm {
-  font-weight: 500;
+.eis-bg[data-theme="detective"] .text-sm {
+  font-weight: 500 !important;
 }
 
 /* --- Typography in Detective Theme --- */

@@ -23,19 +23,20 @@
 .eis-posterPanel {
   --frame: rgba(28, 41, 55, 0.55);
   --frame2: rgba(218, 191, 120, 0.55);
-  --paper: rgba(246, 242, 235, 0.92);
+  --paper: rgba(246, 242, 235, 0.94);
   --ink: rgba(18, 20, 22, 0.92);
   --muted: rgba(18, 20, 22, 0.72);
 
   position: relative;
   overflow: hidden;
   border-radius: 16px;
-  border: 2px solid rgba(0, 0, 0, 0.18);
+  border: 3px solid rgba(180, 160, 120, 0.50);
 
-  /* outer "frame" feel */
+  /* outer "frame" feel - golden museum frame */
   box-shadow:
-    0 14px 30px rgba(0,0,0,0.22),
-    inset 0 1px 0 rgba(255,255,255,0.55);
+    0 14px 30px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.40),
+    inset 0 0 0 1px rgba(212, 175, 55, 0.20);
 
   /* fallback texture if no image */
   background:
@@ -57,14 +58,14 @@
   z-index: 0;
 }
 
-/* subtle overlay so text reads over the poster */
+/* very subtle overlay - let the image be the star */
 .eis-posterPanel::after {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(1200px 700px at 15% 0%, rgba(255,255,255,0.18), transparent 60%),
-    linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.26));
+    radial-gradient(1200px 700px at 15% 0%, rgba(255,255,255,0.10), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.08));
   z-index: 1;
 }
 
@@ -88,12 +89,14 @@
   padding: 12px 12px 10px 12px;
   border-radius: 12px;
 
+  /* More transparent - let background show through */
   background:
-    linear-gradient(180deg, rgba(16, 34, 52, 0.62), rgba(16, 34, 52, 0.30));
-  border: 1px solid rgba(255,255,255,0.18);
+    linear-gradient(180deg, rgba(16, 34, 52, 0.35), rgba(16, 34, 52, 0.18));
+  border: 1px solid rgba(255,255,255,0.25);
   box-shadow:
-    0 6px 14px rgba(0,0,0,0.16),
-    inset 0 1px 0 rgba(255,255,255,0.20);
+    0 6px 14px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+  backdrop-filter: blur(4px);
 }
 
 .eis-posterTitle {
@@ -101,33 +104,37 @@
   font-weight: 800;
   letter-spacing: 0.2px;
   line-height: 1.1;
-  color: rgba(255,255,255,0.92);
-  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+  color: rgba(255,255,255,0.98);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.50), 0 1px 2px rgba(0,0,0,0.40);
   font-size: 18px;
 }
 
 .eis-posterSubtitle {
   margin-top: 6px;
-  color: rgba(255,255,255,0.78);
+  color: rgba(255,255,255,0.92);
   font-size: 13px;
   line-height: 1.25;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.40);
 }
 
-/* ------- Number coin ------- */
+/* ------- Number coin - prominent gold medallion ------- */
 .eis-posterNum {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 999px;
   display: grid;
   place-items: center;
   font-weight: 900;
-  color: rgba(35, 24, 10, 0.92);
-  text-shadow: 0 1px 0 rgba(255,255,255,0.35);
+  font-size: 20px;
+  color: rgba(35, 24, 10, 0.95);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.45);
   background:
-    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.60), transparent 45%),
-    linear-gradient(135deg, rgba(232, 210, 140, 0.98), rgba(179, 132, 40, 0.98));
-  border: 1px solid rgba(255,255,255,0.40);
-  box-shadow: 0 10px 18px rgba(0,0,0,0.22);
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.70), transparent 50%),
+    linear-gradient(135deg, #E8D28C, #B38428);
+  border: 2px solid rgba(255,255,255,0.50);
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.30),
+    inset 0 1px 0 rgba(255,255,255,0.60);
 }
 
 /* ------- "Paper" content block ------- */

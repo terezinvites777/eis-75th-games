@@ -55,7 +55,7 @@ export function Home() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="surface text-center py-8 px-6"
+          className="eis-surface text-center py-8 px-6"
         >
           <div className="flex justify-center mb-4">
             <EISShield size="xl" />
@@ -63,7 +63,7 @@ export function Home() {
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Welcome, Disease Detective
           </h2>
-          <p className="text-gray-600 max-w-sm mx-auto text-balance">
+          <p className="text-gray-600 max-w-sm mx-auto">
             Celebrate 75 years of the Epidemic Intelligence Service by solving real outbreak mysteries
           </p>
         </motion.div>
@@ -74,44 +74,44 @@ export function Home() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="stat-card"
+            className="eis-stat"
           >
-            <div className="stat-value text-[var(--anniv-gold)]">
+            <div className="eis-statValue text-[var(--anniv-gold)]">
               {completedCases.length}
             </div>
-            <div className="stat-label">Solved</div>
+            <div className="eis-statLabel">Solved</div>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="stat-card"
+            className="eis-stat"
           >
-            <div className="stat-value text-[var(--cdc-blue)]">
+            <div className="eis-statValue text-[var(--cdc-blue)]">
               {streak}
             </div>
-            <div className="stat-label">Streak</div>
+            <div className="eis-statLabel">Streak</div>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="stat-card"
+            className="eis-stat"
           >
-            <div className="stat-value text-[var(--eis-purple)]">
+            <div className="eis-statValue text-[var(--eis-purple)]">
               {allCases.length}
             </div>
-            <div className="stat-label">Cases</div>
+            <div className="eis-statLabel">Cases</div>
           </motion.div>
         </div>
 
         {/* Game Modes */}
         <div className="space-y-4">
-          <div className="section-header">
-            <span className="section-title">Choose Your Mission</span>
-            <div className="section-header-line" />
+          <div className="eis-sectionHeader">
+            <span className="eis-sectionTitle">Choose Your Mission</span>
+            <div className="eis-sectionLine" />
           </div>
 
           <div className="space-y-4">
@@ -122,11 +122,11 @@ export function Home() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.25 + index * 0.1 }}
               >
-                <Link 
-                  to={mode.available ? mode.path : '#'} 
+                <Link
+                  to={mode.available ? mode.path : '#'}
                   className={mode.available ? '' : 'pointer-events-none'}
                 >
-                  <div className={`game-card flex items-center gap-4 ${!mode.available ? 'opacity-50' : ''}`}>
+                  <div className={`eis-gameCard flex items-center gap-4 ${!mode.available ? 'opacity-50' : ''}`}>
                     <div className={`p-3 rounded-xl bg-gradient-to-br ${mode.gradient} shadow-lg`}>
                       <mode.icon className="w-7 h-7 text-white" />
                     </div>
@@ -153,21 +153,21 @@ export function Home() {
             transition={{ delay: 0.5 }}
           >
             <Link to="/leaderboard">
-              <div className="panel text-center py-5 hover:shadow-lg transition-shadow">
+              <div className="eis-panel text-center py-5 hover:shadow-lg transition-shadow">
                 <Trophy className="w-8 h-8 mx-auto mb-2 text-[var(--anniv-gold)]" />
                 <p className="font-semibold text-gray-800">Leaderboard</p>
                 <p className="text-xs text-gray-500">See top detectives</p>
               </div>
             </Link>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55 }}
           >
             <Link to="/about">
-              <div className="panel text-center py-5 hover:shadow-lg transition-shadow">
+              <div className="eis-panel text-center py-5 hover:shadow-lg transition-shadow">
                 <BookOpen className="w-8 h-8 mx-auto mb-2 text-[var(--cdc-blue)]" />
                 <p className="font-semibold text-gray-800">About EIS</p>
                 <p className="text-xs text-gray-500">75 years of service</p>

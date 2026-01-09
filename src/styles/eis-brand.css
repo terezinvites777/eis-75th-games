@@ -1,0 +1,340 @@
+/* src/styles/eis-brand.css */
+/* EIS 75th Anniversary Games - Namespaced Design System */
+
+/* Put this inside Tailwind layers so order is stable */
+@layer base {
+  :root {
+    --cdc-blue: #0057B8;
+    --cdc-teal: #0077B6;
+    --anniv-gold: #D4AF37;
+    --anniv-bronze: #B8860B;
+    --eis-purple: #7A2A7E;
+
+    --ink: #0b1220;
+    --ink-muted: rgba(11, 18, 32, 0.66);
+
+    --radius-xl: 22px;
+    --radius-lg: 16px;
+    --radius-md: 12px;
+
+    --shadow-soft: 0 10px 25px rgba(2, 6, 23, 0.12);
+    --shadow-tight: 0 6px 14px rgba(2, 6, 23, 0.14);
+    --shadow-emboss: 0 6px 0 rgba(2, 6, 23, 0.10), 0 12px 24px rgba(2, 6, 23, 0.12);
+    --ring: 0 0 0 3px rgba(0, 87, 184, 0.25);
+  }
+
+  [data-theme="detective"] {
+    --theme-primary: #b8860b;
+    --theme-secondary: #d4af37;
+    --theme-surface: rgba(255, 251, 235, 0.88);
+    --theme-ink: #1a1a1a;
+  }
+  [data-theme="command"] {
+    --theme-primary: #0057B8;
+    --theme-secondary: #0077B6;
+    --theme-surface: rgba(239, 246, 255, 0.85);
+    --theme-ink: #0b1220;
+  }
+  [data-theme="connect"] {
+    --theme-primary: #7a2a7e;
+    --theme-secondary: #a66bb6;
+    --theme-surface: rgba(245, 243, 255, 0.85);
+    --theme-ink: #0b1220;
+  }
+  [data-theme="default"] {
+    --theme-primary: #0057B8;
+    --theme-secondary: #0077B6;
+    --theme-surface: rgba(255, 255, 255, 0.88);
+    --theme-ink: #0b1220;
+  }
+}
+
+@layer components {
+  /* ========== Background treatment (museum parchment + subtle pattern) ========== */
+  .eis-bg {
+    position: relative;
+    min-height: 100vh;
+    color: var(--ink);
+    background: #d5d0c3;
+    background-image:
+      radial-gradient(ellipse 120% 80% at 50% 0%, rgba(255,255,255,0.6) 0%, transparent 50%),
+      linear-gradient(180deg, #c8c3b5 0%, #d5d0c3 25%, #e0dcd2 60%, #e8e5dd 100%);
+  }
+
+  .eis-bg::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image: radial-gradient(circle, rgba(0,0,0,0.10) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+
+  .eis-bg > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ========== Hero strip ========== */
+  .eis-hero {
+    position: relative;
+    z-index: 10;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.20);
+  }
+
+  /* Theme-specific hero backgrounds */
+  [data-theme="detective"] .eis-hero {
+    background: linear-gradient(90deg, #5c4a0a 0%, #3d3207 100%);
+  }
+  [data-theme="command"] .eis-hero {
+    background: linear-gradient(90deg, #003d7a 0%, #002855 100%);
+  }
+  [data-theme="connect"] .eis-hero {
+    background: linear-gradient(90deg, #5c1e5f 0%, #3d1440 100%);
+  }
+  [data-theme="default"] .eis-hero {
+    background: linear-gradient(90deg, #003d7a 0%, #002855 100%);
+  }
+
+  .eis-heroTitle {
+    letter-spacing: 0.5px;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  .eis-heroSub {
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  /* ========== Surfaces / Cards ========== */
+  .eis-surface {
+    background: linear-gradient(180deg, #ffffff 0%, #f8f7f4 100%);
+    border: 2px solid rgba(160, 150, 130, 0.35);
+    border-radius: var(--radius-xl);
+    box-shadow:
+      0 2px 0 rgba(160, 150, 130, 0.25),
+      0 8px 24px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 1);
+  }
+
+  .eis-panel {
+    background: linear-gradient(180deg, #fefefe 0%, #f9f8f5 100%);
+    border: 2px solid rgba(160, 150, 130, 0.30);
+    border-radius: var(--radius-lg);
+    box-shadow:
+      0 2px 0 rgba(160, 150, 130, 0.20),
+      0 6px 16px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 1);
+    padding: 1rem;
+  }
+
+  /* ========== Stat Cards ========== */
+  .eis-stat {
+    background: linear-gradient(180deg, #ffffff 0%, #f9f8f5 100%);
+    border: 2px solid rgba(160, 150, 130, 0.28);
+    border-radius: var(--radius-lg);
+    padding: 16px 12px;
+    text-align: center;
+    box-shadow:
+      0 2px 0 rgba(160, 150, 130, 0.18),
+      0 4px 12px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 1);
+  }
+
+  .eis-statValue {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .eis-statLabel {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(15, 23, 42, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+  }
+
+  /* ========== Game Cards ========== */
+  .eis-gameCard {
+    position: relative;
+    background: linear-gradient(180deg, #ffffff 0%, #f9f8f5 100%);
+    border: 2px solid rgba(160, 150, 130, 0.32);
+    border-radius: var(--radius-xl);
+    padding: 20px;
+    box-shadow:
+      0 2px 0 rgba(160, 150, 130, 0.22),
+      0 8px 20px rgba(0, 0, 0, 0.10),
+      inset 0 1px 0 rgba(255, 255, 255, 1);
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+  }
+
+  .eis-gameCard:hover {
+    transform: translateY(-4px);
+    border-color: rgba(140, 130, 110, 0.45);
+    box-shadow:
+      0 4px 0 rgba(160, 150, 130, 0.18),
+      0 12px 28px rgba(0, 0, 0, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 1);
+  }
+
+  .eis-gameCard::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--theme-secondary, #D4AF37), var(--theme-primary, #B8860B));
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+
+  .eis-gameCard:hover::before {
+    opacity: 1;
+  }
+
+  /* ========== Section Headers ========== */
+  .eis-sectionHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .eis-sectionTitle {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(15, 23, 42, 0.55);
+    white-space: nowrap;
+  }
+
+  .eis-sectionLine {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(15, 23, 42, 0.15), transparent);
+  }
+
+  /* ========== Emboss buttons ========== */
+  .eis-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 23, 42, 0.14);
+    background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.80));
+    box-shadow: var(--shadow-emboss);
+    color: var(--ink);
+    cursor: pointer;
+    transform: translateY(0);
+    transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+  }
+
+  .eis-btn:hover {
+    filter: brightness(1.02);
+    transform: translateY(-1px);
+  }
+
+  .eis-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 3px 0 rgba(2,6,23,0.10), 0 8px 16px rgba(2,6,23,0.10);
+  }
+
+  .eis-btnPrimary {
+    background: linear-gradient(135deg, var(--theme-secondary, #D4AF37), var(--theme-primary, #B8860B));
+    border: 1px solid rgba(255,255,255,0.30);
+    color: #1a1a1a;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.3);
+  }
+
+  .eis-btnLg {
+    padding: 16px 32px;
+    font-size: 16px;
+  }
+
+  .eis-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--ring), var(--shadow-emboss);
+  }
+
+  /* ========== Pills / Badges ========== */
+  .eis-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.80);
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(11, 18, 32, 0.75);
+  }
+
+  /* ========== Bottom Navigation ========== */
+  .eis-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: linear-gradient(180deg, rgba(255,255,255,0.90), rgba(255,255,255,0.98));
+    border-top: 1px solid rgba(15, 23, 42, 0.12);
+    backdrop-filter: blur(12px);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .eis-navInner {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 8px 0;
+  }
+
+  .eis-navItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 16px;
+    border-radius: 12px;
+    color: rgba(15, 23, 42, 0.45);
+    font-size: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 150ms ease, background 150ms ease;
+  }
+
+  .eis-navItem:hover {
+    color: rgba(15, 23, 42, 0.7);
+    background: rgba(15, 23, 42, 0.04);
+  }
+
+  .eis-navItem.active {
+    color: var(--theme-primary, var(--cdc-blue));
+    background: rgba(0, 87, 184, 0.08);
+  }
+
+  /* ========== Leaderboard Bar ========== */
+  .eis-leaderbar {
+    position: sticky;
+    bottom: 0;
+    z-index: 50;
+    background: linear-gradient(180deg, rgba(255,255,255,0.60), rgba(255,255,255,0.92));
+    border-top: 1px solid rgba(15, 23, 42, 0.12);
+    backdrop-filter: blur(12px);
+    padding: 12px 16px;
+  }
+}

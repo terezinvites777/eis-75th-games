@@ -43,10 +43,10 @@ export function GameShell({
   };
 
   return (
-    <div className="app-bg min-h-screen" data-theme={theme}>
+    <div className="eis-bg min-h-screen" data-theme={theme}>
       {/* Hero Header */}
       {showHero && (
-        <header className="hero-strip relative">
+        <header className="eis-hero">
           <div className="relative z-10 px-5 py-5">
             {backPath ? (
               <Link
@@ -59,14 +59,14 @@ export function GameShell({
                 Back
               </Link>
             ) : null}
-            
+
             {heroTitle ? (
               <div className="space-y-1">
-                <h1 className="hero-title text-2xl sm:text-3xl font-bold text-white">
+                <h1 className="eis-heroTitle text-2xl sm:text-3xl font-bold text-white">
                   {heroTitle}
                 </h1>
                 {heroSubtitle && (
-                  <p className="hero-subtitle text-sm sm:text-base">
+                  <p className="eis-heroSub text-sm sm:text-base">
                     {heroSubtitle}
                   </p>
                 )}
@@ -85,20 +85,16 @@ export function GameShell({
 
       {/* Bottom Navigation */}
       {showNav && (
-        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-gray-200/60 safe-area-bottom">
-          <div className="max-w-lg mx-auto flex justify-around items-center py-2">
+        <nav className="eis-nav">
+          <div className="eis-navInner">
             {navItems.map(({ path, label, icon: Icon }) => (
               <Link
                 key={path}
                 to={path}
-                className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all duration-200 ${
-                  isActive(path)
-                    ? 'text-[var(--theme-primary,var(--cdc-blue))] bg-[var(--theme-surface,rgba(0,87,184,0.08))]'
-                    : 'text-gray-400 hover:text-gray-600 hover:bg-gray-100'
-                }`}
+                className={`eis-navItem ${isActive(path) ? 'active' : ''}`}
               >
                 <Icon size={22} strokeWidth={isActive(path) ? 2.5 : 2} />
-                <span className="text-[10px] font-semibold tracking-wide">{label}</span>
+                <span>{label}</span>
               </Link>
             ))}
           </div>

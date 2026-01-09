@@ -1,7 +1,7 @@
 // src/components/command/CommandGame.tsx
 import { useState, useEffect, useCallback } from 'react';
 import type { CommandScenario, GameState, Action, GameEvent } from '../../types/command';
-import { USMap } from './USMap';
+import { USMapInteractive } from './USMapInteractive';
 import { ActionPanel } from './ActionPanel';
 import { GameStats } from './GameStats';
 import { EventDialog } from './EventDialog';
@@ -453,14 +453,17 @@ export function CommandGame({ scenario, onComplete, onBack }: CommandGameProps) 
         <div className="lg:col-span-5">
           <div className="bg-white rounded-xl shadow p-4">
             <h3 className="text-lg font-bold text-slate-800 mb-3">Outbreak Map</h3>
-            <USMap locations={gameState.outbreak_locations} className="h-64 lg:h-80" />
+            <USMapInteractive
+              locations={gameState.outbreak_locations}
+              className="h-72 lg:h-96"
+            />
 
             {/* Location List */}
             <div className="mt-4 space-y-2">
               {gameState.outbreak_locations.map((loc, idx) => (
-                <div key={idx} className="flex items-center justify-between text-sm">
-                  <span className="text-slate-600">{loc.state}</span>
-                  <span className="font-semibold text-red-600">{loc.cases} cases</span>
+                <div key={idx} className="flex items-center justify-between text-sm bg-slate-50 px-3 py-2 rounded-lg">
+                  <span className="font-medium text-slate-700">{loc.state}</span>
+                  <span className="font-bold text-red-600">{loc.cases} cases</span>
                 </div>
               ))}
             </div>

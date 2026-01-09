@@ -127,7 +127,7 @@ export function DetectiveGame() {
       />
 
       {(phase === 'investigation' || phase === 'diagnosis') && (
-        <div className="sticky top-0 z-20 bg-white/90 backdrop-blur-sm border-b border-gray-100 px-5 py-3">
+        <div className="sticky top-0 z-20 detective-topbar px-5 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Clock size={18} className={timeRemaining < 60 ? 'text-red-500' : 'text-gray-500'} />
@@ -156,7 +156,7 @@ export function DetectiveGame() {
                 <DifficultyStars level={caseData.difficulty} />
               </div>
 
-              <div className="panel-themed">
+              <div className="panel">
                 <div className="flex items-center gap-2 mb-4">
                   <MessageSquare size={18} className="text-[var(--theme-primary)]" />
                   <span className="text-sm font-semibold uppercase tracking-wide text-gray-500">
@@ -265,7 +265,7 @@ export function DetectiveGame() {
 
           {phase === 'result' && (
             <motion.div key="result" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="space-y-6">
-              <div className={`panel-themed text-center py-8`}>
+              <div className={`panel text-center py-8`}>
                 {isCorrect ? (
                   <>
                     <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">

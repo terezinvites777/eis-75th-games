@@ -757,6 +757,13 @@
     0 0 30px rgba(212,175,55,0.15);
 }
 
+/* --- Detective sticky top bar (timer / points) --- */
+.eis-bg[data-theme="detective"] .detective-topbar {
+  background: linear-gradient(180deg, rgba(246, 238, 210, 0.92), rgba(223, 204, 150, 0.92));
+  border-bottom: 2px solid rgba(212, 175, 55, 0.35);
+  backdrop-filter: blur(10px);
+}
+
 /* --- Typography in Detective Theme --- */
 [data-theme="detective"] h1,
 [data-theme="detective"] h2,

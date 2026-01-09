@@ -1,6 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Home, DetectiveHub, CommandHub, Leaderboard, Profile } from './pages';
-import { DetectiveGame } from './pages/DetectiveGame';
+import {
+  Home,
+  DetectiveHub,
+  DetectiveGame,
+  Command,
+  Connect,
+  PatientZero,
+  Stories,
+  Predict,
+  Leaderboard,
+  Profile
+} from './pages';
 
 function App() {
   return (
@@ -14,12 +24,20 @@ function App() {
         <Route path="/detective/:era" element={<DetectiveHub />} />
         <Route path="/detective/:era/:caseId" element={<DetectiveGame />} />
 
-        {/* Command mode routes */}
-        <Route path="/command" element={<CommandHub />} />
-        <Route path="/command/:missionId" element={<CommandHub />} />
+        {/* Outbreak Command game */}
+        <Route path="/command" element={<Command />} />
 
-        {/* Connect mode (placeholder) */}
-        <Route path="/connect" element={<Home />} />
+        {/* EpiConnect networking */}
+        <Route path="/connect" element={<Connect />} />
+
+        {/* Patient Zero mystery */}
+        <Route path="/patient-zero" element={<PatientZero />} />
+
+        {/* 75 Stories video gallery */}
+        <Route path="/stories" element={<Stories />} />
+
+        {/* Predict the Outbreak */}
+        <Route path="/predict" element={<Predict />} />
 
         {/* Other routes */}
         <Route path="/leaderboard" element={<Leaderboard />} />

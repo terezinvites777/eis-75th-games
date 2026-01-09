@@ -1,0 +1,177 @@
+// src/components/patient-zero/TheoryForm.tsx
+import { useState } from 'react';
+import type { PlayerTheory } from '../../types/patient-zero';
+import { Send, AlertCircle } from 'lucide-react';
+
+interface TheoryFormProps {
+  existingTheory?: PlayerTheory['theory'];
+  onSubmit: (theory: PlayerTheory['theory']) => void;
+}
+
+export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
+  const [theory, setTheory] = useState({
+    outbreak_name: existingTheory?.outbreak_name || '',
+    year: existingTheory?.year || 1980,
+    location: existingTheory?.location || '',
+    pathogen: existingTheory?.pathogen || '',
+    source: existingTheory?.source || '',
+    confidence: existingTheory?.confidence || 'guess' as const,
+  });
+
+  const [errors, setErrors] = useState<string[]>([]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const newErrors: string[] = [];
+    if (!theory.outbreak_name.trim()) newErrors.push('Outbreak name is required');
+    if (!theory.location.trim()) newErrors.push('Location is required');
+    if (!theory.pathogen.trim()) newErrors.push('Pathogen is required');
+
+    if (newErrors.length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    onSubmit(theory);
+  };
+
+  const confidenceOptions: { value: typeof theory.confidence; label: string; description: string }[] = [
+    { value: 'guess', label: 'Taking a guess', description: 'Low confidence, early theory' },
+    { value: 'likely', label: 'Likely correct', description: 'Good evidence, some uncertainty' },
+    { value: 'certain', label: 'Certain', description: 'All clues point to this' },
+  ];
+
+  return (
+    <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
+      <h3 className="text-lg font-bold text-slate-800 mb-4">
+        {existingTheory ? 'Update Your Theory' : 'Submit Your Theory'}
+      </h3>
+
+      {errors.length > 0 && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+          <div className="flex gap-2 text-red-700">
+            <AlertCircle size={20} />
+            <div>
+              {errors.map((err, i) => (
+                <div key={i} className="text-sm">{err}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="space-y-4">
+        {/* Outbreak Name */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-1">
+            What was this outbreak called?
+          </label>
+          <input
+            type="text"
+            value={theory.outbreak_name}
+            onChange={e => setTheory(prev => ({ ...prev, outbreak_name: e.target.value }))}
+            placeholder="e.g., Legionnaires' Disease, Hantavirus..."
+            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
+        {/* Year */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-1">
+            What year did this occur?
+          </label>
+          <input
+            type="number"
+            value={theory.year}
+            onChange={e => setTheory(prev => ({ ...prev, year: parseInt(e.target.value) || 1980 }))}
+            min={1950}
+            max={2024}
+            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
+        {/* Location */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-1">
+            Where did this outbreak occur?
+          </label>
+          <input
+            type="text"
+            value={theory.location}
+            onChange={e => setTheory(prev => ({ ...prev, location: e.target.value }))}
+            placeholder="e.g., Philadelphia, Pennsylvania"
+            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
+        {/* Pathogen */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-1">
+            What was the pathogen/cause?
+          </label>
+          <input
+            type="text"
+            value={theory.pathogen}
+            onChange={e => setTheory(prev => ({ ...prev, pathogen: e.target.value }))}
+            placeholder="e.g., Legionella pneumophila, virus..."
+            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
+        {/* Source (optional) */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-1">
+            What was the source? (Optional, bonus points!)
+          </label>
+          <input
+            type="text"
+            value={theory.source}
+            onChange={e => setTheory(prev => ({ ...prev, source: e.target.value }))}
+            placeholder="e.g., Cooling tower, contaminated food..."
+            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
+        {/* Confidence */}
+        <div>
+          <label className="block text-sm font-medium text-slate-700 mb-2">
+            How confident are you?
+          </label>
+          <div className="grid grid-cols-3 gap-2">
+            {confidenceOptions.map(opt => (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => setTheory(prev => ({ ...prev, confidence: opt.value }))}
+                className={`
+                  p-3 rounded-lg border-2 text-center transition-all
+                  ${theory.confidence === opt.value
+                    ? 'border-blue-500 bg-blue-50'
+                    : 'border-slate-200 hover:border-slate-300'
+                  }
+                `}
+              >
+                <div className="font-medium text-sm">{opt.label}</div>
+                <div className="text-xs text-slate-500 mt-1">{opt.description}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Submit */}
+      <button
+        type="submit"
+        className="mt-6 w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+      >
+        <Send size={18} />
+        {existingTheory ? 'Update Theory' : 'Submit Theory'}
+      </button>
+
+      <p className="mt-3 text-xs text-slate-500 text-center">
+        Tip: Submit early for bonus points! You can update your theory as new clues are revealed.
+      </p>
+    </form>
+  );
+}

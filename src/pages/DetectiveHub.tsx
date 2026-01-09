@@ -9,7 +9,7 @@ import { EraCard } from '../components/detective/EraCard';
 import { CaseCard } from '../components/detective/CaseCard';
 import { ExhibitStagePlate } from '../components/exhibit/ExhibitStagePlate';
 import { ERA_INFO, getCasesByEra, allCases } from '../data/detective';
-import { DETECTIVE_PLATES, DETECTIVE_PHASE_NARRATIVE } from '../data/detectivePlates';
+import { DETECTIVE_PLATES } from '../data/detectivePlates';
 import type { Era } from '../types/detective';
 import { useGameStore } from '../store/gameStore';
 
@@ -46,16 +46,13 @@ export function DetectiveHub() {
     >
       {/* Phase Plate: Case Select - "You're in the archive" */}
       <ExhibitStagePlate
-        backgroundSrc={DETECTIVE_PLATES.caseSelect}
-        alt={DETECTIVE_PHASE_NARRATIVE.caseSelect}
-      >
-        <h2 className="eis-stagePlate__title">
-          {eraInfo ? eraInfo.title : "Disease Detective"}
-        </h2>
-        <p className="eis-stagePlate__subtitle">
-          {eraInfo ? eraInfo.description : "Solve historical outbreak mysteries"}
-        </p>
-      </ExhibitStagePlate>
+        src={DETECTIVE_PLATES.caseSelect.src}
+        alt={DETECTIVE_PLATES.caseSelect.alt}
+        eyebrow={DETECTIVE_PLATES.caseSelect.eyebrow}
+        title={eraInfo ? eraInfo.title : "Disease Detective"}
+        subtitle={eraInfo ? eraInfo.description : "Solve historical outbreak mysteries"}
+        height="md"
+      />
 
       <div className="p-5 space-y-6">
         {/* Stats Bar */}

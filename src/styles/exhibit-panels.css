@@ -283,3 +283,153 @@
 .eis-posterPanel.is-compact .eis-posterCta {
   width: 100%;
 }
+
+
+/* ============================================
+   EIS STAGE PLATE (Cinematic Header Cards)
+   ============================================
+   Museum-grade narrative phase backgrounds with
+   proper framing, vignettes, and caption overlays.
+   Used in Disease Detective phases.
+*/
+
+.eis-stagePlate {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+  margin-bottom: 20px;
+}
+
+.eis-stagePlate__frame {
+  position: relative;
+  width: min(1100px, 100%);
+  border-radius: 18px;
+  overflow: hidden;
+
+  /* Heavy museum frame effect */
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.30),
+    0 8px 20px rgba(0,0,0,0.22),
+    inset 0 0 0 1px rgba(255,255,255,0.12);
+
+  /* Subtle brass frame */
+  border: 2px solid rgba(180, 145, 75, 0.35);
+
+  /* Base background for loading state */
+  background: linear-gradient(180deg, #2a2015, #1a150d);
+}
+
+.eis-stagePlate__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+
+  /* Slight vintage photo treatment */
+  filter: saturate(1.06) contrast(1.03);
+}
+
+/* Cinematic vignette for depth and focus */
+.eis-stagePlate__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background:
+    /* Radial vignette from center */
+    radial-gradient(120% 100% at 50% 40%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.20) 50%, rgba(0,0,0,0.50) 100%),
+    /* Bottom gradient for caption readability */
+    linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,0.45) 100%);
+}
+
+/* Bottom caption band */
+.eis-stagePlate__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 16px 20px;
+  pointer-events: none;
+}
+
+.eis-stagePlate__caption > * {
+  pointer-events: auto;
+}
+
+.eis-stagePlate__eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(232, 210, 140, 0.95);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.60);
+  margin-bottom: 4px;
+}
+
+.eis-stagePlate__title {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.15;
+  color: rgba(255,255,255,0.98);
+  text-shadow:
+    0 3px 12px rgba(0,0,0,0.55),
+    0 1px 3px rgba(0,0,0,0.45);
+  letter-spacing: 0.01em;
+}
+
+.eis-stagePlate__subtitle {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.50);
+  margin-top: 4px;
+}
+
+.eis-stagePlate__badge {
+  flex-shrink: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 720px) {
+  .eis-stagePlate {
+    padding: 0 12px;
+    margin-bottom: 16px;
+  }
+
+  .eis-stagePlate__frame {
+    border-radius: 14px;
+  }
+
+  .eis-stagePlate__caption {
+    padding: 12px 14px;
+  }
+
+  .eis-stagePlate__eyebrow {
+    font-size: 10px;
+  }
+
+  .eis-stagePlate__title {
+    font-size: 18px;
+  }
+
+  .eis-stagePlate__subtitle {
+    font-size: 12px;
+  }
+}
+
+/* Larger screens get more dramatic plates */
+@media (min-width: 1200px) {
+  .eis-stagePlate__title {
+    font-size: 26px;
+  }
+
+  .eis-stagePlate__caption {
+    padding: 20px 28px;
+  }
+}

@@ -3,7 +3,7 @@
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Search, Star, Trophy, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 import { GameShell } from '../components/layout/GameShell';
 import { EraCard } from '../components/detective/EraCard';
 import { CaseCard } from '../components/detective/CaseCard';

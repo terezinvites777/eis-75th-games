@@ -3,7 +3,7 @@
 
 import { motion } from 'framer-motion';
 import { ChevronRight, CheckCircle } from 'lucide-react';
-import type { Era, EraInfo } from '../../types/detective';
+import type { EraInfo } from '../../types/detective';
 
 interface EraCardProps {
   era: EraInfo;

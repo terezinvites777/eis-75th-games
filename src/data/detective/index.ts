@@ -6,6 +6,9 @@ import { cases1980s } from './cases-1980s';
 import { cases2010s } from './cases-2010s';
 import type { DetectiveCase, Era } from '../../types/detective';
 
+// Re-export ERA_INFO from types
+export { ERA_INFO } from '../../types/detective';
+
 // Export individual era arrays
 export { cases1950s } from './cases-1950s';
 export { cases1980s } from './cases-1980s';

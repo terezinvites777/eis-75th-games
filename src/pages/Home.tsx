@@ -47,8 +47,6 @@ const gameModes = [
 
 export function Home() {
   const { completedCases, streak } = useGameStore();
-  
-  const totalScore = completedCases.length * 100; // Simplified for now
 
   return (
     <GameShell theme="default" showHero={true}>

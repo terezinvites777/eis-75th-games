@@ -35,7 +35,7 @@ function getRankStyle(rank: number) {
 
 export function Leaderboard() {
   const [timeframe, setTimeframe] = useState<'all' | 'week' | 'today'>('all');
-  const { completedCases, streak } = useGameStore();
+  const { completedCases } = useGameStore();
 
   const currentPlayerScore = completedCases.length * 100;
 

@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Target, Users, DollarSign, Clock, Lock, ChevronRight, Construction } from 'lucide-react';
 import { GameShell } from '../components/layout/GameShell';
-import { useGameStore } from '../store/gameStore';
 
 const missions = [
   {
@@ -59,7 +58,6 @@ const difficultyConfig = {
 
 export function CommandHub() {
   const navigate = useNavigate();
-  const { completedMissions } = useGameStore();
 
   return (
     <GameShell 
@@ -133,7 +131,6 @@ export function CommandHub() {
 
           <div className="space-y-3">
             {missions.map((mission, index) => {
-              const isCompleted = completedMissions.includes(mission.id);
               const config = difficultyConfig[mission.difficulty];
 
               return (

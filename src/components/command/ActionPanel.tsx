@@ -83,6 +83,28 @@ export function ActionPanel({ actions, gameState, onExecuteAction, disabled }: A
                   </div>
                 </div>
               )}
+
+              {/* Execute button - only show if action is available */}
+              {!active && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!disabled && affordable) {
+                      onExecuteAction(action.id);
+                    }
+                  }}
+                  disabled={disabled || !affordable}
+                  className={`
+                    mt-3 w-full py-2 px-4 rounded-lg font-semibold text-sm transition-all
+                    ${affordable && !disabled
+                      ? 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800'
+                      : 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                    }
+                  `}
+                >
+                  {affordable ? 'Execute Action' : 'Insufficient Budget'}
+                </button>
+              )}
             </div>
           );
         })}

@@ -44,11 +44,11 @@ export function USMapInteractive({ locations, className = '', onStateClick }: US
   };
 
   return (
-    <div className={`relative bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl border border-slate-200 overflow-hidden ${className}`}>
+    <div className={`relative bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl border border-slate-200 ${className}`} style={{ aspectRatio: '960 / 600' }}>
       <svg
         viewBox="0 0 960 600"
-        className="w-full h-auto"
-        style={{ minHeight: '200px' }}
+        className="w-full h-full"
+        preserveAspectRatio="xMidYMid meet"
       >
         {/* Background */}
         <rect x="0" y="0" width="960" height="600" fill="transparent" />

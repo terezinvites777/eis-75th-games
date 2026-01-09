@@ -16,6 +16,7 @@ export function Home() {
           description="Choose an era and crack a case using real investigation clues."
           cta="Solve a Case!"
           href="/detective"
+          bgImageUrl="/images/exhibits/panel-1.png"
           dataTheme="detective"
         >
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -32,6 +33,7 @@ export function Home() {
           description="Make critical decisions and manage resources in real outbreak scenarios."
           cta="Take Command!"
           href="/command"
+          bgImageUrl="/images/exhibits/panel-2.png"
           dataTheme="command"
         >
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -47,6 +49,7 @@ export function Home() {
           description="Run 5-minute rounds, earn points for matches, unlock challenges."
           cta="Find My Matches"
           href="/connect"
+          bgImageUrl="/images/exhibits/panel-3.png"
           dataTheme="connect"
         >
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -63,6 +66,7 @@ export function Home() {
           description="Explore featured decades and share your own memory."
           cta="Watch Stories"
           href="/stories"
+          bgImageUrl="/images/exhibits/panel-4.png"
           dataTheme="default"
         />
 
@@ -73,6 +77,7 @@ export function Home() {
           description="See who's solved the most cases and earned the highest scores."
           cta="View Rankings"
           href="/leaderboard"
+          bgImageUrl="/images/exhibits/panel-5.png"
           dataTheme="default"
         />
 
@@ -83,6 +88,7 @@ export function Home() {
           description="Learn about the history and mission of the Epidemic Intelligence Service."
           cta="Learn More"
           href="/about"
+          bgImageUrl="/images/exhibits/panel-6.png"
           dataTheme="default"
         />
       </div>

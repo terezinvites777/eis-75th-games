@@ -708,6 +708,23 @@
   border-bottom: 2px solid rgba(212, 175, 55, 0.5);
 }
 
+/* --- Detective Clue/Evidence Cards --- */
+[data-theme="detective"] .clue-card,
+[data-theme="detective"] .clue-card-locked {
+  background: url('/images/textures/parchment-light.png') center/cover;
+  border: 2px solid #8b7355;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+[data-theme="detective"] .clue-card-locked {
+  background: url('/images/textures/parchment-dark.png') center/cover;
+  border-color: #6b5344;
+}
+
 /* --- Typography in Detective Theme --- */
 [data-theme="detective"] h1,
 [data-theme="detective"] h2,

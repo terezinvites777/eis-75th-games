@@ -349,15 +349,9 @@
   object-position: center;
 }
 
-/* Keep vignette very light; images already have framing/text */
+/* Vignette DISABLED - images have baked-in framing, no overlay needed */
 .eis-stagePlate__vignette {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(120% 100% at 50% 40%,
-    rgba(0,0,0,0) 0%,
-    rgba(0,0,0,.10) 60%,
-    rgba(0,0,0,.22) 100%);
+  display: none;
 }
 
 /* When showCaption=false, don't reserve/paint caption space */
@@ -414,4 +408,4 @@
     border-radius: 14px;
   }
 }
-/* Cache bust: 1767992374 */
+/* Cache bust: 1736444400 - Force fresh CSS build */

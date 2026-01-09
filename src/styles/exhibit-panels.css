@@ -416,10 +416,8 @@
 */
 
 /* --- Detective Page Background: Wood Desk Texture --- */
-/* Using !important to override eis-brand.css defaults */
-[data-theme="detective"].eis-bg,
-.eis-bg[data-theme="detective"],
-[data-theme="detective"] .eis-bg {
+/* .eis-bg has data-theme on SAME element, so use combined selector */
+.eis-bg[data-theme="detective"] {
   background:
     /* Wood grain overlay */
     repeating-linear-gradient(
@@ -438,18 +436,15 @@
       #3d2b1f 75%,
       #2e1f15 100%
     ) !important;
-  background-image: none !important;
 }
 
-[data-theme="detective"].eis-bg::before,
-.eis-bg[data-theme="detective"]::before,
-[data-theme="detective"] .eis-bg::before {
+.eis-bg[data-theme="detective"]::before {
   background-image:
     /* Subtle wood knots/variations */
     radial-gradient(ellipse 100px 60px at 20% 30%, rgba(0,0,0,0.15), transparent),
     radial-gradient(ellipse 80px 50px at 70% 60%, rgba(0,0,0,0.12), transparent),
     radial-gradient(ellipse 120px 70px at 50% 80%, rgba(0,0,0,0.10), transparent),
-    /* Remove default dots, add wood grain texture */
+    /* Wood grain texture instead of dots */
     repeating-linear-gradient(
       0deg,
       transparent,
@@ -458,7 +453,6 @@
       rgba(0,0,0,0.04) 9px
     ) !important;
   background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100% !important;
-  opacity: 1 !important;
 }
 
 /* --- Detective Stat Cards: Brass Plaques --- */

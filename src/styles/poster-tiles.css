@@ -11,7 +11,7 @@
   border-radius: 18px;
   overflow: hidden;
   text-decoration: none;
-  min-height: 280px;
+  min-height: 340px;
 
   /* Museum card dimensional feel */
   box-shadow:
@@ -278,10 +278,10 @@
 
 .eis-exhibitGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 26px;
-  padding: 24px 20px 72px;
-  max-width: 1280px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 28px;
+  padding: 28px 40px 72px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 

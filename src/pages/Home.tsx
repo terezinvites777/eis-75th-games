@@ -55,7 +55,7 @@ export function Home() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="surface text-center py-8"
+          className="surface text-center py-8 px-6"
         >
           <div className="flex justify-center mb-4">
             <EISShield size="xl" />
@@ -63,7 +63,7 @@ export function Home() {
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Welcome, Disease Detective
           </h2>
-          <p className="text-gray-600 max-w-sm mx-auto">
+          <p className="text-gray-600 max-w-sm mx-auto text-balance">
             Celebrate 75 years of the Epidemic Intelligence Service by solving real outbreak mysteries
           </p>
         </motion.div>

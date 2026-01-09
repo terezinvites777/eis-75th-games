@@ -131,14 +131,35 @@
 /* ---------- Hero Header Strip ---------- */
 .hero-strip {
   position: relative;
+  /* Fallback for browsers without color-mix support */
+  background: linear-gradient(90deg, #003366, #1a4d80);
+  /* Modern browsers with color-mix */
   background:
     linear-gradient(90deg, rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0.12)),
-    linear-gradient(90deg, 
-      color-mix(in srgb, var(--theme-primary, var(--cdc-blue)) 70%, #0f0f0f 30%), 
+    linear-gradient(90deg,
+      color-mix(in srgb, var(--theme-primary, var(--cdc-blue)) 70%, #0f0f0f 30%),
       color-mix(in srgb, var(--theme-primary, var(--cdc-blue)) 45%, #0f0f0f 55%)
     );
   border-bottom: 1px solid rgba(255, 255, 255, 0.18);
   overflow: hidden;
+}
+
+/* Theme-specific hero backgrounds */
+[data-theme="detective"] .hero-strip {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0.12)),
+    linear-gradient(90deg, #704d0a, #4a3306);
+}
+[data-theme="command"] .hero-strip {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0.12)),
+    linear-gradient(90deg, #003d7a, #002855);
+}
+[data-theme="connect"] .hero-strip {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0.12)),
+    linear-gradient(90deg, #5c1e5f, #3d1440);
+}
+[data-theme="default"] .hero-strip {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0.12)),
+    linear-gradient(90deg, #003d7a, #002855);
 }
 
 .hero-strip::before {
@@ -344,6 +365,22 @@
 
 .game-card:hover::before {
   opacity: 1;
+}
+
+/* Base case card styles */
+.case-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  border-radius: var(--radius-xl);
+  padding: 20px;
+  box-shadow: var(--shadow-medium);
+  backdrop-filter: blur(10px);
+  transition: transform 200ms var(--ease-spring), box-shadow 200ms var(--ease-smooth);
+}
+
+.case-card:hover {
+  box-shadow: var(--shadow-soft), var(--theme-glow);
 }
 
 /* Era-specific card accents */

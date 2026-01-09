@@ -1,190 +1,90 @@
 // src/pages/Home.tsx
 // Main landing page for EIS 75th Anniversary Games
+// Uses Exhibit Panel system for museum-style layout
 
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Search, Target, Users, Trophy, BookOpen, ChevronRight } from 'lucide-react';
+import { PosterPanel } from '../components/exhibit/PosterPanel';
 import { GameShell } from '../components/layout/GameShell';
-import { EISShield } from '../components/brand/BrandMarks';
-import { useGameStore } from '../store/gameStore';
-import { allCases } from '../data/detective';
-
-const gameModes = [
-  {
-    id: 'detective',
-    title: 'Disease Detective',
-    description: 'Solve historical outbreak mysteries using real EIS case studies',
-    icon: Search,
-    gradient: 'from-amber-500 to-yellow-600',
-    bgColor: 'bg-amber-50',
-    textColor: 'text-amber-700',
-    path: '/detective',
-    available: true,
-  },
-  {
-    id: 'command',
-    title: 'Outbreak Command',
-    description: 'Lead response operations and make critical decisions under pressure',
-    icon: Target,
-    gradient: 'from-blue-500 to-cyan-600',
-    bgColor: 'bg-blue-50',
-    textColor: 'text-blue-700',
-    path: '/command',
-    available: true,
-  },
-  {
-    id: 'connect',
-    title: 'EpiConnect',
-    description: 'Network with fellow EIS officers and complete challenges',
-    icon: Users,
-    gradient: 'from-purple-500 to-pink-600',
-    bgColor: 'bg-purple-50',
-    textColor: 'text-purple-700',
-    path: '/connect',
-    available: false,
-  },
-];
 
 export function Home() {
-  const { completedCases, streak } = useGameStore();
-
   return (
     <GameShell theme="default" showHero={true}>
-      <div className="p-5 space-y-6">
-        {/* Welcome Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="eis-surface text-center py-8 px-6"
+      <div className="eis-exhibitGrid">
+        <PosterPanel
+          number={1}
+          title="Disease Detective Challenge"
+          subtitle="Solve bite-sized outbreak puzzles from the 1950s to today!"
+          description="Choose an era and crack a case using real investigation clues."
+          cta="Solve a Case!"
+          href="/detective"
+          dataTheme="detective"
         >
-          <div className="flex justify-center mb-4">
-            <EISShield size="xl" />
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <span className="eis-pill">1950s</span>
+            <span className="eis-pill">1980s</span>
+            <span className="eis-pill">2010s</span>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Welcome, Disease Detective
-          </h2>
-          <p className="text-gray-600 max-w-sm mx-auto">
-            Celebrate 75 years of the Epidemic Intelligence Service by solving real outbreak mysteries
-          </p>
-        </motion.div>
+        </PosterPanel>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-3 gap-3">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="eis-stat"
-          >
-            <div className="eis-statValue text-[var(--anniv-gold)]">
-              {completedCases.length}
-            </div>
-            <div className="eis-statLabel">Solved</div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15 }}
-            className="eis-stat"
-          >
-            <div className="eis-statValue text-[var(--cdc-blue)]">
-              {streak}
-            </div>
-            <div className="eis-statLabel">Streak</div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="eis-stat"
-          >
-            <div className="eis-statValue text-[var(--eis-purple)]">
-              {allCases.length}
-            </div>
-            <div className="eis-statLabel">Cases</div>
-          </motion.div>
-        </div>
-
-        {/* Game Modes */}
-        <div className="space-y-4">
-          <div className="eis-sectionHeader">
-            <span className="eis-sectionTitle">Choose Your Mission</span>
-            <div className="eis-sectionLine" />
-          </div>
-
-          <div className="space-y-4">
-            {gameModes.map((mode, index) => (
-              <motion.div
-                key={mode.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.25 + index * 0.1 }}
-              >
-                <Link
-                  to={mode.available ? mode.path : '#'}
-                  className={mode.available ? '' : 'pointer-events-none'}
-                >
-                  <div className={`eis-gameCard flex items-center gap-4 ${!mode.available ? 'opacity-50' : ''}`}>
-                    <div className={`p-3 rounded-xl bg-gradient-to-br ${mode.gradient} shadow-lg`}>
-                      <mode.icon className="w-7 h-7 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-bold text-gray-900">{mode.title}</h3>
-                      <p className="text-sm text-gray-500">{mode.description}</p>
-                      {!mode.available && (
-                        <span className="text-xs text-gray-400 mt-1 inline-block">Coming soon</span>
-                      )}
-                    </div>
-                    <ChevronRight className="text-gray-400" />
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Quick Links */}
-        <div className="grid grid-cols-2 gap-4">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <Link to="/leaderboard">
-              <div className="eis-panel text-center py-5 hover:shadow-lg transition-shadow">
-                <Trophy className="w-8 h-8 mx-auto mb-2 text-[var(--anniv-gold)]" />
-                <p className="font-semibold text-gray-800">Leaderboard</p>
-                <p className="text-xs text-gray-500">See top detectives</p>
-              </div>
-            </Link>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55 }}
-          >
-            <Link to="/about">
-              <div className="eis-panel text-center py-5 hover:shadow-lg transition-shadow">
-                <BookOpen className="w-8 h-8 mx-auto mb-2 text-[var(--cdc-blue)]" />
-                <p className="font-semibold text-gray-800">About EIS</p>
-                <p className="text-xs text-gray-500">75 years of service</p>
-              </div>
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* Footer Note */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="text-center text-xs text-gray-400 pt-4"
+        <PosterPanel
+          number={2}
+          title="Outbreak Command"
+          subtitle="Lead response operations under pressure!"
+          description="Make critical decisions and manage resources in real outbreak scenarios."
+          cta="Take Command!"
+          href="/command"
+          dataTheme="command"
         >
-          Based on real EIS investigations • Educational use only
-        </motion.p>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <span className="eis-pill">Strategy</span>
+            <span className="eis-pill">Resource Management</span>
+          </div>
+        </PosterPanel>
+
+        <PosterPanel
+          number={3}
+          title="EpiConnect Networking"
+          subtitle="Meet fellow EIS officers, alumni, and supervisors."
+          description="Run 5-minute rounds, earn points for matches, unlock challenges."
+          cta="Find My Matches"
+          href="/connect"
+          dataTheme="connect"
+        >
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            <span className="eis-pill">New Officers</span>
+            <span className="eis-pill">Alumni</span>
+            <span className="eis-pill">By Topic</span>
+          </div>
+        </PosterPanel>
+
+        <PosterPanel
+          number={4}
+          title="75 Years, 75 Stories"
+          subtitle="Watch stories from 75 years of EIS."
+          description="Explore featured decades and share your own memory."
+          cta="Watch Stories"
+          href="/stories"
+          dataTheme="default"
+        />
+
+        <PosterPanel
+          number={5}
+          title="Leaderboard"
+          subtitle="Top Disease Detectives"
+          description="See who's solved the most cases and earned the highest scores."
+          cta="View Rankings"
+          href="/leaderboard"
+          dataTheme="default"
+        />
+
+        <PosterPanel
+          number={6}
+          title="About EIS"
+          subtitle="75 years of protecting public health."
+          description="Learn about the history and mission of the Epidemic Intelligence Service."
+          cta="Learn More"
+          href="/about"
+          dataTheme="default"
+        />
       </div>
     </GameShell>
   );

@@ -1,0 +1,278 @@
+/* src/styles/exhibit-panels.css */
+/* EIS 75th Anniversary Games - Exhibit Panel System */
+/* Plain CSS (no @layer, no @apply) for Tailwind v4 compatibility */
+
+/* ------- Global exhibit grid ------- */
+.eis-exhibitGrid {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 860px) {
+  .eis-exhibitGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1180px) {
+  .eis-exhibitGrid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ------- Poster / Exhibit Panel (the "mockup look") ------- */
+.eis-posterPanel {
+  --frame: rgba(28, 41, 55, 0.55);
+  --frame2: rgba(218, 191, 120, 0.55);
+  --paper: rgba(246, 242, 235, 0.92);
+  --ink: rgba(18, 20, 22, 0.92);
+  --muted: rgba(18, 20, 22, 0.72);
+
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 2px solid rgba(0, 0, 0, 0.18);
+
+  /* outer "frame" feel */
+  box-shadow:
+    0 14px 30px rgba(0,0,0,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.55);
+
+  /* fallback texture if no image */
+  background:
+    radial-gradient(1200px 600px at 20% 10%, rgba(255,255,255,0.22), transparent 60%),
+    radial-gradient(900px 500px at 80% 20%, rgba(255,255,255,0.12), transparent 55%),
+    linear-gradient(180deg, rgba(34, 55, 71, 0.55), rgba(34, 55, 71, 0.20));
+}
+
+/* optional per-panel bg image */
+.eis-posterPanel[data-bg="true"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--panel-bg);
+  background-size: cover;
+  background-position: center;
+  filter: saturate(1.05) contrast(1.04);
+  transform: scale(1.01);
+  z-index: 0;
+}
+
+/* subtle overlay so text reads over the poster */
+.eis-posterPanel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1200px 700px at 15% 0%, rgba(255,255,255,0.18), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.26));
+  z-index: 1;
+}
+
+.eis-posterInner {
+  position: relative;
+  z-index: 2;
+  padding: 16px;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ------- Header strip like the mockups ------- */
+.eis-posterHeader {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: start;
+
+  padding: 12px 12px 10px 12px;
+  border-radius: 12px;
+
+  background:
+    linear-gradient(180deg, rgba(16, 34, 52, 0.62), rgba(16, 34, 52, 0.30));
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.20);
+}
+
+.eis-posterTitle {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  line-height: 1.1;
+  color: rgba(255,255,255,0.92);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+  font-size: 18px;
+}
+
+.eis-posterSubtitle {
+  margin-top: 6px;
+  color: rgba(255,255,255,0.78);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+/* ------- Number coin ------- */
+.eis-posterNum {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  color: rgba(35, 24, 10, 0.92);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.35);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.60), transparent 45%),
+    linear-gradient(135deg, rgba(232, 210, 140, 0.98), rgba(179, 132, 40, 0.98));
+  border: 1px solid rgba(255,255,255,0.40);
+  box-shadow: 0 10px 18px rgba(0,0,0,0.22);
+}
+
+/* ------- "Paper" content block ------- */
+.eis-posterBody {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+
+  background: var(--paper);
+  color: var(--ink);
+
+  border: 1px solid rgba(0,0,0,0.18);
+  box-shadow:
+    0 8px 18px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.70);
+}
+
+.eis-posterDesc {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+/* ------- footer CTA like the gold buttons ------- */
+.eis-posterFooter {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.eis-posterCta {
+  appearance: none;
+  border: 1px solid rgba(255,255,255,0.30);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+
+  color: rgba(25, 18, 10, 0.92);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.26);
+
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255,255,255,0.65), transparent 42%),
+    linear-gradient(135deg, rgba(232, 210, 140, 0.98), rgba(179, 132, 40, 0.98));
+
+  box-shadow:
+    0 10px 16px rgba(0,0,0,0.20),
+    inset 0 1px 0 rgba(255,255,255,0.55);
+
+  transition: transform 100ms ease;
+}
+
+.eis-posterCta:hover { transform: translateY(-1px); }
+.eis-posterCta:active { transform: translateY(0px); }
+
+/* ------- Pills for micro UI inside panels ------- */
+.eis-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.80);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(11, 18, 32, 0.75);
+}
+
+/* ---------- Mobile / Compact tuning ---------- */
+
+/* Reduce height + tighten spacing on small screens */
+@media (max-width: 520px) {
+  .eis-posterInner {
+    padding: 12px;
+    min-height: 200px;
+  }
+
+  .eis-posterHeader {
+    padding: 10px;
+    border-radius: 12px;
+  }
+
+  .eis-posterNum {
+    width: 38px;
+    height: 38px;
+    font-size: 14px;
+  }
+
+  .eis-posterTitle {
+    font-size: 16px;
+  }
+
+  .eis-posterSubtitle {
+    font-size: 12px;
+  }
+
+  .eis-posterBody {
+    padding: 10px;
+  }
+
+  .eis-posterDesc {
+    font-size: 12px;
+  }
+
+  .eis-posterCta {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* Compact variant class (can be used regardless of screen size) */
+.eis-posterPanel.is-compact .eis-posterInner {
+  padding: 12px;
+  min-height: 200px;
+}
+
+.eis-posterPanel.is-compact .eis-posterHeader {
+  padding: 10px;
+}
+
+.eis-posterPanel.is-compact .eis-posterNum {
+  width: 38px;
+  height: 38px;
+}
+
+.eis-posterPanel.is-compact .eis-posterTitle {
+  font-size: 16px;
+}
+
+.eis-posterPanel.is-compact .eis-posterSubtitle {
+  font-size: 12px;
+}
+
+.eis-posterPanel.is-compact .eis-posterBody {
+  padding: 10px;
+}
+
+.eis-posterPanel.is-compact .eis-posterDesc {
+  font-size: 12px;
+}
+
+.eis-posterPanel.is-compact .eis-posterCta {
+  width: 100%;
+}

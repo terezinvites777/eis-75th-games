@@ -765,6 +765,41 @@
   font-size: 0.95rem !important;
 }
 
+/* --- Diagnosis Option Buttons: Parchment style --- */
+.eis-bg[data-theme="detective"] button.bg-white,
+.eis-bg[data-theme="detective"] .bg-white {
+  background: url('/images/textures/parchment-light.png') center/cover !important;
+  border-color: #8b7355 !important;
+}
+
+.eis-bg[data-theme="detective"] button.bg-white:hover,
+.eis-bg[data-theme="detective"] .bg-white:hover {
+  border-color: #d4af37 !important;
+}
+
+.eis-bg[data-theme="detective"] .border-gray-200 {
+  border-color: #8b7355 !important;
+}
+
+.eis-bg[data-theme="detective"] .text-gray-900 {
+  color: #0d0804 !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+}
+
+.eis-bg[data-theme="detective"] .text-gray-800 {
+  color: #0d0804 !important;
+  font-weight: 700 !important;
+  font-size: 1.15rem !important;
+}
+
+.eis-bg[data-theme="detective"] .text-gray-600,
+.eis-bg[data-theme="detective"] .text-gray-500 {
+  color: #1a0f08 !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+}
+
 /* --- Typography in Detective Theme --- */
 [data-theme="detective"] h1,
 [data-theme="detective"] h2,

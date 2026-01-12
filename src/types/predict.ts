@@ -38,3 +38,13 @@ export interface PredictionChallenge {
   is_active: boolean;
   leaderboard_visible: boolean;
 }
+
+// Enhanced prediction with more variables
+export interface EnhancedPrediction {
+  peak_week: number;
+  peak_cases: number;
+  total_cases: number;
+  duration_weeks: number;
+  r0_estimate?: number;
+  drawn_curve?: DataPoint[];
+}

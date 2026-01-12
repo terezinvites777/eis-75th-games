@@ -94,6 +94,23 @@
   --theme-glow: 0 0 30px rgba(220, 38, 38, 0.20);
 }
 
+[data-theme="predict"] {
+  --theme-primary: #2563eb;
+  --theme-secondary: #3b82f6;
+  --theme-tertiary: #1d4ed8;
+  --theme-surface: rgba(239, 246, 255, 0.90);
+  --theme-surface-solid: #eff6ff;
+  --theme-ink: #1e3a5f;
+  --theme-glow: 0 0 30px rgba(37, 99, 235, 0.20);
+
+  /* Data visualization accents */
+  --chart-historical: #64748b;
+  --chart-predicted: #3b82f6;
+  --chart-actual: #22c55e;
+  --chart-error: #ef4444;
+  --chart-grid: #e2e8f0;
+}
+
 /* Era Themes for Detective Mode */
 [data-era="1950s"] {
   --era-primary: #B8860B;
@@ -179,6 +196,10 @@
 [data-theme="patient-zero"] .hero-strip {
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0.12)),
     linear-gradient(90deg, #991b1b, #7f1d1d);
+}
+[data-theme="predict"] .hero-strip {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0.12)),
+    linear-gradient(90deg, #1d4ed8, #1e3a8a);
 }
 
 .hero-strip::before {

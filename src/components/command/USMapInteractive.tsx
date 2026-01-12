@@ -3,27 +3,61 @@
 
 import { useState } from 'react';
 import type { OutbreakLocation } from '../../types/command';
-import { usStates, getStateById } from './USMapPaths';
+import { usStates, getStateById, MAP_VIEWBOX } from './USMapPaths';
 
-// State center coordinates for labels and markers
+// State center coordinates for the map (viewBox: 192 9 1028 746)
 const STATE_CENTERS: Record<string, { x: number; y: number }> = {
-  'AL': { x: 628, y: 385 }, 'AK': { x: 85, y: 525 }, 'AZ': { x: 253, y: 365 },
-  'AR': { x: 531, y: 365 }, 'CA': { x: 142, y: 295 }, 'CO': { x: 323, y: 270 },
-  'CT': { x: 862, y: 177 }, 'DE': { x: 810, y: 235 }, 'FL': { x: 718, y: 460 },
-  'GA': { x: 688, y: 385 }, 'HI': { x: 265, y: 510 }, 'ID': { x: 213, y: 155 },
-  'IL': { x: 573, y: 275 }, 'IN': { x: 618, y: 275 }, 'IA': { x: 510, y: 215 },
-  'KS': { x: 430, y: 295 }, 'KY': { x: 648, y: 305 }, 'LA': { x: 545, y: 425 },
-  'ME': { x: 875, y: 115 }, 'MD': { x: 775, y: 250 }, 'MA': { x: 870, y: 165 },
-  'MI': { x: 615, y: 185 }, 'MN': { x: 490, y: 150 }, 'MS': { x: 575, y: 395 },
-  'MO': { x: 525, y: 305 }, 'MT': { x: 275, y: 95 }, 'NE': { x: 405, y: 225 },
-  'NV': { x: 175, y: 255 }, 'NH': { x: 865, y: 135 }, 'NJ': { x: 820, y: 220 },
-  'NM': { x: 305, y: 365 }, 'NY': { x: 795, y: 175 }, 'NC': { x: 745, y: 320 },
-  'ND': { x: 420, y: 115 }, 'OH': { x: 670, y: 260 }, 'OK': { x: 440, y: 355 },
-  'OR': { x: 135, y: 140 }, 'PA': { x: 765, y: 215 }, 'RI': { x: 878, y: 177 },
-  'SC': { x: 720, y: 355 }, 'SD': { x: 415, y: 170 }, 'TN': { x: 640, y: 325 },
-  'TX': { x: 415, y: 415 }, 'UT': { x: 250, y: 265 }, 'VT': { x: 850, y: 135 },
-  'VA': { x: 755, y: 280 }, 'WA': { x: 155, y: 75 }, 'WV': { x: 720, y: 270 },
-  'WI': { x: 555, y: 175 }, 'WY': { x: 295, y: 175 },
+  'AK': { x: 336, y: 618 },
+  'AL': { x: 943, y: 427 },
+  'AR': { x: 835, y: 386 },
+  'AZ': { x: 473, y: 376 },
+  'CA': { x: 362, y: 276 },
+  'CO': { x: 599, y: 284 },
+  'CT': { x: 1151, y: 188 },
+  'DC': { x: 1093, y: 261 },
+  'DE': { x: 1119, y: 251 },
+  'FL': { x: 1009, y: 525 },
+  'GA': { x: 1004, y: 415 },
+  'HI': { x: 599, y: 623 },
+  'IA': { x: 809, y: 226 },
+  'ID': { x: 473, y: 120 },
+  'IL': { x: 878, y: 271 },
+  'IN': { x: 932, y: 267 },
+  'KS': { x: 724, y: 303 },
+  'KY': { x: 947, y: 312 },
+  'LA': { x: 854, y: 468 },
+  'MA': { x: 1166, y: 167 },
+  'MD': { x: 1088, y: 258 },
+  'ME': { x: 1187, y: 94 },
+  'MI': { x: 920, y: 154 },
+  'MN': { x: 805, y: 127 },
+  'MO': { x: 829, y: 306 },
+  'MS': { x: 881, y: 431 },
+  'MT': { x: 556, y: 96 },
+  'NC': { x: 1058, y: 342 },
+  'ND': { x: 699, y: 102 },
+  'NE': { x: 704, y: 235 },
+  'NH': { x: 1159, y: 130 },
+  'NJ': { x: 1126, y: 226 },
+  'NM': { x: 578, y: 385 },
+  'NV': { x: 411, y: 261 },
+  'NY': { x: 1100, y: 160 },
+  'OH': { x: 989, y: 247 },
+  'OK': { x: 717, y: 373 },
+  'OR': { x: 375, y: 126 },
+  'PA': { x: 1073, y: 221 },
+  'RI': { x: 1169, y: 180 },
+  'SC': { x: 1043, y: 391 },
+  'SD': { x: 697, y: 174 },
+  'TN': { x: 946, y: 353 },
+  'TX': { x: 688, y: 466 },
+  'UT': { x: 496, y: 259 },
+  'VA': { x: 1057, y: 293 },
+  'VT': { x: 1136, y: 135 },
+  'WA': { x: 396, y: 55 },
+  'WI': { x: 862, y: 162 },
+  'WV': { x: 1039, y: 274 },
+  'WY': { x: 576, y: 191 }
 };
 
 interface USMapInteractiveProps {
@@ -65,14 +99,14 @@ export function USMapInteractive({ locations, className = '', onStateClick }: US
   };
 
   return (
-    <div className={`relative bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl border border-slate-200 ${className}`} style={{ aspectRatio: '960 / 600' }}>
+    <div className={`relative bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl border border-slate-200 ${className}`} style={{ aspectRatio: '1028 / 746' }}>
       <svg
-        viewBox="0 0 960 600"
+        viewBox={MAP_VIEWBOX}
         className="w-full h-full"
         preserveAspectRatio="xMidYMid meet"
       >
         {/* Background */}
-        <rect x="0" y="0" width="960" height="600" fill="transparent" />
+        <rect x="192" y="9" width="1028" height="746" fill="transparent" />
 
         {/* State paths */}
         <g>

@@ -7,6 +7,20 @@ import { GameStats } from './GameStats';
 import { EventDialog } from './EventDialog';
 import { Play, Pause, FastForward, RotateCcw, Trophy, XCircle } from 'lucide-react';
 
+// State abbreviation to full name mapping
+const STATE_NAMES: Record<string, string> = {
+  'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', 'CA': 'California',
+  'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware', 'FL': 'Florida', 'GA': 'Georgia',
+  'HI': 'Hawaii', 'ID': 'Idaho', 'IL': 'Illinois', 'IN': 'Indiana', 'IA': 'Iowa',
+  'KS': 'Kansas', 'KY': 'Kentucky', 'LA': 'Louisiana', 'ME': 'Maine', 'MD': 'Maryland',
+  'MA': 'Massachusetts', 'MI': 'Michigan', 'MN': 'Minnesota', 'MS': 'Mississippi', 'MO': 'Missouri',
+  'MT': 'Montana', 'NE': 'Nebraska', 'NV': 'Nevada', 'NH': 'New Hampshire', 'NJ': 'New Jersey',
+  'NM': 'New Mexico', 'NY': 'New York', 'NC': 'North Carolina', 'ND': 'North Dakota', 'OH': 'Ohio',
+  'OK': 'Oklahoma', 'OR': 'Oregon', 'PA': 'Pennsylvania', 'RI': 'Rhode Island', 'SC': 'South Carolina',
+  'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah', 'VT': 'Vermont',
+  'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia', 'WI': 'Wisconsin', 'WY': 'Wyoming',
+};
+
 interface CommandGameProps {
   scenario: CommandScenario;
   onComplete: (won: boolean, score: number) => void;
@@ -395,51 +409,74 @@ export function CommandGame({ scenario, onComplete, onBack }: CommandGameProps) 
         <EventDialog event={currentEvent} onChoice={handleEventChoice} />
       )}
 
-      {/* Controls Bar */}
-      <div className="bg-white rounded-xl shadow p-3 mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          {gameStatus === 'playing' ? (
+      {/* Header Bar - Prominent title and controls */}
+      <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 rounded-xl shadow-lg mb-4 overflow-hidden">
+        {/* Title Row */}
+        <div className="p-4 flex items-center justify-between border-b border-white/10">
+          <div className="flex items-center gap-3">
+            {gameStatus === 'playing' ? (
+              <button
+                onClick={() => setGameStatus('paused')}
+                className="p-2 bg-amber-500 text-white rounded-lg hover:bg-amber-400 shadow"
+              >
+                <Pause size={20} />
+              </button>
+            ) : (
+              <button
+                onClick={resumeGame}
+                disabled={!!currentEvent}
+                className="p-2 bg-green-500 text-white rounded-lg hover:bg-green-400 disabled:opacity-50 shadow"
+              >
+                <Play size={20} />
+              </button>
+            )}
             <button
-              onClick={() => setGameStatus('paused')}
-              className="p-2 bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200"
+              onClick={() => setSpeed(speed === 1 ? 2 : 1)}
+              className={`p-2 rounded-lg shadow ${speed === 2 ? 'bg-blue-500 text-white' : 'bg-white/20 text-white'}`}
             >
-              <Pause size={20} />
+              <FastForward size={20} />
             </button>
-          ) : (
-            <button
-              onClick={resumeGame}
-              disabled={!!currentEvent}
-              className="p-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 disabled:opacity-50"
-            >
-              <Play size={20} />
-            </button>
-          )}
+          </div>
+
+          <div className="text-center">
+            <h1 className="text-xl font-bold text-white drop-shadow">{scenario.title}</h1>
+            <span className={`text-sm font-medium px-3 py-0.5 rounded-full ${
+              scenario.difficulty === 'easy' ? 'bg-green-500/20 text-green-300' :
+              scenario.difficulty === 'medium' ? 'bg-yellow-500/20 text-yellow-300' :
+              scenario.difficulty === 'hard' ? 'bg-orange-500/20 text-orange-300' : 'bg-red-500/20 text-red-300'
+            }`}>
+              {scenario.difficulty.charAt(0).toUpperCase() + scenario.difficulty.slice(1)}
+            </span>
+          </div>
+
           <button
-            onClick={() => setSpeed(speed === 1 ? 2 : 1)}
-            className={`p-2 rounded-lg ${speed === 2 ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-600'}`}
+            onClick={onBack}
+            className="px-4 py-2 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
           >
-            <FastForward size={20} />
+            Exit
           </button>
         </div>
 
-        <div className="text-sm text-slate-600">
-          <span className="font-semibold">{scenario.title}</span>
-          <span className="mx-2">•</span>
-          <span className={`capitalize ${
-            scenario.difficulty === 'easy' ? 'text-green-600' :
-            scenario.difficulty === 'medium' ? 'text-yellow-600' :
-            scenario.difficulty === 'hard' ? 'text-orange-600' : 'text-red-600'
-          }`}>
-            {scenario.difficulty}
-          </span>
+        {/* Objective Banner */}
+        <div className="px-4 py-2 bg-black/20 flex items-center justify-between text-sm">
+          <div className="flex items-center gap-4 text-white/90">
+            <span className="text-amber-400 font-semibold">🎯 MISSION:</span>
+            {scenario.win_state.source_identified && (
+              <span className={gameState.source_identified ? 'text-green-400' : ''}>
+                {gameState.source_identified ? '✓ Source Found' : 'Identify the source'}
+              </span>
+            )}
+            {scenario.win_state.cases_below && (
+              <span>• Keep cases below {scenario.win_state.cases_below}</span>
+            )}
+          </div>
+          {scenario.lose_state.cases_above && (
+            <div className="flex items-center gap-2 text-red-300">
+              <span>⚠️ Fail at {scenario.lose_state.cases_above} cases</span>
+              <span className="font-bold">({gameState.cases} current)</span>
+            </div>
+          )}
         </div>
-
-        <button
-          onClick={onBack}
-          className="px-4 py-2 text-sm text-slate-600 hover:text-slate-800"
-        >
-          Exit
-        </button>
       </div>
 
       {/* Main Game Grid */}
@@ -458,14 +495,16 @@ export function CommandGame({ scenario, onComplete, onBack }: CommandGameProps) 
               className="h-72 lg:h-96"
             />
 
-            {/* Location List */}
-            <div className="mt-4 space-y-2">
-              {gameState.outbreak_locations.map((loc, idx) => (
-                <div key={idx} className="flex items-center justify-between text-sm bg-slate-50 px-3 py-2 rounded-lg">
-                  <span className="font-medium text-slate-700">{loc.state}</span>
-                  <span className="font-bold text-red-600">{loc.cases} cases</span>
-                </div>
-              ))}
+            {/* Location List - sorted by case count */}
+            <div className="mt-4 space-y-2 max-h-40 overflow-y-auto">
+              {[...gameState.outbreak_locations]
+                .sort((a, b) => b.cases - a.cases)
+                .map((loc, idx) => (
+                  <div key={idx} className="flex items-center justify-between text-sm bg-slate-50 px-3 py-2 rounded-lg">
+                    <span className="font-medium text-slate-700">{STATE_NAMES[loc.state] || loc.state}</span>
+                    <span className="font-bold text-red-600">{loc.cases} cases</span>
+                  </div>
+                ))}
             </div>
           </div>
         </div>

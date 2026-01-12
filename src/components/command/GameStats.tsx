@@ -10,10 +10,11 @@ interface GameStatsProps {
 export function GameStats({ gameState, pathogen }: GameStatsProps) {
   return (
     <div className="space-y-4">
-      {/* Day Counter */}
-      <div className="bg-slate-800 text-white rounded-xl p-4 text-center">
-        <div className="text-4xl font-bold">Day {gameState.day}</div>
-        <div className="text-slate-400 text-sm mt-1">Outbreak Response</div>
+      {/* Day Counter - Prominent amber/gold for visibility */}
+      <div className="bg-gradient-to-br from-amber-500 to-amber-600 text-white rounded-xl p-5 text-center shadow-lg border-2 border-amber-400">
+        <div className="text-amber-100 text-xs uppercase tracking-widest font-bold mb-1">Day</div>
+        <div className="text-5xl font-black text-white drop-shadow-lg">{gameState.day}</div>
+        <div className="text-amber-100 text-sm mt-2 font-medium">Outbreak Response</div>
       </div>
 
       {/* Key Metrics */}

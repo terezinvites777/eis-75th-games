@@ -1,5 +1,5 @@
 // src/components/patient-zero/WorldMap.tsx
-// Interactive world map showing mystery locations
+// Interactive US map showing mystery locations
 
 import { useState } from 'react';
 import { MapPin, HelpCircle } from 'lucide-react';
@@ -18,12 +18,19 @@ interface WorldMapProps {
   onLocationClick?: (id: string) => void;
 }
 
-// Convert lat/lng to percentage positions on the map
-// Using equirectangular projection for simplicity
-function latLngToPosition(lat: number, lng: number) {
-  // Map: lat -90 to 90 -> y 100% to 0%, lng -180 to 180 -> x 0% to 100%
-  const x = ((lng + 180) / 360) * 100;
-  const y = ((90 - lat) / 180) * 100;
+// Convert lat/lng to position on US-focused map
+// US bounds: lat 24-50, lng -125 to -66
+function latLngToUSPosition(lat: number, lng: number) {
+  const minLat = 24, maxLat = 50;
+  const minLng = -125, maxLng = -66;
+
+  // Clamp values to US bounds
+  const clampedLat = Math.max(minLat, Math.min(maxLat, lat));
+  const clampedLng = Math.max(minLng, Math.min(maxLng, lng));
+
+  const x = ((clampedLng - minLng) / (maxLng - minLng)) * 100;
+  const y = ((maxLat - clampedLat) / (maxLat - minLat)) * 100;
+
   return { x, y };
 }
 
@@ -32,93 +39,115 @@ export function WorldMap({ locations, onLocationClick }: WorldMapProps) {
 
   return (
     <div className="relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl overflow-hidden border border-slate-700">
-      {/* Simple SVG world map outline */}
+      {/* US Map SVG */}
       <svg
-        viewBox="0 0 1000 500"
+        viewBox="0 0 960 600"
         className="w-full h-48 md:h-64"
         preserveAspectRatio="xMidYMid meet"
       >
         {/* Background */}
-        <rect width="1000" height="500" fill="transparent" />
+        <rect width="960" height="600" fill="transparent" />
 
         {/* Grid lines */}
-        <g stroke="rgba(148, 163, 184, 0.1)" strokeWidth="0.5">
-          {[...Array(9)].map((_, i) => (
-            <line key={`h-${i}`} x1="0" y1={i * 62.5} x2="1000" y2={i * 62.5} />
+        <g stroke="rgba(148, 163, 184, 0.08)" strokeWidth="1">
+          {[...Array(7)].map((_, i) => (
+            <line key={`h-${i}`} x1="0" y1={i * 100} x2="960" y2={i * 100} />
           ))}
-          {[...Array(17)].map((_, i) => (
-            <line key={`v-${i}`} x1={i * 62.5} y1="0" x2={i * 62.5} y2="500" />
+          {[...Array(10)].map((_, i) => (
+            <line key={`v-${i}`} x1={i * 100} y1="0" x2={i * 100} y2="600" />
           ))}
         </g>
 
-        {/* Simple continent outlines */}
-        <g fill="rgba(148, 163, 184, 0.2)" stroke="rgba(148, 163, 184, 0.3)" strokeWidth="0.5">
-          {/* North America (simplified) */}
-          <path d="M120,80 L250,70 L280,100 L290,150 L260,200 L220,220 L180,250 L150,230 L100,200 L80,150 L100,100 Z" />
-          {/* South America (simplified) */}
-          <path d="M200,260 L240,250 L270,280 L280,350 L260,420 L220,450 L190,400 L180,320 Z" />
-          {/* Europe (simplified) */}
-          <path d="M450,80 L520,70 L560,90 L540,140 L490,150 L450,130 Z" />
-          {/* Africa (simplified) */}
-          <path d="M460,170 L530,160 L560,200 L550,300 L500,350 L450,320 L440,250 L450,200 Z" />
-          {/* Asia (simplified) */}
-          <path d="M560,60 L750,50 L850,100 L870,180 L800,220 L700,200 L600,160 L560,120 Z" />
-          {/* Australia (simplified) */}
-          <path d="M780,300 L860,290 L890,330 L870,380 L810,390 L770,360 L760,320 Z" />
-        </g>
-
-        {/* USA highlighted since most mysteries are there */}
+        {/* Simplified US outline - Continental US */}
         <path
-          d="M130,130 L250,125 L260,160 L240,180 L180,190 L140,175 L120,150 Z"
-          fill="rgba(220, 38, 38, 0.15)"
+          d="M 120 180
+             L 180 140 L 260 120 L 340 100 L 420 90 L 500 85 L 580 90 L 660 100 L 720 120
+             L 780 150 L 820 180 L 850 220 L 870 280 L 860 340 L 840 380 L 800 420
+             L 750 450 L 680 470 L 600 480 L 520 475 L 440 465 L 360 450 L 280 440
+             L 200 450 L 150 480 L 120 500 L 100 460 L 90 400 L 85 340 L 90 280 L 100 230 Z"
+          fill="rgba(220, 38, 38, 0.12)"
           stroke="rgba(220, 38, 38, 0.4)"
-          strokeWidth="1"
+          strokeWidth="2"
         />
+
+        {/* State-like divisions for visual interest */}
+        <g stroke="rgba(220, 38, 38, 0.15)" strokeWidth="1" fill="none">
+          {/* Vertical divisions */}
+          <line x1="300" y1="100" x2="280" y2="450" />
+          <line x1="450" y1="90" x2="440" y2="470" />
+          <line x1="600" y1="90" x2="600" y2="480" />
+          <line x1="720" y1="120" x2="750" y2="450" />
+          {/* Horizontal divisions */}
+          <line x1="90" y1="300" x2="870" y2="300" />
+          <line x1="100" y1="400" x2="840" y2="400" />
+        </g>
+
+        {/* Region labels */}
+        <g fill="rgba(148, 163, 184, 0.3)" fontSize="12" fontFamily="sans-serif">
+          <text x="180" y="320">West</text>
+          <text x="380" y="280">Central</text>
+          <text x="550" y="250">Midwest</text>
+          <text x="750" y="300">East</text>
+          <text x="450" y="430">South</text>
+        </g>
+
+        {/* Notable cities as reference dots */}
+        <g fill="rgba(148, 163, 184, 0.25)">
+          <circle cx="140" cy="200" r="3" /> {/* Seattle */}
+          <circle cx="120" cy="340" r="3" /> {/* LA */}
+          <circle cx="280" cy="450" r="3" /> {/* Houston */}
+          <circle cx="520" cy="300" r="3" /> {/* Chicago */}
+          <circle cx="820" cy="280" r="3" /> {/* NYC */}
+          <circle cx="780" cy="380" r="3" /> {/* Atlanta */}
+        </g>
       </svg>
 
       {/* Mystery location pins */}
       {locations.map(loc => {
-        const pos = latLngToPosition(loc.lat, loc.lng);
+        const pos = latLngToUSPosition(loc.lat, loc.lng);
         const isHovered = hoveredLocation === loc.id;
 
         return (
           <div
             key={loc.id}
-            className="absolute transform -translate-x-1/2 -translate-y-full cursor-pointer transition-transform hover:scale-125"
+            className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-transform hover:scale-125"
             style={{
               left: `${pos.x}%`,
               top: `${pos.y}%`,
               zIndex: isHovered || loc.isFeatured ? 20 : 10,
             }}
-            onClick={() => onLocationClick?.(loc.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onLocationClick?.(loc.id);
+            }}
             onMouseEnter={() => setHoveredLocation(loc.id)}
             onMouseLeave={() => setHoveredLocation(null)}
           >
             {/* Pulse animation for unrevealed mysteries */}
             {!loc.revealed && (
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-red-500 rounded-full animate-ping opacity-40" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-red-500 rounded-full animate-ping opacity-30" />
             )}
 
             {/* Pin marker */}
             <div className={`
-              relative flex items-center justify-center w-6 h-6 rounded-full border-2 shadow-lg
+              relative flex items-center justify-center rounded-full border-2 shadow-lg
               ${loc.isFeatured
-                ? 'bg-amber-500 border-amber-300 w-8 h-8'
+                ? 'bg-amber-500 border-amber-300 w-10 h-10'
                 : loc.revealed
-                  ? 'bg-green-500 border-green-300'
-                  : 'bg-red-500 border-red-300'
+                  ? 'bg-green-500 border-green-300 w-7 h-7'
+                  : 'bg-red-500 border-red-300 w-7 h-7'
               }
             `}>
               {loc.revealed ? (
-                <MapPin size={loc.isFeatured ? 16 : 12} className="text-white" />
+                <MapPin size={loc.isFeatured ? 20 : 14} className="text-white" />
               ) : (
-                <HelpCircle size={loc.isFeatured ? 16 : 12} className="text-white" />
+                <HelpCircle size={loc.isFeatured ? 20 : 14} className="text-white" />
               )}
             </div>
 
             {/* Tooltip */}
             {isHovered && (
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-white rounded-lg shadow-xl whitespace-nowrap z-30 border border-slate-200">
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-2 bg-white rounded-lg shadow-xl whitespace-nowrap z-30 border border-slate-200">
                 <div className="text-sm font-semibold text-slate-800">{loc.title}</div>
                 {loc.isFeatured && (
                   <span className="text-xs text-amber-600 font-medium">75th Anniversary Feature</span>
@@ -138,9 +167,9 @@ export function WorldMap({ locations, onLocationClick }: WorldMapProps) {
       <div className="absolute top-3 left-3 text-white">
         <h3 className="text-sm font-bold drop-shadow-lg flex items-center gap-2">
           <MapPin size={14} className="text-red-400" />
-          Where in the World?
+          Mystery Locations
         </h3>
-        <p className="text-xs text-white/60">Click a location to investigate</p>
+        <p className="text-xs text-white/60">Click a pin to investigate</p>
       </div>
 
       {/* Legend */}

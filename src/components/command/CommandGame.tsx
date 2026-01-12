@@ -5,6 +5,8 @@ import { USMapInteractive } from './USMapInteractive';
 import { ActionPanel } from './ActionPanel';
 import { GameStats } from './GameStats';
 import { EventDialog } from './EventDialog';
+import { TutorialOverlay } from './TutorialOverlay';
+import { ToastContainer, type ToastData } from './ActionToast';
 import { Play, Pause, FastForward, RotateCcw, Trophy, XCircle } from 'lucide-react';
 
 // State abbreviation to full name mapping
@@ -36,6 +38,30 @@ export function CommandGame({ scenario, onComplete, onBack }: CommandGameProps) 
   const [currentEvent, setCurrentEvent] = useState<GameEvent | null>(null);
   const [eventQueue, setEventQueue] = useState<GameEvent[]>([]);
   const [speed, setSpeed] = useState<1 | 2>(1);
+
+  // Tutorial and toast states
+  const [showTutorial, setShowTutorial] = useState(() => {
+    // Check if user has seen tutorial before
+    return !localStorage.getItem('command-tutorial-seen');
+  });
+  const [toasts, setToasts] = useState<ToastData[]>([]);
+
+  // Add a toast notification
+  const addToast = useCallback((toast: Omit<ToastData, 'id'>) => {
+    const id = `toast-${Date.now()}`;
+    setToasts(prev => [...prev, { ...toast, id }]);
+  }, []);
+
+  // Remove a toast
+  const removeToast = useCallback((id: string) => {
+    setToasts(prev => prev.filter(t => t.id !== id));
+  }, []);
+
+  // Dismiss tutorial and remember
+  const dismissTutorial = useCallback(() => {
+    setShowTutorial(false);
+    localStorage.setItem('command-tutorial-seen', 'true');
+  }, []);
 
   // Initialize game state
   function initGameState(s: CommandScenario): GameState {
@@ -122,8 +148,13 @@ export function CommandGame({ scenario, onComplete, onBack }: CommandGameProps) 
         if (action.active && action.started_day !== undefined) {
           const elapsed = gameState.day + 1 - action.started_day;
           if (elapsed >= action.duration) {
-            // Action completed - apply effects
-            applyActionEffect(action);
+            // Action completed - apply effects and show toast
+            const result = applyActionEffect(action);
+            addToast({
+              message: `${action.name} completed!`,
+              type: result.sourceFound ? 'success' : 'info',
+              effect: result.sourceFound ? 'Source identified!' : action.effect,
+            });
             return { ...action, active: false, progress: 0 };
           }
           return { ...action, progress: elapsed };
@@ -137,10 +168,12 @@ export function CommandGame({ scenario, onComplete, onBack }: CommandGameProps) 
     if (dayEvents.length > 0) {
       setEventQueue(prev => [...prev, ...dayEvents]);
     }
-  }, [gameStatus, gameState, scenario]);
+  }, [gameStatus, gameState, scenario, addToast]);
 
-  // Apply action effects (simplified)
-  const applyActionEffect = (action: Action) => {
+  // Apply action effects (simplified) - returns result info for toast
+  const applyActionEffect = (action: Action): { sourceFound: boolean } => {
+    let sourceFound = false;
+
     setGameState(prev => {
       let newState = { ...prev };
 
@@ -153,6 +186,7 @@ export function CommandGame({ scenario, onComplete, onBack }: CommandGameProps) 
                        action.effect.includes('25%') ? 0.25 : 0.2;
         if (Math.random() < chance) {
           newState.source_identified = true;
+          sourceFound = true;
         }
       }
 
@@ -174,6 +208,8 @@ export function CommandGame({ scenario, onComplete, onBack }: CommandGameProps) 
 
       return newState;
     });
+
+    return { sourceFound };
   };
 
   // Execute action
@@ -404,6 +440,17 @@ export function CommandGame({ scenario, onComplete, onBack }: CommandGameProps) 
   // Render main game UI
   return (
     <div className="p-4">
+      {/* Tutorial Overlay - shows for first-time players */}
+      {showTutorial && (
+        <TutorialOverlay
+          scenarioName={scenario.title}
+          onDismiss={dismissTutorial}
+        />
+      )}
+
+      {/* Toast Notifications */}
+      <ToastContainer toasts={toasts} onDismiss={removeToast} />
+
       {/* Event Dialog */}
       {currentEvent && (
         <EventDialog event={currentEvent} onChoice={handleEventChoice} />

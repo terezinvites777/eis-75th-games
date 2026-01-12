@@ -4,60 +4,95 @@
 import type { MysteryDefinition } from '../types/patient-zero';
 
 export const mysteries: MysteryDefinition[] = [
+  // ============================================
+  // 75th ANNIVERSARY FEATURED MYSTERY
+  // ============================================
   {
-    id: 'legionnaires-1976',
-    title: 'The Philadelphia Mystery',
+    id: '75th-anniversary-grand',
+    title: 'The 75th Anniversary Case',
+    isFeatured: true,
+    coordinates: { lat: 39.95, lng: -75.16 }, // Philadelphia
     solution: {
-      outbreak: 'Legionnaires\' Disease',
+      outbreak: "Legionnaires' Disease",
       year: 1976,
       location: 'Philadelphia, Pennsylvania',
       pathogen: 'Legionella pneumophila',
-      source: 'Air conditioning cooling tower at Bellevue-Stratford Hotel',
-      patient_zero_context: 'American Legion convention attendees staying at the hotel',
-      eis_officers_involved: ['David Fraser', 'Joseph McDade', 'Charles Shepard'],
+      source: 'Bellevue-Stratford Hotel cooling tower',
+      patient_zero_context: 'American Legion convention attendees celebrating the nation\'s bicentennial',
+      eis_officers_involved: [
+        'David Fraser (Lead Investigator)',
+        'Joseph McDade (Discovered the pathogen)',
+        'Charles Shepard',
+        'And 17 other EIS Officers',
+      ],
     },
     clues: [
+      // Day 1 AM
       {
         day: 1,
         time: 'am',
-        content: 'July 1976: A large patriotic gathering brings thousands to a major East Coast city for the nation\'s bicentennial celebration.',
+        content: 'The year is significant - the entire nation was celebrating. Red, white, and blue decorations everywhere. America\'s 200th birthday.',
         hint_level: 'vague',
       },
+      // Day 1 PM
       {
         day: 1,
         time: 'pm',
-        content: 'Within days of returning home, attendees from multiple states begin experiencing severe pneumonia. Death toll rises rapidly.',
+        content: 'A large gathering of patriots - men who served their country - came together at a grand historic hotel in a major East Coast city.',
         hint_level: 'vague',
       },
+      // Day 2 AM
       {
         day: 2,
         time: 'am',
-        content: 'EIS officers note that most cases stayed at the same historic hotel. Indoor exposure seems likely.',
+        content: '182 became ill. 29 died. Most victims were older men, many with military backgrounds. A mysterious pneumonia was striking attendees.',
         hint_level: 'moderate',
       },
+      // Day 2 PM
       {
         day: 2,
         time: 'pm',
-        content: 'Standard bacterial cultures are negative. This is no ordinary pneumonia. The pathogen is unknown to science.',
+        content: 'Standard bacterial cultures found nothing. This was no ordinary pneumonia. Scientists were baffled for months. The pathogen was unknown to science.',
         hint_level: 'moderate',
       },
+      // Day 3 AM
       {
         day: 3,
         time: 'am',
-        content: 'Investigation focuses on the hotel\'s ventilation system. Cases cluster among those who spent time in the lobby.',
+        content: 'The CDC deployed 20 EIS officers - the largest team in program history at that time. Cases clustered among those who spent time in the hotel lobby.',
         hint_level: 'specific',
       },
+      // Day 3 PM
       {
         day: 3,
         time: 'pm',
-        content: 'Six months later, CDC microbiologist Joseph McDade identifies a new bacterium in lung tissue samples. It thrives in warm water systems.',
+        content: 'Six months after the outbreak, Joseph McDade finally isolated a new bacterium from lung tissue. It thrived in warm water - like that found in air conditioning systems.',
         hint_level: 'specific',
       },
     ],
+    historicalContext: `This outbreak transformed public health forever. It led to:
+    - Discovery of an entirely new bacterial species (Legionella pneumophila)
+    - New understanding of environmental transmission routes
+    - Water system regulations in buildings worldwide
+    - The Bellevue-Stratford Hotel closing permanently
+
+    This investigation exemplifies why EIS exists: to solve the unsolvable and protect the public from threats we don't even know exist yet.`,
+    impactStats: {
+      totalCases: 182,
+      deaths: 29,
+      statesAffected: 23,
+      eisOfficersDeployed: 20,
+      monthsToIdentify: 6,
+    },
   },
+
+  // ============================================
+  // STANDARD MYSTERIES
+  // ============================================
   {
     id: 'hantavirus-1993',
     title: 'The Four Corners Killer',
+    coordinates: { lat: 36.99, lng: -109.05 }, // Four Corners region
     solution: {
       outbreak: 'Hantavirus Pulmonary Syndrome',
       year: 1993,
@@ -105,10 +140,16 @@ export const mysteries: MysteryDefinition[] = [
         hint_level: 'specific',
       },
     ],
+    impactStats: {
+      totalCases: 48,
+      deaths: 27,
+      statesAffected: 4,
+    },
   },
   {
     id: 'toxic-shock-1980',
     title: 'The Menstrual Mystery',
+    coordinates: { lat: 39.83, lng: -98.58 }, // Geographic center of US (nationwide)
     solution: {
       outbreak: 'Toxic Shock Syndrome',
       year: 1980,
@@ -156,8 +197,16 @@ export const mysteries: MysteryDefinition[] = [
         hint_level: 'specific',
       },
     ],
+    impactStats: {
+      totalCases: 812,
+      deaths: 38,
+      statesAffected: 50,
+    },
   },
 ];
+
+// Export featured mystery separately for easy access
+export const featuredMystery = mysteries.find(m => m.isFeatured);
 
 export function getMysteryById(id: string): MysteryDefinition | undefined {
   return mysteries.find(m => m.id === id);
@@ -169,7 +218,7 @@ export function getCluesForDay(mystery: MysteryDefinition, day: number): typeof 
 
 // Calculate score based on when theory was submitted
 export function calculateTheoryScore(
-  theory: { outbreak_name: string; year: number; location: string; pathogen: string },
+  theory: { outbreak_name: string; year: number; location: string; pathogen: string; source?: string },
   solution: MysteryDefinition['solution'],
   daySubmitted: number
 ): number {
@@ -194,6 +243,13 @@ export function calculateTheoryScore(
   const pathogenMatch = solution.pathogen.toLowerCase().includes(theory.pathogen.toLowerCase()) ||
     theory.pathogen.toLowerCase().includes(solution.pathogen.toLowerCase());
   if (pathogenMatch) score += 250;
+
+  // Source match (bonus, if provided)
+  if (theory.source && solution.source) {
+    const sourceMatch = solution.source.toLowerCase().includes(theory.source.toLowerCase()) ||
+      theory.source.toLowerCase().includes(solution.source.toLowerCase());
+    if (sourceMatch) score += 100;
+  }
 
   // Day bonus: earlier submissions get more points
   const dayMultiplier = daySubmitted === 1 ? 2.0 : daySubmitted === 2 ? 1.5 : 1.0;

@@ -11,6 +11,11 @@ export interface Clue {
 export interface MysteryDefinition {
   id: string;
   title: string;
+  isFeatured?: boolean;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
   solution: {
     outbreak: string;
     year: number;
@@ -21,6 +26,14 @@ export interface MysteryDefinition {
     eis_officers_involved: string[];
   };
   clues: Clue[];
+  historicalContext?: string;
+  impactStats?: {
+    totalCases?: number;
+    deaths?: number;
+    statesAffected?: number;
+    eisOfficersDeployed?: number;
+    monthsToIdentify?: number;
+  };
 }
 
 export interface PlayerTheory {

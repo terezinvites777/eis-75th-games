@@ -1069,6 +1069,144 @@
   border: 2px solid #8b7355 !important;
 }
 
+/* ==========================================================================
+   PATIENT ZERO THEME - Dark red crime investigation aesthetic
+   ========================================================================== */
+
+.eis-bg[data-theme="patient-zero"] {
+  background:
+    linear-gradient(145deg, #1a0a0a 0%, #2d1010 30%, #1a0808 70%, #0f0505 100%) !important;
+  position: relative;
+}
+
+.eis-bg[data-theme="patient-zero"]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(220, 38, 38, 0.08), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(153, 27, 27, 0.06), transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.eis-bg[data-theme="patient-zero"]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --- Patient Zero Hero --- */
+.eis-bg[data-theme="patient-zero"] .eis-hero,
+.eis-bg[data-theme="patient-zero"] .hero-strip {
+  background:
+    linear-gradient(180deg, #7f1d1d 0%, #991b1b 50%, #dc2626 100%) !important;
+  border-bottom: 3px solid;
+  border-image: linear-gradient(90deg, transparent, #ef4444, #fca5a5, #ef4444, transparent) 1;
+}
+
+.eis-bg[data-theme="patient-zero"] .eis-hero h1,
+.eis-bg[data-theme="patient-zero"] .hero-strip h1 {
+  color: #fff !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.eis-bg[data-theme="patient-zero"] .eis-heroSub {
+  color: rgba(254, 202, 202, 0.9) !important;
+}
+
+/* --- Patient Zero Cards --- */
+.eis-bg[data-theme="patient-zero"] .bg-white,
+.eis-bg[data-theme="patient-zero"] [class*="bg-white\\/95"] {
+  background: linear-gradient(145deg, #fef2f2, #fee2e2) !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+}
+
+/* --- Patient Zero Text Styling --- */
+.eis-bg[data-theme="patient-zero"] [class*="text-slate-800"],
+.eis-bg[data-theme="patient-zero"] [class*="text-slate-700"] {
+  color: #1f1212 !important;
+}
+
+.eis-bg[data-theme="patient-zero"] [class*="text-slate-600"],
+.eis-bg[data-theme="patient-zero"] [class*="text-slate-500"] {
+  color: #4a2828 !important;
+}
+
+/* --- Patient Zero dark panels --- */
+.eis-bg[data-theme="patient-zero"] [class*="bg-slate-800"] {
+  background: linear-gradient(145deg, #2d1010, #1a0808) !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
+}
+
+/* --- Patient Zero Navigation --- */
+.eis-bg[data-theme="patient-zero"] .eis-nav {
+  background: linear-gradient(180deg, #1a0808, #0f0505) !important;
+  border-top: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
+
+.eis-bg[data-theme="patient-zero"] .eis-navItem {
+  color: rgba(254, 202, 202, 0.7) !important;
+}
+
+.eis-bg[data-theme="patient-zero"] .eis-navItem.active {
+  color: #fca5a5 !important;
+}
+
+.eis-bg[data-theme="patient-zero"] .eis-navItem.active::after {
+  background: linear-gradient(90deg, transparent, #ef4444, transparent) !important;
+}
+
+/* --- Patient Zero Buttons --- */
+.eis-bg[data-theme="patient-zero"] [class*="bg-red-600"],
+.eis-bg[data-theme="patient-zero"] [class*="bg-red-700"] {
+  background: linear-gradient(145deg, #dc2626, #991b1b) !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4) !important;
+}
+
+.eis-bg[data-theme="patient-zero"] [class*="bg-green-600"] {
+  background: linear-gradient(145deg, #16a34a, #15803d) !important;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.4) !important;
+}
+
+/* --- Patient Zero accent colors --- */
+.eis-bg[data-theme="patient-zero"] [class*="text-red-"] {
+  color: #fca5a5 !important;
+}
+
+.eis-bg[data-theme="patient-zero"] [class*="text-amber-"] {
+  color: #fcd34d !important;
+}
+
+/* --- Keep form inputs readable --- */
+.eis-bg[data-theme="patient-zero"] input,
+.eis-bg[data-theme="patient-zero"] select,
+.eis-bg[data-theme="patient-zero"] textarea {
+  background: #fff !important;
+  color: #1a1a1a !important;
+  border-color: #d1d5db !important;
+}
+
+.eis-bg[data-theme="patient-zero"] input:focus,
+.eis-bg[data-theme="patient-zero"] select:focus,
+.eis-bg[data-theme="patient-zero"] textarea:focus {
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2) !important;
+}
+
 /* --- Toast slide-in animation --- */
 @keyframes slide-in {
   from {

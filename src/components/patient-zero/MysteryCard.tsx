@@ -1,6 +1,6 @@
 // src/components/patient-zero/MysteryCard.tsx
 import type { MysteryDefinition } from '../../types/patient-zero';
-import { Calendar, MapPin, Play, CheckCircle } from 'lucide-react';
+import { Search, Play, CheckCircle, Star, HelpCircle } from 'lucide-react';
 
 interface MysteryCardProps {
   mystery: MysteryDefinition;
@@ -17,29 +17,42 @@ export function MysteryCard({ mystery, currentDay, isComplete, score, onStart }:
   return (
     <div
       className={`
-        bg-white rounded-xl shadow-lg border overflow-hidden transition-all hover:shadow-xl cursor-pointer
-        ${isComplete ? 'border-green-300' : 'border-slate-200'}
+        rounded-xl shadow-lg border overflow-hidden transition-all hover:shadow-xl cursor-pointer
+        ${isComplete
+          ? 'bg-green-50 border-green-300'
+          : mystery.isFeatured
+            ? 'bg-gradient-to-br from-amber-50 to-amber-100 border-amber-300'
+            : 'bg-white border-slate-200'
+        }
       `}
       onClick={() => onStart(mystery.id)}
     >
-      {/* Header */}
-      <div className={`p-4 ${isComplete ? 'bg-green-600' : 'bg-slate-800'} text-white`}>
+      {/* Header - NO SPOILERS! */}
+      <div className={`p-4 ${
+        isComplete
+          ? 'bg-green-600'
+          : mystery.isFeatured
+            ? 'bg-gradient-to-r from-amber-600 to-red-600'
+            : 'bg-red-700'
+      } text-white`}>
         <div className="flex items-start justify-between">
           <div>
+            {mystery.isFeatured && (
+              <div className="flex items-center gap-1 mb-1">
+                <Star size={12} className="text-amber-300" />
+                <span className="text-xs text-amber-200 font-semibold uppercase tracking-wide">Featured</span>
+              </div>
+            )}
             <h3 className="text-lg font-bold">{mystery.title}</h3>
-            <div className="flex items-center gap-3 mt-2 text-sm text-white/70">
-              <span className="flex items-center gap-1">
-                <Calendar size={14} />
-                {mystery.solution.year}
-              </span>
-              <span className="flex items-center gap-1">
-                <MapPin size={14} />
-                {mystery.solution.location.split(',')[0]}
-              </span>
+            <div className="flex items-center gap-2 mt-2 text-sm text-white/80">
+              <HelpCircle size={14} />
+              <span>{totalClues} clues to discover</span>
             </div>
           </div>
-          {isComplete && (
+          {isComplete ? (
             <CheckCircle size={24} className="text-green-200" />
+          ) : (
+            <Search size={24} className="text-white/60" />
           )}
         </div>
       </div>
@@ -74,12 +87,12 @@ export function MysteryCard({ mystery, currentDay, isComplete, score, onStart }:
             w-full py-2.5 rounded-lg font-semibold transition-all flex items-center justify-center gap-2
             ${isComplete
               ? 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-              : 'bg-blue-600 text-white hover:bg-blue-700'
+              : 'bg-red-600 text-white hover:bg-red-700'
             }
           `}
         >
           <Play size={18} />
-          {isComplete ? 'Review Mystery' : 'Investigate'}
+          {isComplete ? 'Review Case' : 'Investigate'}
         </button>
       </div>
     </div>

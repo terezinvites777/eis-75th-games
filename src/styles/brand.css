@@ -84,6 +84,16 @@
   --theme-glow: var(--shadow-glow-purple);
 }
 
+[data-theme="patient-zero"] {
+  --theme-primary: #dc2626;
+  --theme-secondary: #ef4444;
+  --theme-tertiary: #991b1b;
+  --theme-surface: rgba(254, 242, 242, 0.90);
+  --theme-surface-solid: #fef2f2;
+  --theme-ink: #1a1a1a;
+  --theme-glow: 0 0 30px rgba(220, 38, 38, 0.20);
+}
+
 /* Era Themes for Detective Mode */
 [data-era="1950s"] {
   --era-primary: #B8860B;
@@ -165,6 +175,10 @@
 [data-theme="default"] .hero-strip {
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0.12)),
     linear-gradient(90deg, #003d7a, #002855);
+}
+[data-theme="patient-zero"] .hero-strip {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.30), rgba(0, 0, 0, 0.12)),
+    linear-gradient(90deg, #991b1b, #7f1d1d);
 }
 
 .hero-strip::before {

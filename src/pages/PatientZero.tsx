@@ -1,5 +1,6 @@
 // src/pages/PatientZero.tsx
 // Where in the World is Patient Zero? - Multi-day mystery game
+// UX aligned with Disease Detective brand styling
 
 import { useState, useEffect } from 'react';
 import { GameShell } from '../components/layout/GameShell';
@@ -14,7 +15,7 @@ import { mysteries, featuredMystery, calculateTheoryScoreDetailed } from '../dat
 import type { ScoreBreakdown } from '../data/patient-zero-data';
 import { getCurrentDay, getNextClueRelease, DEV_MODE } from '../data/patient-zero-schedule';
 import type { MysteryDefinition, PlayerTheory } from '../types/patient-zero';
-import { ArrowLeft, Trophy, Target, Star, Users, Skull, MapPin, Calendar, Sparkles, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Trophy, Target, Star, Users, Skull, MapPin, Calendar, Sparkles, TrendingUp, Zap, Search } from 'lucide-react';
 
 // Simulated social proof - would come from backend in production
 function getSimulatedSolvers(mysteryId: string): number {
@@ -136,51 +137,77 @@ export function PatientZero() {
           {/* Back button */}
           <button
             onClick={() => setSelectedMystery(null)}
-            className="flex items-center gap-2 text-white/80 hover:text-white mb-4 transition-colors"
+            className="btn-emboss btn-emboss-sm mb-4"
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={16} />
             Back to Case Files
           </button>
 
-          {/* Day indicator + countdown */}
-          <div className="bg-slate-800/80 rounded-xl p-4 mb-6 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <Calendar size={24} className="text-red-400" />
-              <div>
-                <div className="text-white font-bold">Day {currentDay} of 3</div>
-                <div className="text-slate-400 text-sm">
-                  {selectedMystery.clues.filter(c => c.day <= currentDay).length} of {selectedMystery.clues.length} clues available
+          {/* Day indicator + countdown - brand panel */}
+          <div className="panel-themed p-4 mb-6 animate-slide-up">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-red-100 rounded-lg">
+                  <Calendar size={24} className="text-red-600" />
+                </div>
+                <div>
+                  <div className="font-bold text-slate-800">Day {currentDay} of 3</div>
+                  <div className="text-slate-500 text-sm">
+                    {selectedMystery.clues.filter(c => c.day <= currentDay).length} of {selectedMystery.clues.length} clues available
+                  </div>
                 </div>
               </div>
+              <div className="flex items-center gap-3">
+                {/* Early bonus indicator */}
+                {currentDay <= 2 && !isComplete && (
+                  <span className="pill pill-gold animate-pulse-glow">
+                    <Zap size={14} />
+                    {currentDay === 1 ? '2x' : '1.5x'} early bonus!
+                  </span>
+                )}
+                {!allCluesRevealed && nextClueRelease && (
+                  <CountdownTimer
+                    targetDate={nextClueRelease}
+                    label="Next Clue"
+                    variant="compact"
+                    onComplete={() => setCurrentDay(getCurrentDay())}
+                  />
+                )}
+                {DEV_MODE && !allCluesRevealed && (
+                  <button
+                    onClick={advanceDay}
+                    className="btn-emboss btn-emboss-sm"
+                  >
+                    Skip Day
+                  </button>
+                )}
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              {!allCluesRevealed && nextClueRelease && (
-                <CountdownTimer
-                  targetDate={nextClueRelease}
-                  label="Next Clue"
-                  variant="compact"
-                  onComplete={() => setCurrentDay(getCurrentDay())}
+
+            {/* Progress bar */}
+            <div className="mt-4">
+              <div className="progress-bar">
+                <div
+                  className="progress-fill"
+                  style={{ width: `${(currentDay / 3) * 100}%` }}
                 />
-              )}
-              {DEV_MODE && !allCluesRevealed && (
-                <button
-                  onClick={advanceDay}
-                  className="px-3 py-1.5 bg-amber-500 text-white rounded-lg font-semibold hover:bg-amber-600 transition-colors text-sm"
-                >
-                  Skip Day
-                </button>
-              )}
+              </div>
             </div>
           </div>
 
           {/* Featured mystery badge */}
           {selectedMystery.isFeatured && (
-            <div className="bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl p-4 mb-6 flex items-center gap-3">
-              <Star size={24} className="text-white" />
-              <div>
-                <div className="text-white font-bold">75th Anniversary Featured Case</div>
-                <div className="text-amber-100 text-sm">
-                  The landmark investigation that changed public health forever
+            <div className="panel mb-6 relative overflow-hidden animate-slide-up" style={{ animationDelay: '50ms' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-amber-600" />
+              <div className="flex items-center gap-3 pt-1">
+                <div className="p-2 bg-amber-100 rounded-lg">
+                  <Star size={24} className="text-amber-600" />
+                </div>
+                <div>
+                  <div className="font-bold text-slate-800">75th Anniversary Featured Case</div>
+                  <div className="text-slate-500 text-sm">
+                    The landmark investigation that changed public health forever
+                  </div>
                 </div>
               </div>
             </div>
@@ -195,34 +222,34 @@ export function PatientZero() {
             />
           </div>
 
-          {/* Impact Stats (if available) */}
+          {/* Impact Stats (if available) - using stat-card */}
           {selectedMystery.impactStats && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6 stagger-children">
               {selectedMystery.impactStats.totalCases && (
-                <div className="bg-white/95 rounded-lg p-3 text-center">
-                  <div className="text-2xl font-bold text-red-600">{selectedMystery.impactStats.totalCases}</div>
-                  <div className="text-xs text-slate-500 uppercase">Cases</div>
+                <div className="stat-card">
+                  <div className="stat-value text-red-600">{selectedMystery.impactStats.totalCases}</div>
+                  <div className="stat-label">Cases</div>
                 </div>
               )}
               {selectedMystery.impactStats.deaths && (
-                <div className="bg-white/95 rounded-lg p-3 text-center">
+                <div className="stat-card">
                   <Skull size={16} className="mx-auto text-slate-400 mb-1" />
-                  <div className="text-2xl font-bold text-slate-700">{selectedMystery.impactStats.deaths}</div>
-                  <div className="text-xs text-slate-500 uppercase">Deaths</div>
+                  <div className="stat-value text-slate-700">{selectedMystery.impactStats.deaths}</div>
+                  <div className="stat-label">Deaths</div>
                 </div>
               )}
               {selectedMystery.impactStats.statesAffected && (
-                <div className="bg-white/95 rounded-lg p-3 text-center">
+                <div className="stat-card">
                   <MapPin size={16} className="mx-auto text-slate-400 mb-1" />
-                  <div className="text-2xl font-bold text-slate-700">{selectedMystery.impactStats.statesAffected}</div>
-                  <div className="text-xs text-slate-500 uppercase">States</div>
+                  <div className="stat-value text-slate-700">{selectedMystery.impactStats.statesAffected}</div>
+                  <div className="stat-label">States</div>
                 </div>
               )}
               {selectedMystery.impactStats.eisOfficersDeployed && (
-                <div className="bg-white/95 rounded-lg p-3 text-center">
+                <div className="stat-card">
                   <Users size={16} className="mx-auto text-blue-400 mb-1" />
-                  <div className="text-2xl font-bold text-blue-600">{selectedMystery.impactStats.eisOfficersDeployed}</div>
-                  <div className="text-xs text-slate-500 uppercase">EIS Officers</div>
+                  <div className="stat-value text-blue-600">{selectedMystery.impactStats.eisOfficersDeployed}</div>
+                  <div className="stat-label">EIS Officers</div>
                 </div>
               )}
             </div>
@@ -233,18 +260,22 @@ export function PatientZero() {
 
           {/* Theory Form or Solution */}
           {isComplete && completedData ? (
-            <div className="bg-white rounded-xl shadow-lg p-6 overflow-hidden relative">
+            <div className="panel relative overflow-hidden animate-slide-up">
               {/* Success banner */}
-              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-green-400 via-emerald-500 to-green-400" />
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 via-emerald-500 to-green-400" />
 
-              <div className="text-center mb-6">
-                <Trophy size={48} className="mx-auto text-amber-500 mb-3" />
+              <div className="text-center mb-6 pt-2">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-100 rounded-full mb-3 animate-score-pop">
+                  <Trophy size={32} className="text-amber-500" />
+                </div>
                 <h3 className="text-xl font-bold text-slate-800">Case Closed!</h3>
 
                 {/* Social proof */}
-                <div className="flex items-center justify-center gap-2 mt-2 text-slate-500 text-sm">
-                  <TrendingUp size={16} className="text-green-500" />
-                  <span>{solverCount.toLocaleString()} detectives have solved this case</span>
+                <div className="flex items-center justify-center gap-2 mt-2">
+                  <span className="pill">
+                    <TrendingUp size={14} className="text-green-500" />
+                    {solverCount.toLocaleString()} detectives have solved this case
+                  </span>
                 </div>
               </div>
 
@@ -256,11 +287,15 @@ export function PatientZero() {
                 />
               </div>
 
-              <div className="bg-blue-50 rounded-lg p-4 border border-blue-200 mb-4">
-                <h4 className="font-semibold text-blue-800 mb-2">EIS Officers Involved</h4>
+              <div className="panel-themed p-4 mb-4">
+                <div className="section-header mb-3">
+                  <Users size={16} className="text-blue-600" />
+                  <span className="section-title">EIS Officers Involved</span>
+                  <div className="section-header-line" />
+                </div>
                 <div className="flex flex-wrap gap-2">
                   {selectedMystery.solution.eis_officers_involved.map(officer => (
-                    <span key={officer} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
+                    <span key={officer} className="pill pill-blue">
                       {officer}
                     </span>
                   ))}
@@ -269,9 +304,13 @@ export function PatientZero() {
 
               {/* Historical Context */}
               {selectedMystery.historicalContext && (
-                <div className="bg-amber-50 rounded-lg p-4 border border-amber-200">
-                  <h4 className="font-semibold text-amber-800 mb-2">Historical Significance</h4>
-                  <p className="text-sm text-slate-700 whitespace-pre-line">
+                <div className="panel-themed p-4">
+                  <div className="section-header mb-3">
+                    <Sparkles size={16} className="text-amber-600" />
+                    <span className="section-title">Historical Significance</span>
+                    <div className="section-header-line" />
+                  </div>
+                  <p className="text-sm text-slate-700 whitespace-pre-line leading-relaxed">
                     {selectedMystery.historicalContext}
                   </p>
                 </div>
@@ -281,7 +320,7 @@ export function PatientZero() {
             <>
               {/* Social proof indicator */}
               {solverCount > 0 && (
-                <div className="bg-slate-100 rounded-lg p-3 mb-4 flex items-center justify-center gap-2 text-slate-600 text-sm">
+                <div className="panel-themed p-3 mb-4 flex items-center justify-center gap-2 text-slate-600 text-sm animate-slide-up">
                   <Users size={16} className="text-slate-400" />
                   <span>{solverCount.toLocaleString()} investigators have cracked this case — can you?</span>
                 </div>
@@ -297,7 +336,7 @@ export function PatientZero() {
                 <button
                   type="button"
                   onClick={handleRevealSolution}
-                  className="mt-4 w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3 rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transition-all flex items-center justify-center gap-2 shadow-lg relative z-10"
+                  className="btn-emboss btn-emboss-primary btn-emboss-lg w-full mt-4"
                 >
                   <Target size={18} />
                   Reveal Solution & Score
@@ -319,110 +358,155 @@ export function PatientZero() {
       backPath="/"
     >
       <div className="px-4 py-6 max-w-4xl mx-auto">
-        {/* World Map */}
-        <div className="mb-6">
+        {/* World Map - enhanced with panel styling */}
+        <div className="mb-6 animate-slide-up">
           <WorldMap
             locations={mapLocations}
             onLocationClick={handleSelectMystery}
           />
         </div>
 
-        {/* Featured 75th Anniversary Mystery */}
+        {/* Featured 75th Anniversary Mystery - premium panel styling */}
         {featuredMystery && !completedMysteries[featuredMystery.id] && (
-          <div className="mb-6">
-            <div className="bg-gradient-to-br from-amber-500 via-amber-600 to-red-600 rounded-xl p-1 shadow-xl">
-              <div className="bg-slate-900/95 rounded-lg p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-amber-500 rounded-xl">
-                    <Sparkles size={32} className="text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Star size={16} className="text-amber-400" />
-                      <span className="text-amber-400 text-sm font-semibold uppercase tracking-wide">
-                        75th Anniversary Featured Case
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-2">{featuredMystery.title}</h3>
-                    <p className="text-slate-400 text-sm mb-4">
-                      The landmark outbreak that defined modern epidemiology. Can you solve the mystery that launched the EIS into the history books?
-                    </p>
+          <div className="mb-6 animate-slide-up" style={{ animationDelay: '100ms' }}>
+            <div className="panel relative overflow-hidden">
+              {/* Gold accent bar */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 via-amber-600 to-red-600" />
 
-                    {/* Progress indicator */}
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="flex-1 bg-slate-700 rounded-full h-2">
+              <div className="flex items-start gap-4 pt-1">
+                <div className="p-3 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl shadow-lg">
+                  <Sparkles size={32} className="text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="pill pill-gold">
+                      <Star size={14} />
+                      75th Anniversary Featured Case
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-800 mb-2">{featuredMystery.title}</h3>
+                  <p className="text-slate-600 text-sm mb-4">
+                    The landmark outbreak that defined modern epidemiology. Can you solve the mystery that launched the EIS into the history books?
+                  </p>
+
+                  {/* Progress indicator with brand styling */}
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="flex-1">
+                      <div className="progress-bar">
                         <div
-                          className="bg-amber-500 rounded-full h-2 transition-all"
+                          className="progress-fill"
                           style={{ width: `${(currentDay / 3) * 100}%` }}
                         />
                       </div>
-                      <span className="text-slate-400 text-sm">Day {currentDay}/3</span>
                     </div>
+                    <span className="pill">Day {currentDay}/3</span>
+                  </div>
 
+                  <div className="flex items-center gap-3">
                     <button
                       onClick={() => featuredMystery && handleSelectMystery(featuredMystery.id)}
-                      className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-6 py-2 rounded-lg font-semibold hover:from-amber-600 hover:to-amber-700 transition-all shadow-lg"
+                      className="btn-emboss btn-emboss-primary"
                     >
+                      <Search size={18} />
                       Investigate Case
                     </button>
+                    {currentDay <= 2 && (
+                      <span className="pill pill-gold animate-pulse-glow">
+                        <Zap size={14} />
+                        {currentDay === 1 ? '2x' : '1.5x'} early bonus!
+                      </span>
+                    )}
                   </div>
                 </div>
-
-                {/* Countdown to next clue */}
-                {nextClueRelease && currentDay < 3 && (
-                  <div className="mt-4 pt-4 border-t border-slate-700 flex items-center justify-between">
-                    <span className="text-slate-400 text-sm">Next clue releases in:</span>
-                    <CountdownTimer
-                      targetDate={nextClueRelease}
-                      label="Next Clue"
-                      variant="compact"
-                      onComplete={() => setCurrentDay(getCurrentDay())}
-                    />
-                  </div>
-                )}
               </div>
+
+              {/* Countdown to next clue */}
+              {nextClueRelease && currentDay < 3 && (
+                <div className="mt-4 pt-4 border-t border-slate-200 flex items-center justify-between">
+                  <span className="text-slate-500 text-sm">Next clue releases in:</span>
+                  <CountdownTimer
+                    targetDate={nextClueRelease}
+                    label="Next Clue"
+                    variant="compact"
+                    onComplete={() => setCurrentDay(getCurrentDay())}
+                  />
+                </div>
+              )}
             </div>
           </div>
         )}
 
-        {/* Instructions */}
-        <div className="bg-white/95 rounded-xl p-6 shadow-lg mb-6">
-          <h2 className="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
-            <Target size={20} className="text-red-600" />
-            How to Play
-          </h2>
-          <div className="space-y-2 text-slate-700 text-sm">
-            <p>🔍 <strong>Investigate:</strong> New clues are revealed twice daily - morning and afternoon during the conference.</p>
-            <p>🧠 <strong>Theorize:</strong> Use the evidence to form your theory about the outbreak, year, location, and pathogen.</p>
-            <p>⏰ <strong>Score Big:</strong> Submit early for bonus multipliers! Day 1 = 2x points, Day 2 = 1.5x points.</p>
-            <p>🎯 <strong>Solve:</strong> After all clues are revealed, unlock the solution and see how you scored!</p>
+        {/* Instructions - brand panel styling */}
+        <div className="panel mb-6 animate-slide-up" style={{ animationDelay: '150ms' }}>
+          <div className="section-header mb-4">
+            <Target size={18} className="text-red-600" />
+            <span className="section-title">How to Play</span>
+            <div className="section-header-line" />
           </div>
-        </div>
-
-        {/* Day Progress + Dev Controls */}
-        <div className="bg-slate-800/80 rounded-xl p-4 mb-6 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <Calendar size={28} className="text-red-400" />
-            <div>
-              <div className="text-white font-bold text-lg">Investigation Day {currentDay}</div>
-              <div className="text-slate-400 text-sm">
-                {currentDay < 3 ? 'More clues coming soon...' : 'All clues revealed - submit your theories!'}
-              </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="stat-card !text-left !p-4">
+              <div className="text-2xl mb-1">🔍</div>
+              <div className="font-semibold text-slate-800 text-sm">Investigate</div>
+              <div className="text-xs text-slate-500 mt-1">New clues revealed twice daily</div>
+            </div>
+            <div className="stat-card !text-left !p-4">
+              <div className="text-2xl mb-1">🧠</div>
+              <div className="font-semibold text-slate-800 text-sm">Theorize</div>
+              <div className="text-xs text-slate-500 mt-1">Form your theory about the outbreak</div>
+            </div>
+            <div className="stat-card !text-left !p-4">
+              <div className="text-2xl mb-1">⏰</div>
+              <div className="font-semibold text-slate-800 text-sm">Score Big</div>
+              <div className="text-xs text-slate-500 mt-1">Day 1 = 2x, Day 2 = 1.5x bonus</div>
+            </div>
+            <div className="stat-card !text-left !p-4">
+              <div className="text-2xl mb-1">🎯</div>
+              <div className="font-semibold text-slate-800 text-sm">Solve</div>
+              <div className="text-xs text-slate-500 mt-1">Unlock solution and see your score</div>
             </div>
           </div>
-          {DEV_MODE && currentDay < 3 && (
-            <button
-              onClick={advanceDay}
-              className="px-4 py-2 bg-amber-500 text-white rounded-lg font-semibold hover:bg-amber-600 transition-colors text-sm"
-            >
-              Skip to Day {currentDay + 1}
-            </button>
-          )}
         </div>
 
-        {/* Other Mysteries Grid */}
-        <h2 className="text-xl font-bold text-white mb-4">Active Case Files</h2>
-        <div className="grid md:grid-cols-2 gap-4">
+        {/* Day Progress - brand panel */}
+        <div className="panel-themed p-4 mb-6 animate-slide-up" style={{ animationDelay: '200ms' }}>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-red-100 rounded-lg">
+                <Calendar size={24} className="text-red-600" />
+              </div>
+              <div>
+                <div className="font-bold text-lg text-slate-800">Investigation Day {currentDay}</div>
+                <div className="text-slate-500 text-sm">
+                  {currentDay < 3 ? 'More clues coming soon...' : 'All clues revealed - submit your theories!'}
+                </div>
+              </div>
+            </div>
+            {DEV_MODE && currentDay < 3 && (
+              <button
+                onClick={advanceDay}
+                className="btn-emboss btn-emboss-sm"
+              >
+                Skip to Day {currentDay + 1}
+              </button>
+            )}
+          </div>
+          <div className="mt-4">
+            <div className="progress-bar">
+              <div
+                className="progress-fill"
+                style={{ width: `${(currentDay / 3) * 100}%` }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Other Mysteries Grid - with section header */}
+        <div className="section-header mb-4">
+          <Search size={18} className="text-[var(--theme-primary)]" />
+          <span className="section-title">Active Case Files</span>
+          <div className="section-header-line" />
+        </div>
+        <div className="grid md:grid-cols-2 gap-4 stagger-children">
           {mysteries.filter(m => !m.isFeatured).map(mystery => (
             <MysteryCard
               key={mystery.id}
@@ -437,7 +521,7 @@ export function PatientZero() {
 
         {/* Completed Featured Mystery Card */}
         {featuredMystery && completedMysteries[featuredMystery.id]?.score && (
-          <div className="mt-4">
+          <div className="mt-4 animate-slide-up">
             <MysteryCard
               mystery={featuredMystery}
               currentDay={currentDay}
@@ -448,20 +532,25 @@ export function PatientZero() {
           </div>
         )}
 
-        {/* Total Score */}
+        {/* Total Score - brand panel */}
         {Object.keys(completedMysteries).length > 0 && (
-          <div className="mt-6 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl p-4 flex items-center justify-between shadow-lg">
-            <div className="flex items-center gap-3">
-              <Trophy size={28} />
-              <div>
-                <div className="text-sm opacity-80">Total Investigation Score</div>
-                <div className="text-2xl font-bold">
-                  {Object.values(completedMysteries).reduce((sum, data) => sum + (data?.score || 0), 0)} pts
+          <div className="mt-6 panel relative overflow-hidden animate-slide-up">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-red-600" />
+            <div className="flex items-center justify-between pt-1">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-amber-100 rounded-lg">
+                  <Trophy size={24} className="text-amber-600" />
+                </div>
+                <div>
+                  <div className="stat-label">Total Investigation Score</div>
+                  <div className="text-2xl font-bold text-gradient-gold animate-score-pop">
+                    {Object.values(completedMysteries).reduce((sum, data) => sum + (data?.score || 0), 0)} pts
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="text-sm opacity-80">
-              {Object.keys(completedMysteries).length} / {mysteries.length} cases solved
+              <span className="pill pill-themed">
+                {Object.keys(completedMysteries).length} / {mysteries.length} cases solved
+              </span>
             </div>
           </div>
         )}

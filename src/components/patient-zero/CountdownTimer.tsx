@@ -1,4 +1,6 @@
 // src/components/patient-zero/CountdownTimer.tsx
+// Countdown timer with brand styling
+
 import { useState, useEffect } from 'react';
 import { Clock, AlertCircle, Zap } from 'lucide-react';
 
@@ -38,9 +40,9 @@ export function CountdownTimer({ targetDate, label, onComplete, variant = 'defau
 
   if (!timeLeft) {
     return (
-      <div className="flex items-center gap-2 text-green-600 font-medium animate-pulse">
-        <AlertCircle size={18} />
-        <span>Available now!</span>
+      <div className="pill pill-themed animate-pulse">
+        <AlertCircle size={14} />
+        <span className="font-medium">Available now!</span>
       </div>
     );
   }
@@ -49,10 +51,9 @@ export function CountdownTimer({ targetDate, label, onComplete, variant = 'defau
 
   if (variant === 'compact') {
     return (
-      <div className={`
-        inline-flex items-center gap-2 px-3 py-1.5 rounded-full font-mono text-sm
-        ${isUrgent ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-700'}
-      `}>
+      <div className={`pill font-mono text-sm ${
+        isUrgent ? 'bg-red-100 text-red-700 border-red-200' : ''
+      }`}>
         <Clock size={14} />
         {String(timeLeft.hours).padStart(2, '0')}:
         {String(timeLeft.minutes).padStart(2, '0')}:
@@ -62,23 +63,25 @@ export function CountdownTimer({ targetDate, label, onComplete, variant = 'defau
   }
 
   return (
-    <div className={`
-      rounded-xl px-4 py-3 inline-flex items-center gap-4
-      ${isUrgent || variant === 'urgent'
-        ? 'bg-red-900/90 border border-red-700'
-        : 'bg-slate-800/90 border border-slate-700'
-      }
-    `}>
+    <div className={`panel-themed inline-flex items-center gap-4 !p-3 ${
+      isUrgent || variant === 'urgent'
+        ? '!bg-red-50 !border-red-200'
+        : ''
+    }`}>
       {isUrgent ? (
-        <Zap size={20} className="text-red-400 animate-pulse" />
+        <div className="p-2 bg-red-100 rounded-lg">
+          <Zap size={18} className="text-red-500 animate-pulse" />
+        </div>
       ) : (
-        <Clock size={20} className="text-amber-400" />
+        <div className="p-2 bg-amber-100 rounded-lg">
+          <Clock size={18} className="text-amber-500" />
+        </div>
       )}
       <div>
-        <div className={`text-xs uppercase tracking-wide ${isUrgent ? 'text-red-300' : 'text-slate-400'}`}>
+        <div className={`stat-label !mt-0 ${isUrgent ? '!text-red-500' : ''}`}>
           {label}
         </div>
-        <div className={`font-mono text-lg font-bold ${isUrgent ? 'text-red-100' : 'text-white'}`}>
+        <div className={`font-mono text-lg font-bold ${isUrgent ? 'text-red-700' : 'text-slate-800'}`}>
           {String(timeLeft.hours).padStart(2, '0')}:
           {String(timeLeft.minutes).padStart(2, '0')}:
           {String(timeLeft.seconds).padStart(2, '0')}

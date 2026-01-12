@@ -1,8 +1,8 @@
 // src/components/patient-zero/DetectiveBoard.tsx
-// Cork board visual with red strings connecting clues
+// Cork board visual with brand styling integration
 
 import type { Clue } from '../../types/patient-zero';
-import { Lock, FileText, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Lock, FileText, AlertTriangle, CheckCircle, Search } from 'lucide-react';
 
 interface DetectiveBoardProps {
   clues: Clue[];
@@ -17,18 +17,24 @@ const hintStyles = {
     border: 'border-amber-200',
     pin: 'bg-amber-500',
     icon: FileText,
+    badge: 'pill pill-gold',
+    badgeText: 'cryptic',
   },
   moderate: {
     bg: 'bg-blue-50',
     border: 'border-blue-200',
     pin: 'bg-blue-500',
     icon: AlertTriangle,
+    badge: 'pill pill-blue',
+    badgeText: 'helpful',
   },
   specific: {
     bg: 'bg-green-50',
     border: 'border-green-200',
     pin: 'bg-green-500',
     icon: CheckCircle,
+    badge: 'pill bg-green-100 text-green-700 border-green-200',
+    badgeText: 'key clue',
   },
 };
 
@@ -43,7 +49,7 @@ function PinnedClue({ clue, isRevealed, position }: { clue: Clue; isRevealed: bo
   if (!isRevealed) {
     return (
       <div
-        className="relative p-4 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg shadow-md transform transition-all hover:scale-105"
+        className="clue-card-locked relative p-4 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg shadow-md transform transition-all hover:scale-105"
         style={{ transform: `rotate(${rotation}deg)` }}
       >
         {/* Push pin */}
@@ -62,8 +68,8 @@ function PinnedClue({ clue, isRevealed, position }: { clue: Clue; isRevealed: bo
 
   return (
     <div
-      className={`relative p-4 ${style.bg} border ${style.border} rounded-lg shadow-lg transform transition-all hover:scale-105 hover:z-10`}
-      style={{ transform: `rotate(${rotation}deg)` }}
+      className={`clue-card relative p-4 ${style.bg} border ${style.border} rounded-lg shadow-lg transform transition-all hover:scale-105 hover:z-10 animate-slide-up`}
+      style={{ transform: `rotate(${rotation}deg)`, animationDelay: `${position * 100}ms` }}
     >
       {/* Push pin */}
       <div className={`absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 ${style.pin} rounded-full shadow-md border-2 border-white`} />
@@ -81,21 +87,10 @@ function PinnedClue({ clue, isRevealed, position }: { clue: Clue; isRevealed: bo
         "{clue.content}"
       </p>
 
-      {/* Hint level badge - shows how specific this clue is */}
-      <div className="mt-2 text-right">
-        <span className={`
-          inline-block px-2 py-0.5 rounded text-xs font-medium
-          ${clue.hint_level === 'vague' ? 'bg-amber-200 text-amber-800' :
-            clue.hint_level === 'moderate' ? 'bg-blue-200 text-blue-800' :
-            'bg-green-200 text-green-800'}
-        `} title={
-          clue.hint_level === 'vague' ? 'Early clue - very cryptic' :
-          clue.hint_level === 'moderate' ? 'Getting warmer...' :
-          'Key evidence!'
-        }>
-          {clue.hint_level === 'vague' ? 'cryptic' :
-           clue.hint_level === 'moderate' ? 'helpful' :
-           'key clue'}
+      {/* Hint level badge - using pill styling */}
+      <div className="mt-3 text-right">
+        <span className={`${style.badge} text-xs`}>
+          {style.badgeText}
         </span>
       </div>
     </div>
@@ -106,8 +101,9 @@ export function DetectiveBoard({ clues, currentDay, mysteryTitle }: DetectiveBoa
   const revealedCount = clues.filter(c => c.day <= currentDay).length;
 
   return (
-    <div className="relative bg-amber-100 rounded-xl p-6 shadow-inner border-4 border-amber-900/20 overflow-hidden">
-      {/* Cork board texture pattern */}
+    <div className="panel relative overflow-hidden animate-slide-up">
+      {/* Cork board texture background */}
+      <div className="absolute inset-0 bg-amber-100/80 rounded-lg" />
       <div
         className="absolute inset-0 opacity-30"
         style={{
@@ -117,12 +113,15 @@ export function DetectiveBoard({ clues, currentDay, mysteryTitle }: DetectiveBoa
 
       {/* Title card pinned at top */}
       <div className="relative mb-8 text-center">
-        <div className="inline-block bg-white px-6 py-3 rounded shadow-md border border-slate-200 transform -rotate-1">
+        <div className="inline-block bg-white px-6 py-3 rounded-lg shadow-md border-2 border-slate-200 transform -rotate-1">
           <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-red-600 rounded-full shadow-md border-2 border-red-400" />
           <h3 className="text-lg font-bold text-slate-800 font-serif">{mysteryTitle}</h3>
-          <p className="text-xs text-slate-500 mt-1">
-            {revealedCount} of {clues.length} clues revealed
-          </p>
+          <div className="flex items-center justify-center gap-2 mt-1">
+            <Search size={12} className="text-slate-400" />
+            <span className="text-xs text-slate-500">
+              {revealedCount} of {clues.length} clues revealed
+            </span>
+          </div>
         </div>
       </div>
 

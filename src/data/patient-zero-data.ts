@@ -216,43 +216,117 @@ export function getCluesForDay(mystery: MysteryDefinition, day: number): typeof 
   return mystery.clues.filter(c => c.day <= day);
 }
 
-// Calculate score based on when theory was submitted
+// Score breakdown interface
+export interface ScoreBreakdown {
+  totalScore: number;
+  baseScore: number;
+  dayMultiplier: number;
+  fields: {
+    outbreak: { matched: boolean; points: number; playerAnswer: string; correctAnswer: string };
+    year: { matched: boolean; partial: boolean; points: number; playerAnswer: number; correctAnswer: number; diff: number };
+    location: { matched: boolean; points: number; playerAnswer: string; correctAnswer: string };
+    pathogen: { matched: boolean; points: number; playerAnswer: string; correctAnswer: string };
+    source: { matched: boolean; points: number; playerAnswer: string; correctAnswer: string; attempted: boolean };
+  };
+}
+
+// Calculate score with detailed breakdown
+export function calculateTheoryScoreDetailed(
+  theory: { outbreak_name: string; year: number; location: string; pathogen: string; source?: string },
+  solution: MysteryDefinition['solution'],
+  daySubmitted: number
+): ScoreBreakdown {
+  const breakdown: ScoreBreakdown = {
+    totalScore: 0,
+    baseScore: 0,
+    dayMultiplier: daySubmitted === 1 ? 2.0 : daySubmitted === 2 ? 1.5 : 1.0,
+    fields: {
+      outbreak: { matched: false, points: 0, playerAnswer: theory.outbreak_name, correctAnswer: solution.outbreak },
+      year: { matched: false, partial: false, points: 0, playerAnswer: theory.year, correctAnswer: solution.year, diff: Math.abs(theory.year - solution.year) },
+      location: { matched: false, points: 0, playerAnswer: theory.location, correctAnswer: solution.location },
+      pathogen: { matched: false, points: 0, playerAnswer: theory.pathogen, correctAnswer: solution.pathogen },
+      source: { matched: false, points: 0, playerAnswer: theory.source || '', correctAnswer: solution.source, attempted: !!theory.source },
+    },
+  };
+
+  // Outbreak name match
+  const outbreakMatch = solution.outbreak.toLowerCase().includes(theory.outbreak_name.toLowerCase()) ||
+    theory.outbreak_name.toLowerCase().includes(solution.outbreak.toLowerCase());
+  if (outbreakMatch && theory.outbreak_name.length >= 3) {
+    breakdown.fields.outbreak.matched = true;
+    breakdown.fields.outbreak.points = 250;
+    breakdown.baseScore += 250;
+  }
+
+  // Year match
+  const yearDiff = Math.abs(theory.year - solution.year);
+  if (yearDiff === 0) {
+    breakdown.fields.year.matched = true;
+    breakdown.fields.year.points = 250;
+    breakdown.baseScore += 250;
+  } else if (yearDiff <= 2) {
+    breakdown.fields.year.partial = true;
+    breakdown.fields.year.points = 125;
+    breakdown.baseScore += 125;
+  }
+
+  // Location match
+  const locationMatch = solution.location.toLowerCase().includes(theory.location.toLowerCase()) ||
+    theory.location.toLowerCase().includes(solution.location.toLowerCase());
+  if (locationMatch && theory.location.length >= 3) {
+    breakdown.fields.location.matched = true;
+    breakdown.fields.location.points = 250;
+    breakdown.baseScore += 250;
+  }
+
+  // Pathogen match
+  const pathogenMatch = solution.pathogen.toLowerCase().includes(theory.pathogen.toLowerCase()) ||
+    theory.pathogen.toLowerCase().includes(solution.pathogen.toLowerCase());
+  if (pathogenMatch && theory.pathogen.length >= 3) {
+    breakdown.fields.pathogen.matched = true;
+    breakdown.fields.pathogen.points = 250;
+    breakdown.baseScore += 250;
+  }
+
+  // Source match (bonus)
+  if (theory.source && solution.source) {
+    const sourceMatch = solution.source.toLowerCase().includes(theory.source.toLowerCase()) ||
+      theory.source.toLowerCase().includes(solution.source.toLowerCase());
+    if (sourceMatch && theory.source.length >= 3) {
+      breakdown.fields.source.matched = true;
+      breakdown.fields.source.points = 100;
+      breakdown.baseScore += 100;
+    }
+  }
+
+  breakdown.totalScore = Math.floor(breakdown.baseScore * breakdown.dayMultiplier);
+  return breakdown;
+}
+
+// Legacy function for backwards compatibility
 export function calculateTheoryScore(
   theory: { outbreak_name: string; year: number; location: string; pathogen: string; source?: string },
   solution: MysteryDefinition['solution'],
   daySubmitted: number
 ): number {
-  let score = 0;
-
-  // Outbreak name match (case insensitive, partial matching)
-  const outbreakMatch = solution.outbreak.toLowerCase().includes(theory.outbreak_name.toLowerCase()) ||
-    theory.outbreak_name.toLowerCase().includes(solution.outbreak.toLowerCase());
-  if (outbreakMatch) score += 250;
-
-  // Year match (exact or within 2 years)
-  const yearDiff = Math.abs(theory.year - solution.year);
-  if (yearDiff === 0) score += 250;
-  else if (yearDiff <= 2) score += 125;
-
-  // Location match (partial)
-  const locationMatch = solution.location.toLowerCase().includes(theory.location.toLowerCase()) ||
-    theory.location.toLowerCase().includes(solution.location.toLowerCase());
-  if (locationMatch) score += 250;
-
-  // Pathogen match (partial)
-  const pathogenMatch = solution.pathogen.toLowerCase().includes(theory.pathogen.toLowerCase()) ||
-    theory.pathogen.toLowerCase().includes(solution.pathogen.toLowerCase());
-  if (pathogenMatch) score += 250;
-
-  // Source match (bonus, if provided)
-  if (theory.source && solution.source) {
-    const sourceMatch = solution.source.toLowerCase().includes(theory.source.toLowerCase()) ||
-      theory.source.toLowerCase().includes(solution.source.toLowerCase());
-    if (sourceMatch) score += 100;
-  }
-
-  // Day bonus: earlier submissions get more points
-  const dayMultiplier = daySubmitted === 1 ? 2.0 : daySubmitted === 2 ? 1.5 : 1.0;
-
-  return Math.floor(score * dayMultiplier);
+  return calculateTheoryScoreDetailed(theory, solution, daySubmitted).totalScore;
 }
+
+// Hint suggestions based on clue content
+export const outbreakSuggestions = [
+  "Legionnaires' Disease", "Hantavirus", "Toxic Shock Syndrome", "E. coli",
+  "Salmonella", "SARS", "Influenza", "Cholera", "Typhoid", "Anthrax",
+  "West Nile Virus", "Zika", "Ebola", "HIV/AIDS", "Tuberculosis"
+];
+
+export const pathogenSuggestions = [
+  "Legionella pneumophila", "Sin Nombre virus", "Staphylococcus aureus",
+  "E. coli O157:H7", "Salmonella", "Vibrio cholerae", "Bacillus anthracis",
+  "Influenza virus", "Coronavirus", "Hantavirus", "Mycobacterium tuberculosis"
+];
+
+export const sourceSuggestions = [
+  "Cooling tower", "Contaminated water", "Rodents/mice", "Contaminated food",
+  "Tampons/medical device", "Imported goods", "Animal contact", "Mosquitoes",
+  "Person-to-person", "Airborne transmission", "Hospital/healthcare setting"
+];

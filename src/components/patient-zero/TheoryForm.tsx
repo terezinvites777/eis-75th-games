@@ -1,7 +1,8 @@
 // src/components/patient-zero/TheoryForm.tsx
 import { useState } from 'react';
 import type { PlayerTheory } from '../../types/patient-zero';
-import { Send, AlertCircle } from 'lucide-react';
+import { Send, AlertCircle, Lightbulb } from 'lucide-react';
+import { outbreakSuggestions, pathogenSuggestions, sourceSuggestions } from '../../data/patient-zero-data';
 
 interface TheoryFormProps {
   existingTheory?: PlayerTheory['theory'];
@@ -19,6 +20,7 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
   });
 
   const [errors, setErrors] = useState<string[]>([]);
+  const [showHints, setShowHints] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,11 +44,38 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
     { value: 'certain', label: 'Certain', description: 'All clues point to this' },
   ];
 
+  // US states and major cities for location suggestions
+  const locationSuggestions = [
+    "Philadelphia, Pennsylvania", "New York, New York", "Four Corners region",
+    "Los Angeles, California", "Chicago, Illinois", "Atlanta, Georgia",
+    "Nationwide (USA)", "Multiple states", "Southwest United States",
+    "New Mexico", "Arizona", "Colorado", "Utah"
+  ];
+
   return (
     <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-6 border border-slate-200">
-      <h3 className="text-lg font-bold text-slate-800 mb-4">
-        {existingTheory ? 'Update Your Theory' : 'Submit Your Theory'}
-      </h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-bold text-slate-800">
+          {existingTheory ? 'Update Your Theory' : 'Submit Your Theory'}
+        </h3>
+        <button
+          type="button"
+          onClick={() => setShowHints(!showHints)}
+          className={`flex items-center gap-1 text-sm px-3 py-1 rounded-full transition-colors ${
+            showHints ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+          }`}
+        >
+          <Lightbulb size={14} />
+          {showHints ? 'Hide hints' : 'Show hints'}
+        </button>
+      </div>
+
+      {showHints && (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-4 text-sm text-amber-800">
+          <div className="font-medium mb-1">Hints enabled!</div>
+          <p className="text-amber-700">Start typing to see suggestions. These are common outbreak names, pathogens, and sources from EIS history.</p>
+        </div>
+      )}
 
       {errors.length > 0 && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
@@ -69,11 +98,17 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
           </label>
           <input
             type="text"
+            list={showHints ? "outbreak-suggestions" : undefined}
             value={theory.outbreak_name}
             onChange={e => setTheory(prev => ({ ...prev, outbreak_name: e.target.value }))}
             placeholder="e.g., Legionnaires' Disease, Hantavirus..."
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
           />
+          {showHints && (
+            <datalist id="outbreak-suggestions">
+              {outbreakSuggestions.map(s => <option key={s} value={s} />)}
+            </datalist>
+          )}
         </div>
 
         {/* Year */}
@@ -87,8 +122,9 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
             onChange={e => setTheory(prev => ({ ...prev, year: parseInt(e.target.value) || 1980 }))}
             min={1950}
             max={2024}
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
           />
+          <p className="text-xs text-slate-500 mt-1">Hint: Within 2 years still earns partial points!</p>
         </div>
 
         {/* Location */}
@@ -98,11 +134,17 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
           </label>
           <input
             type="text"
+            list={showHints ? "location-suggestions" : undefined}
             value={theory.location}
             onChange={e => setTheory(prev => ({ ...prev, location: e.target.value }))}
             placeholder="e.g., Philadelphia, Pennsylvania"
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
           />
+          {showHints && (
+            <datalist id="location-suggestions">
+              {locationSuggestions.map(s => <option key={s} value={s} />)}
+            </datalist>
+          )}
         </div>
 
         {/* Pathogen */}
@@ -112,25 +154,37 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
           </label>
           <input
             type="text"
+            list={showHints ? "pathogen-suggestions" : undefined}
             value={theory.pathogen}
             onChange={e => setTheory(prev => ({ ...prev, pathogen: e.target.value }))}
             placeholder="e.g., Legionella pneumophila, virus..."
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
           />
+          {showHints && (
+            <datalist id="pathogen-suggestions">
+              {pathogenSuggestions.map(s => <option key={s} value={s} />)}
+            </datalist>
+          )}
         </div>
 
         {/* Source (optional) */}
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">
-            What was the source? (Optional, bonus points!)
+            What was the source? <span className="text-amber-600">(+100 bonus points!)</span>
           </label>
           <input
             type="text"
+            list={showHints ? "source-suggestions" : undefined}
             value={theory.source}
             onChange={e => setTheory(prev => ({ ...prev, source: e.target.value }))}
             placeholder="e.g., Cooling tower, contaminated food..."
-            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
           />
+          {showHints && (
+            <datalist id="source-suggestions">
+              {sourceSuggestions.map(s => <option key={s} value={s} />)}
+            </datalist>
+          )}
         </div>
 
         {/* Confidence */}
@@ -147,7 +201,7 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
                 className={`
                   p-3 rounded-lg border-2 text-center transition-all
                   ${theory.confidence === opt.value
-                    ? 'border-blue-500 bg-blue-50'
+                    ? 'border-red-500 bg-red-50'
                     : 'border-slate-200 hover:border-slate-300'
                   }
                 `}
@@ -163,7 +217,7 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
       {/* Submit */}
       <button
         type="submit"
-        className="mt-6 w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+        className="mt-6 w-full bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
       >
         <Send size={18} />
         {existingTheory ? 'Update Theory' : 'Submit Theory'}

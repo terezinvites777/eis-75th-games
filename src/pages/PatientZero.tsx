@@ -1,25 +1,51 @@
 // src/pages/PatientZero.tsx
 // Where in the World is Patient Zero? - Multi-day mystery game
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GameShell } from '../components/layout/GameShell';
 import { MysteryCard } from '../components/patient-zero/MysteryCard';
 import { TheoryForm } from '../components/patient-zero/TheoryForm';
 import { DetectiveBoard } from '../components/patient-zero/DetectiveBoard';
 import { WorldMap } from '../components/patient-zero/WorldMap';
 import { CountdownTimer } from '../components/patient-zero/CountdownTimer';
-import { mysteries, featuredMystery, calculateTheoryScore } from '../data/patient-zero-data';
+import { ScoreBreakdownDisplay } from '../components/patient-zero/ScoreBreakdown';
+import { Confetti } from '../components/patient-zero/Confetti';
+import { mysteries, featuredMystery, calculateTheoryScoreDetailed } from '../data/patient-zero-data';
+import type { ScoreBreakdown } from '../data/patient-zero-data';
 import { getCurrentDay, getNextClueRelease, DEV_MODE } from '../data/patient-zero-schedule';
 import type { MysteryDefinition, PlayerTheory } from '../types/patient-zero';
-import { ArrowLeft, Trophy, Target, Star, Users, Skull, MapPin, Calendar, Sparkles } from 'lucide-react';
+import { ArrowLeft, Trophy, Target, Star, Users, Skull, MapPin, Calendar, Sparkles, TrendingUp } from 'lucide-react';
+
+// Simulated social proof - would come from backend in production
+function getSimulatedSolvers(mysteryId: string): number {
+  const baseCounts: Record<string, number> = {
+    '75th-anniversary-grand': 847,
+    'hantavirus-1993': 423,
+    'toxic-shock-1980': 391,
+  };
+  // Add some randomness to make it feel dynamic
+  const base = baseCounts[mysteryId] || Math.floor(Math.random() * 300) + 100;
+  return base + Math.floor(Math.random() * 10);
+}
 
 export function PatientZero() {
   const [selectedMystery, setSelectedMystery] = useState<MysteryDefinition | null>(null);
   const [theories, setTheories] = useState<Record<string, PlayerTheory>>({});
-  const [completedMysteries, setCompletedMysteries] = useState<Record<string, number>>({});
+  const [completedMysteries, setCompletedMysteries] = useState<Record<string, { score: number; breakdown: ScoreBreakdown; daySubmitted: number }>>({});
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [solverCounts, setSolverCounts] = useState<Record<string, number>>({});
 
   // Use conference schedule for day progression (or dev mode for testing)
   const [currentDay, setCurrentDay] = useState(getCurrentDay());
+
+  // Initialize simulated solver counts
+  useEffect(() => {
+    const counts: Record<string, number> = {};
+    mysteries.forEach(m => {
+      counts[m.id] = getSimulatedSolvers(m.id);
+    });
+    setSolverCounts(counts);
+  }, []);
 
   // For dev mode - allow manual day advancement
   const advanceDay = () => {
@@ -57,7 +83,7 @@ export function PatientZero() {
 
     const theory = theories[selectedMystery.id];
     if (theory) {
-      const score = calculateTheoryScore(
+      const breakdown = calculateTheoryScoreDetailed(
         theory.theory,
         selectedMystery.solution,
         theory.day_submitted
@@ -65,8 +91,16 @@ export function PatientZero() {
 
       setCompletedMysteries(prev => ({
         ...prev,
-        [selectedMystery.id]: score,
+        [selectedMystery.id]: {
+          score: breakdown.totalScore,
+          breakdown,
+          daySubmitted: theory.day_submitted,
+        },
       }));
+
+      // Trigger confetti celebration!
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 100); // Reset trigger after brief delay
     }
   };
 
@@ -79,15 +113,17 @@ export function PatientZero() {
     title: m.title,
     lat: m.coordinates.lat,
     lng: m.coordinates.lng,
-    revealed: !!completedMysteries[m.id],
+    revealed: !!completedMysteries[m.id]?.score,
     isFeatured: m.isFeatured,
   }));
 
   // Mystery detail view
   if (selectedMystery) {
-    const isComplete = !!completedMysteries[selectedMystery.id];
+    const completedData = completedMysteries[selectedMystery.id];
+    const isComplete = !!completedData?.score;
     const existingTheory = theories[selectedMystery.id];
     const allCluesRevealed = currentDay >= 3;
+    const solverCount = solverCounts[selectedMystery.id] || 0;
 
     return (
       <GameShell
@@ -192,29 +228,32 @@ export function PatientZero() {
             </div>
           )}
 
+          {/* Confetti celebration */}
+          <Confetti active={showConfetti} />
+
           {/* Theory Form or Solution */}
-          {isComplete ? (
+          {isComplete && completedData ? (
             <div className="bg-white rounded-xl shadow-lg p-6 overflow-hidden relative">
-              {/* Confetti effect */}
+              {/* Success banner */}
               <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-green-400 via-emerald-500 to-green-400" />
 
               <div className="text-center mb-6">
                 <Trophy size={48} className="mx-auto text-amber-500 mb-3" />
                 <h3 className="text-xl font-bold text-slate-800">Case Closed!</h3>
-                <div className="text-3xl font-bold text-amber-600 mt-2">
-                  {completedMysteries[selectedMystery.id]} points
+
+                {/* Social proof */}
+                <div className="flex items-center justify-center gap-2 mt-2 text-slate-500 text-sm">
+                  <TrendingUp size={16} className="text-green-500" />
+                  <span>{solverCount.toLocaleString()} detectives have solved this case</span>
                 </div>
               </div>
 
-              <div className="bg-green-50 rounded-lg p-4 border border-green-200 mb-4">
-                <h4 className="font-semibold text-green-800 mb-3">The Solution</h4>
-                <div className="space-y-2 text-sm">
-                  <div><span className="text-slate-500">Outbreak:</span> <span className="font-medium text-slate-800">{selectedMystery.solution.outbreak}</span></div>
-                  <div><span className="text-slate-500">Year:</span> <span className="font-medium text-slate-800">{selectedMystery.solution.year}</span></div>
-                  <div><span className="text-slate-500">Location:</span> <span className="font-medium text-slate-800">{selectedMystery.solution.location}</span></div>
-                  <div><span className="text-slate-500">Pathogen:</span> <span className="font-medium text-slate-800">{selectedMystery.solution.pathogen}</span></div>
-                  <div><span className="text-slate-500">Source:</span> <span className="font-medium text-slate-800">{selectedMystery.solution.source}</span></div>
-                </div>
+              {/* Score Breakdown Component */}
+              <div className="mb-6">
+                <ScoreBreakdownDisplay
+                  breakdown={completedData.breakdown}
+                  daySubmitted={completedData.daySubmitted}
+                />
               </div>
 
               <div className="bg-blue-50 rounded-lg p-4 border border-blue-200 mb-4">
@@ -240,6 +279,14 @@ export function PatientZero() {
             </div>
           ) : (
             <>
+              {/* Social proof indicator */}
+              {solverCount > 0 && (
+                <div className="bg-slate-100 rounded-lg p-3 mb-4 flex items-center justify-center gap-2 text-slate-600 text-sm">
+                  <Users size={16} className="text-slate-400" />
+                  <span>{solverCount.toLocaleString()} investigators have cracked this case — can you?</span>
+                </div>
+              )}
+
               <TheoryForm
                 existingTheory={existingTheory?.theory}
                 onSubmit={handleSubmitTheory}
@@ -381,21 +428,21 @@ export function PatientZero() {
               key={mystery.id}
               mystery={mystery}
               currentDay={currentDay}
-              isComplete={!!completedMysteries[mystery.id]}
-              score={completedMysteries[mystery.id]}
+              isComplete={!!completedMysteries[mystery.id]?.score}
+              score={completedMysteries[mystery.id]?.score}
               onStart={handleSelectMystery}
             />
           ))}
         </div>
 
         {/* Completed Featured Mystery Card */}
-        {featuredMystery && completedMysteries[featuredMystery.id] && (
+        {featuredMystery && completedMysteries[featuredMystery.id]?.score && (
           <div className="mt-4">
             <MysteryCard
               mystery={featuredMystery}
               currentDay={currentDay}
               isComplete={true}
-              score={completedMysteries[featuredMystery.id]}
+              score={completedMysteries[featuredMystery.id]?.score}
               onStart={handleSelectMystery}
             />
           </div>
@@ -409,7 +456,7 @@ export function PatientZero() {
               <div>
                 <div className="text-sm opacity-80">Total Investigation Score</div>
                 <div className="text-2xl font-bold">
-                  {Object.values(completedMysteries).reduce((a, b) => a + b, 0)} pts
+                  {Object.values(completedMysteries).reduce((sum, data) => sum + (data?.score || 0), 0)} pts
                 </div>
               </div>
             </div>

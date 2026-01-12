@@ -81,15 +81,21 @@ function PinnedClue({ clue, isRevealed, position }: { clue: Clue; isRevealed: bo
         "{clue.content}"
       </p>
 
-      {/* Hint level badge */}
+      {/* Hint level badge - shows how specific this clue is */}
       <div className="mt-2 text-right">
         <span className={`
           inline-block px-2 py-0.5 rounded text-xs font-medium
           ${clue.hint_level === 'vague' ? 'bg-amber-200 text-amber-800' :
             clue.hint_level === 'moderate' ? 'bg-blue-200 text-blue-800' :
             'bg-green-200 text-green-800'}
-        `}>
-          {clue.hint_level}
+        `} title={
+          clue.hint_level === 'vague' ? 'Early clue - very cryptic' :
+          clue.hint_level === 'moderate' ? 'Getting warmer...' :
+          'Key evidence!'
+        }>
+          {clue.hint_level === 'vague' ? 'cryptic' :
+           clue.hint_level === 'moderate' ? 'helpful' :
+           'key clue'}
         </span>
       </div>
     </div>

@@ -82,7 +82,10 @@ export const commandScenarios: CommandScenario[] = [
         day: 5,
         title: 'New State Reports',
         description: 'Louisiana reports 8 matching cases.',
-        effect: { cases: 8 },
+        effect: {
+          cases: 8,
+          outbreak_locations: [{ state: 'LA', cases: 8, lat: 30.9, lng: -91.1 }],
+        },
       },
     ],
     win_state: {

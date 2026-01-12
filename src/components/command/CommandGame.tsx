@@ -125,7 +125,14 @@ export function CommandGame({ scenario, onComplete, onBack }: CommandGameProps) 
 
         // Spread to new locations occasionally
         if (newCases > 10 && Math.random() > 0.7) {
-          const states = ['FL', 'NY', 'IL', 'PA', 'OH', 'MI', 'NC', 'NJ', 'VA', 'AZ'];
+          // All US states for realistic outbreak spread
+          const states = [
+            'AL', 'AZ', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'IA', 'ID',
+            'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN',
+            'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM', 'NV',
+            'NY', 'OH', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'UT', 'VA',
+            'VT', 'WA', 'WI', 'WV', 'WY'
+          ];
           const existingStates = newState.outbreak_locations.map(l => l.state);
           const newStates = states.filter(s => !existingStates.includes(s));
           if (newStates.length > 0) {
@@ -246,13 +253,25 @@ export function CommandGame({ scenario, onComplete, onBack }: CommandGameProps) 
     }
 
     if (effect) {
-      setGameState(prev => ({
-        ...prev,
-        cases: prev.cases + (effect.cases || 0),
-        deaths: prev.deaths + (effect.deaths || 0),
-        budget: prev.budget + (effect.budget || 0),
-        personnel: prev.personnel + (effect.personnel || 0),
-      }));
+      setGameState(prev => {
+        const newState = {
+          ...prev,
+          cases: prev.cases + (effect.cases || 0),
+          deaths: prev.deaths + (effect.deaths || 0),
+          budget: prev.budget + (effect.budget || 0),
+          personnel: prev.personnel + (effect.personnel || 0),
+        };
+
+        // Handle new outbreak locations from events
+        if (effect.outbreak_locations && effect.outbreak_locations.length > 0) {
+          newState.outbreak_locations = [
+            ...prev.outbreak_locations,
+            ...effect.outbreak_locations,
+          ];
+        }
+
+        return newState;
+      });
     }
 
     setCurrentEvent(null);

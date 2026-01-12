@@ -104,37 +104,6 @@ export function USMapInteractive({ locations, className = '', onStateClick }: US
           })}
         </g>
 
-        {/* State labels - only show for larger states or states with outbreaks */}
-        <g className="pointer-events-none">
-          {usStates.map(state => {
-            const center = STATE_CENTERS[state.id];
-            if (!center) return null;
-
-            const hasCases = stateCases.has(state.id);
-            // Only show labels for states with outbreaks or larger states
-            const isLargeState = ['TX', 'CA', 'MT', 'AZ', 'NV', 'CO', 'NM', 'OR', 'WY', 'KS', 'NE', 'SD', 'ND', 'MN', 'OK', 'MO', 'IA', 'WI', 'IL', 'MI', 'NY', 'PA', 'FL', 'GA', 'NC', 'VA', 'OH', 'IN', 'AL', 'MS', 'LA', 'AR', 'WA', 'ID', 'UT'].includes(state.id);
-
-            if (!hasCases && !isLargeState) return null;
-
-            return (
-              <text
-                key={`label-${state.id}`}
-                x={center.x}
-                y={center.y + 4}
-                textAnchor="middle"
-                className={`text-[10px] font-bold select-none ${
-                  hasCases ? 'fill-white' : 'fill-slate-500'
-                }`}
-                style={{
-                  textShadow: hasCases ? '0 1px 2px rgba(0,0,0,0.8)' : 'none',
-                }}
-              >
-                {state.id}
-              </text>
-            );
-          })}
-        </g>
-
         {/* Outbreak markers with pulse effect */}
         {locations.map((loc, idx) => {
           const state = getStateById(loc.state);

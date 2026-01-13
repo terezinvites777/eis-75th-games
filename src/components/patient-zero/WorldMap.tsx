@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { MapPin, Search, CheckCircle, Star } from 'lucide-react';
 import { usStates, MAP_VIEWBOX } from '../command/USMapPaths';
+import { OrnateCornersWrapper } from '../ui/OrnateCornersWrapper';
 
 interface MysteryLocation {
   id: string;
@@ -36,9 +37,10 @@ export function WorldMap({ locations, onLocationClick }: WorldMapProps) {
   const [hoveredLocation, setHoveredLocation] = useState<string | null>(null);
 
   return (
-    <div className="pz-frame relative">
-      {/* Map container with dark museum background */}
-      <div className="relative bg-gradient-to-br from-[#2a1f15] to-[#1a140d] rounded-xl overflow-hidden">
+    <OrnateCornersWrapper size="md" className="mb-4">
+      <div className="pz-frame relative">
+        {/* Map container with dark museum background */}
+        <div className="relative bg-gradient-to-br from-[#2a1f15] to-[#1a140d] rounded-lg overflow-hidden">
         {/* US Map SVG using proper state boundaries */}
         <svg
           viewBox={MAP_VIEWBOX}
@@ -187,15 +189,16 @@ export function WorldMap({ locations, onLocationClick }: WorldMapProps) {
             Featured
           </span>
         </div>
-      </div>
+        </div>
 
-      {/* Bottom instruction - parchment style */}
-      <div className="p-3 bg-gradient-to-r from-[rgba(248,240,210,0.95)] to-[rgba(230,215,170,0.95)] text-center border-t border-[rgba(139,115,85,0.3)]">
-        <span className="flex items-center justify-center gap-2 text-xs text-[#3d2b1f] font-medium">
-          <Search size={12} className="text-[#8b6914]" />
-          Click a location marker to begin your investigation
-        </span>
+        {/* Bottom instruction - parchment style */}
+        <div className="p-3 bg-gradient-to-r from-[rgba(248,240,210,0.95)] to-[rgba(230,215,170,0.95)] text-center border-t border-[rgba(139,115,85,0.3)] rounded-b-lg">
+          <span className="flex items-center justify-center gap-2 text-xs text-[#3d2b1f] font-medium">
+            <Search size={12} className="text-[#8b6914]" />
+            Click a location marker to begin your investigation
+          </span>
+        </div>
       </div>
-    </div>
+    </OrnateCornersWrapper>
   );
 }

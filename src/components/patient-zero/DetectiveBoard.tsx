@@ -3,6 +3,7 @@
 
 import type { Clue } from '../../types/patient-zero';
 import { Lock, FileText, AlertTriangle, CheckCircle, Search } from 'lucide-react';
+import { OrnateCornersWrapper } from '../ui/OrnateCornersWrapper';
 
 interface DetectiveBoardProps {
   clues: Clue[];
@@ -101,7 +102,8 @@ export function DetectiveBoard({ clues, currentDay, mysteryTitle }: DetectiveBoa
   const revealedCount = clues.filter(c => c.day <= currentDay).length;
 
   return (
-    <div className="pz-frame relative overflow-hidden animate-slide-up p-4">
+    <OrnateCornersWrapper size="md" className="mb-4">
+      <div className="pz-frame relative overflow-hidden animate-slide-up p-4">
       {/* Cork board texture background - darker mahogany */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#3d2b1f] to-[#2a1f15] rounded-xl" />
       <div
@@ -173,14 +175,15 @@ export function DetectiveBoard({ clues, currentDay, mysteryTitle }: DetectiveBoa
         ))}
       </div>
 
-      {/* Photo evidence corner - vintage polaroid */}
-      <div className="absolute bottom-4 right-4 opacity-70">
-        <div className="w-16 h-12 bg-gradient-to-b from-[#f8f0d8] to-[#e8dcc0] rounded shadow-lg transform rotate-6 border-2 border-[#8b7355]">
-          <div className="w-full h-full flex items-center justify-center text-[#8b7355] text-xs font-serif">
-            ?
+        {/* Photo evidence corner - vintage polaroid */}
+        <div className="absolute bottom-4 right-4 opacity-70">
+          <div className="w-16 h-12 bg-gradient-to-b from-[#f8f0d8] to-[#e8dcc0] rounded shadow-lg transform rotate-6 border-2 border-[#8b7355]">
+            <div className="w-full h-full flex items-center justify-center text-[#8b7355] text-xs font-serif">
+              ?
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </OrnateCornersWrapper>
   );
 }

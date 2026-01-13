@@ -5,6 +5,7 @@ import './styles/brand.css'
 import './styles/eis-brand.css'
 import './styles/exhibit-panels.css'
 import './styles/predict-outbreak.css' // Predict the Outbreak museum theme
+import './styles/epiconnect.css' // EpiConnect exhibit theme
 import './styles/poster-tiles.css' // Museum exhibit plate styles - must be last
 import App from './App.tsx'
 

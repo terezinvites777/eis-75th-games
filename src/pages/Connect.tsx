@@ -1,17 +1,21 @@
 // src/pages/Connect.tsx
 // EpiConnect - Instagram-style networking for EIS officers
+// Museum exhibit styling with purple velvet theme
 
 import { useState, useMemo, useEffect } from 'react';
 import { GameShell } from '../components/layout/GameShell';
 import { AttendeeCard } from '../components/connect/AttendeeCard';
-import { ChallengeCard } from '../components/connect/ChallengeCard';
 import { MatchFilters } from '../components/connect/MatchFilters';
 import { ProfileSetup } from '../components/connect/ProfileSetup';
 import { QRCodeConnect } from '../components/connect/QRCodeConnect';
 import { SpeedNetworking } from '../components/connect/SpeedNetworking';
-import { ConnectLeftSidebar } from '../components/connect/ConnectLeftSidebar';
 import { ConnectRightSidebar } from '../components/connect/ConnectRightSidebar';
 import { OnlineNowCarousel } from '../components/connect/OnlineNowCarousel';
+import { EpiHeroHeader } from '../components/epiconnect/EpiHeroHeader';
+import { EpiExhibitCard, EpiCardHeader } from '../components/epiconnect/EpiExhibitCard';
+import { EpiModeTabs } from '../components/epiconnect/EpiModeTabs';
+import { EpiLedgerRow } from '../components/epiconnect/EpiLedgerRow';
+import { EpiProgressCard } from '../components/epiconnect/EpiProgressCard';
 import {
   mockAttendees,
   connectChallenges,
@@ -257,6 +261,15 @@ export function Connect() {
     }
   };
 
+  // Mode tabs configuration
+  const tabs = [
+    { key: 'discover', label: 'Discover', icon: <Home size={16} /> },
+    { key: 'connections', label: 'My Network', icon: <Users size={16} />, count: connections.length },
+    { key: 'challenges', label: 'Challenges', icon: <Target size={16} /> },
+    { key: 'speed', label: 'Speed', icon: <Timer size={16} /> },
+    { key: 'qr', label: 'QR Code', icon: <QrCode size={16} /> },
+  ];
+
   // Show profile setup if no profile exists
   if (showProfileSetup || !userProfile) {
     return (
@@ -276,31 +289,101 @@ export function Connect() {
     >
       <Confetti active={showConfetti} />
 
-      <div className="px-4 py-6 max-w-7xl mx-auto">
-        <div className="flex gap-6">
+      <div className="epi-shell">
+        {/* Hero Header */}
+        <EpiHeroHeader
+          title="EpiConnect"
+          subtitle="Speed networking for EIS officers"
+          backPath="/"
+          badge={
+            <>
+              <span className="epi-online">Online Now</span>
+              <span style={{ marginLeft: 4 }}>{filteredAttendees.filter((_, i) => i < 8).length}</span>
+            </>
+          }
+          badgeVariant="online"
+        />
+
+        <div className="epi-grid">
           {/* LEFT SIDEBAR - Desktop only */}
-          <aside className="hidden lg:block w-72 flex-shrink-0">
-            <ConnectLeftSidebar
-              userProfile={userProfile}
-              connections={connections}
-              totalPoints={totalPoints}
-              completedChallenges={completedChallenges}
-              onEditProfile={() => setShowProfileSetup(true)}
-            />
+          <aside className="epi-grid__left hidden lg:block">
+            <EpiExhibitCard>
+              {/* Profile */}
+              <div className="epi-profile">
+                <div className="epi-profile__avatar">
+                  {userProfile.name.split(' ').map(n => n[0]).join('')}
+                </div>
+                <div className="epi-profile__name">{userProfile.name}</div>
+                <div className="epi-profile__role">
+                  {userProfile.role === 'incoming' ? 'Incoming EIS' :
+                   userProfile.role === 'second_year' ? '2nd Year EIS' :
+                   userProfile.role === 'alumni' ? 'EIS Alumni' : 'Supervisor'}
+                </div>
+              </div>
+
+              {/* Stats */}
+              <div className="epi-stats">
+                <div className="epi-stat">
+                  <div className="epi-stat__value">{connections.length}</div>
+                  <div className="epi-stat__label">Connects</div>
+                </div>
+                <div className="epi-stat">
+                  <div className="epi-stat__value">{totalPoints}</div>
+                  <div className="epi-stat__label">Points</div>
+                </div>
+                <div className="epi-stat">
+                  <div className="epi-stat__value">{completedChallenges}</div>
+                  <div className="epi-stat__label">Badges</div>
+                </div>
+              </div>
+
+              {/* Edit Profile */}
+              <button
+                onClick={() => setShowProfileSetup(true)}
+                className="epi-btn epi-btn--secondary epi-btn--sm w-full"
+              >
+                Edit Profile
+              </button>
+            </EpiExhibitCard>
+
+            {/* Activity Feed */}
+            <EpiExhibitCard variant="muted" className="mt-4">
+              <EpiCardHeader icon={<Sparkles size={14} />}>Recent Activity</EpiCardHeader>
+              <div className="epi-activity">
+                {connections.slice(-3).reverse().map((conn) => {
+                  const attendee = getAttendeeById(conn.connected_player_id);
+                  return (
+                    <div key={conn.id} className="epi-activityItem">
+                      <div className="epi-activityItem__icon">
+                        <Users size={14} />
+                      </div>
+                      <div className="epi-activityItem__text">
+                        Connected with <strong>{attendee?.name}</strong>
+                      </div>
+                    </div>
+                  );
+                })}
+                {connections.length === 0 && (
+                  <div className="text-center text-sm text-purple-400 py-4">
+                    No activity yet
+                  </div>
+                )}
+              </div>
+            </EpiExhibitCard>
           </aside>
 
           {/* CENTER FEED */}
-          <main className="flex-1 min-w-0 max-w-2xl">
+          <main className="epi-grid__center">
             {/* Mobile Profile Summary */}
-            <div className="lg:hidden mb-4">
-              <div className="panel bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center font-bold text-lg">
+            <div className="lg:hidden">
+              <div className="epi-mobileProfile">
+                <div className="epi-mobileProfile__row">
+                  <div className="epi-mobileProfile__avatar">
                     {userProfile.name.split(' ').map(n => n[0]).join('')}
                   </div>
-                  <div className="flex-1">
-                    <div className="font-bold">{userProfile.name}</div>
-                    <div className="text-purple-200 text-sm">
+                  <div>
+                    <div className="epi-mobileProfile__name">{userProfile.name}</div>
+                    <div className="epi-mobileProfile__stats">
                       {connections.length} connections | {totalPoints} pts
                     </div>
                   </div>
@@ -309,85 +392,67 @@ export function Connect() {
             </div>
 
             {/* Search Bar */}
-            <div className="mb-4">
-              <div className="flex items-center gap-3">
-                <div className="flex-1 relative">
-                  <Search className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    placeholder="Search attendees by name, location, or topic..."
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
-                  />
-                </div>
-              </div>
+            <div className="epi-search mb-4">
+              <Search className="epi-search__icon" size={18} />
+              <input
+                type="text"
+                placeholder="Search attendees by name, location, or topic..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="epi-search__input"
+              />
             </div>
 
-            {/* Feed Filter Tabs */}
-            <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
-              {[
-                { key: 'discover', label: 'Discover', icon: Home },
-                { key: 'connections', label: 'My Network', icon: Users, count: connections.length },
-                { key: 'challenges', label: 'Challenges', icon: Target },
-                { key: 'speed', label: 'Speed', icon: Timer },
-                { key: 'qr', label: 'QR Code', icon: QrCode },
-              ].map(tab => {
-                const Icon = tab.icon;
-                const isActive = view === tab.key;
-                return (
-                  <button
-                    key={tab.key}
-                    onClick={() => setView(tab.key as ConnectView)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all flex items-center gap-2 ${
-                      isActive
-                        ? 'bg-purple-600 text-white shadow-md'
-                        : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
-                    }`}
-                  >
-                    <Icon size={16} />
-                    {tab.label}
-                    {tab.count !== undefined && tab.count > 0 && (
-                      <span className={`px-1.5 py-0.5 rounded-full text-xs ${
-                        isActive ? 'bg-white/20' : 'bg-purple-100 text-purple-700'
-                      }`}>
-                        {tab.count}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
+            {/* Mode Tabs */}
+            <div className="mb-4">
+              <EpiModeTabs
+                tabs={tabs}
+                activeTab={view}
+                onTabChange={(key) => setView(key as ConnectView)}
+              />
             </div>
 
             {/* Speed Networking View */}
             {view === 'speed' && (
-              <SpeedNetworking
-                userProfile={userProfile}
-                onConnect={(id, rating) => handleConnect(id, 'speed_session', rating)}
-                onSkip={handleSkip}
-                connectedIds={connectedIds}
-                skippedIds={skippedIds}
-              />
+              <EpiExhibitCard variant="feature">
+                <SpeedNetworking
+                  userProfile={userProfile}
+                  onConnect={(id, rating) => handleConnect(id, 'speed_session', rating)}
+                  onSkip={handleSkip}
+                  connectedIds={connectedIds}
+                  skippedIds={skippedIds}
+                />
+              </EpiExhibitCard>
             )}
 
             {/* QR Code View */}
             {view === 'qr' && (
-              <QRCodeConnect
-                userProfile={userProfile}
-                onConnect={(id) => handleConnect(id, 'qr_scan')}
-                connectedIds={connectedIds}
-              />
+              <EpiExhibitCard variant="feature">
+                <QRCodeConnect
+                  userProfile={userProfile}
+                  onConnect={(id) => handleConnect(id, 'qr_scan')}
+                  connectedIds={connectedIds}
+                />
+              </EpiExhibitCard>
             )}
 
             {/* Discover View */}
             {view === 'discover' && (
               <>
                 {/* Online Now Carousel */}
-                <OnlineNowCarousel
-                  attendees={filteredAttendees}
-                  onSelect={handleSelectOnlineUser}
-                  connectedIds={connectedIds}
-                />
+                <EpiExhibitCard variant="feature" className="mb-4">
+                  <EpiCardHeader
+                    icon={<Users size={14} />}
+                    action={<span className="epi-online">Online ({filteredAttendees.slice(0, 8).length})</span>}
+                  >
+                    People Near You
+                  </EpiCardHeader>
+                  <OnlineNowCarousel
+                    attendees={filteredAttendees}
+                    onSelect={handleSelectOnlineUser}
+                    connectedIds={connectedIds}
+                  />
+                </EpiExhibitCard>
 
                 {/* Match Filters */}
                 <MatchFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
@@ -395,7 +460,7 @@ export function Connect() {
                 {/* Suggested matches header */}
                 {!activeFilter && !searchQuery && rankedAttendees.length > 0 && (
                   <div className="mt-4 mb-2 flex items-center gap-2">
-                    <span className="pill pill-themed text-xs">
+                    <span className="epi-pill epi-pill--purple">
                       <Zap size={12} />
                       Suggested for you
                     </span>
@@ -405,13 +470,13 @@ export function Connect() {
                 {/* Attendee Feed */}
                 <div className="mt-4 space-y-4">
                   {filteredAttendees.length === 0 ? (
-                    <div className="panel text-center py-8">
-                      <div className="text-4xl mb-3">🎉</div>
-                      <h3 className="text-lg font-semibold text-slate-800">No more matches!</h3>
-                      <p className="text-slate-600 mt-2 text-sm">
+                    <EpiExhibitCard className="text-center py-8">
+                      <div className="text-4xl mb-3">&#127881;</div>
+                      <h3 className="text-lg font-semibold text-[#3d1440]">No more matches!</h3>
+                      <p className="text-[#7a5c7c] mt-2 text-sm">
                         You've connected with everyone in this category. Try a different filter!
                       </p>
-                    </div>
+                    </EpiExhibitCard>
                   ) : (
                     filteredAttendees.slice(0, 10).map(attendee => {
                       const matchInfo = rankedAttendees.find(r => r.attendeeId === attendee.id);
@@ -430,7 +495,7 @@ export function Connect() {
 
                   {filteredAttendees.length > 10 && (
                     <div className="text-center py-4">
-                      <p className="text-slate-500 text-sm">
+                      <p className="text-[#7a5c7c] text-sm">
                         Showing top 10 matches. Use search or filters to find more.
                       </p>
                     </div>
@@ -443,31 +508,31 @@ export function Connect() {
             {view === 'connections' && (
               <div className="space-y-4">
                 {connectedAttendees.length === 0 ? (
-                  <div className="panel text-center py-8">
-                    <div className="text-4xl mb-3">👋</div>
-                    <h3 className="text-lg font-semibold text-slate-800">No connections yet</h3>
-                    <p className="text-slate-600 mt-2 text-sm">
+                  <EpiExhibitCard variant="feature" className="text-center py-8">
+                    <div className="text-4xl mb-3">&#128075;</div>
+                    <h3 className="text-lg font-semibold text-[#3d1440]">No connections yet</h3>
+                    <p className="text-[#7a5c7c] mt-2 text-sm">
                       Start networking! Browse attendees and make your first connection.
                     </p>
                     <button
                       onClick={() => setView('discover')}
-                      className="btn-emboss btn-emboss-primary mt-4"
+                      className="epi-btn epi-btn--primary mt-4"
                     >
                       <Sparkles size={16} />
                       Find People
                     </button>
-                  </div>
+                  </EpiExhibitCard>
                 ) : (
                   <>
-                    <div className="panel bg-gradient-to-r from-purple-50 to-pink-50 border-purple-100">
-                      <div className="flex items-center gap-2 text-purple-700 font-medium mb-2">
+                    <EpiExhibitCard variant="feature">
+                      <div className="flex items-center gap-2 text-[#7a2a7e] font-medium mb-2">
                         <Trophy size={18} />
                         Your Network
                       </div>
-                      <p className="text-sm text-purple-600">
+                      <p className="text-sm text-[#5c1e5f]">
                         You've connected with {connectedAttendees.length} people and earned {totalPoints} points!
                       </p>
-                    </div>
+                    </EpiExhibitCard>
                     {connectedAttendees.map(attendee => {
                       const connection = connections.find(c => c.connected_player_id === attendee.id);
                       return (
@@ -479,18 +544,14 @@ export function Connect() {
                           />
                           {connection && (
                             <div className="absolute top-4 right-4 flex items-center gap-2">
-                              <span className="pill bg-green-100 text-green-700 border-green-200 text-xs">
+                              <span className="epi-pill epi-pill--success">
                                 +{connection.points_earned} pts
                               </span>
                               {connection.connection_method === 'qr_scan' && (
-                                <span className="pill bg-purple-100 text-purple-700 border-purple-200 text-xs">
-                                  QR
-                                </span>
+                                <span className="epi-pill epi-pill--purple">QR</span>
                               )}
                               {connection.connection_method === 'speed_session' && (
-                                <span className="pill bg-amber-100 text-amber-700 border-amber-200 text-xs">
-                                  Speed
-                                </span>
+                                <span className="epi-pill epi-pill--gold">Speed</span>
                               )}
                             </div>
                           )}
@@ -504,43 +565,43 @@ export function Connect() {
 
             {/* Challenges View */}
             {view === 'challenges' && (
-              <div className="space-y-3">
-                {/* Progress summary */}
-                <div className="panel bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-sm text-white/80">Challenge Progress</div>
-                      <div className="text-2xl font-bold">{completedChallenges} / {connectChallenges.length}</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm text-white/80">Total Points</div>
-                      <div className="text-2xl font-bold">{totalPoints}</div>
-                    </div>
-                  </div>
-                  <div className="mt-3 h-2 bg-white/20 rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-white transition-all"
-                      style={{ width: `${(completedChallenges / connectChallenges.length) * 100}%` }}
-                    />
-                  </div>
-                </div>
+              <div className="space-y-4">
+                {/* Progress Summary */}
+                <EpiProgressCard
+                  completed={completedChallenges}
+                  total={connectChallenges.length}
+                  points={totalPoints}
+                />
 
-                {connectChallenges.map(challenge => (
-                  <ChallengeCard
-                    key={challenge.id}
-                    challenge={challenge}
-                    progress={challengeProgress[challenge.id]?.progress || 0}
-                    target={challengeProgress[challenge.id]?.target || 1}
-                    isComplete={challengeProgress[challenge.id]?.complete || false}
-                  />
-                ))}
+                {/* Challenge Ledger */}
+                <EpiExhibitCard variant="feature">
+                  <EpiCardHeader icon={<Target size={14} />}>
+                    Challenge Ledger
+                  </EpiCardHeader>
+                  <div className="epi-ledger">
+                    {connectChallenges.map(challenge => (
+                      <EpiLedgerRow
+                        key={challenge.id}
+                        icon={challenge.icon}
+                        title={challenge.title}
+                        description={challenge.description}
+                        points={challenge.points}
+                        progress={challengeProgress[challenge.id]?.progress || 0}
+                        target={challengeProgress[challenge.id]?.target || 1}
+                        isComplete={challengeProgress[challenge.id]?.complete || false}
+                      />
+                    ))}
+                  </div>
+                </EpiExhibitCard>
               </div>
             )}
           </main>
 
           {/* RIGHT SIDEBAR - XL screens only */}
-          <aside className="hidden xl:block w-64 flex-shrink-0">
-            <ConnectRightSidebar onNavigate={setView} />
+          <aside className="epi-grid__right hidden xl:block">
+            <EpiExhibitCard variant="muted">
+              <ConnectRightSidebar onNavigate={setView} />
+            </EpiExhibitCard>
           </aside>
         </div>
       </div>

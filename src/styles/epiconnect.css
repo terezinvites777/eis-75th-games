@@ -1,0 +1,911 @@
+/* ================================
+   EPICONNECT EXHIBIT THEME
+   ================================
+   Museum-grade styling for networking hub
+   Modern purple palette with exhibit framing
+*/
+
+/* 1) Theme tokens */
+[data-theme="connect"] {
+  --epi-hero-1: #3B0B52;
+  --epi-hero-2: #6A1B7A;
+  --epi-hero-3: #8E24AA;
+  --epi-card: rgba(255, 255, 255, 0.94);
+  --epi-card-feature: rgba(255, 255, 255, 0.97);
+  --epi-border: rgba(122, 42, 126, 0.12);
+  --epi-border-strong: rgba(122, 42, 126, 0.25);
+  --epi-shadow: 0 12px 32px rgba(59, 11, 82, 0.15);
+  --epi-shadow-feature: 0 20px 50px rgba(59, 11, 82, 0.22);
+  --epi-inner: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --epi-pill: rgba(255, 255, 255, 0.88);
+  --epi-accent: linear-gradient(90deg, #7a2a7e, #a66bb6);
+}
+
+/* 2) Hero header - "velvet gallery" */
+.epi-hero {
+  position: relative;
+  background: linear-gradient(135deg, var(--epi-hero-1) 0%, var(--epi-hero-2) 50%, var(--epi-hero-3) 100%);
+  padding: 20px 24px 24px;
+  margin: -24px -16px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.epi-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.epi-hero::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15) 30%, rgba(255,255,255,0.15) 70%, transparent);
+}
+
+.epi-hero__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.epi-hero__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.epi-hero__back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.epi-hero__back:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.epi-hero__title {
+  font-size: clamp(22px, 3.5vw, 32px);
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  letter-spacing: -0.01em;
+}
+
+.epi-hero__subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 2px;
+}
+
+.epi-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+}
+
+.epi-hero__badge--online {
+  background: rgba(34, 197, 94, 0.25);
+  border-color: rgba(34, 197, 94, 0.4);
+}
+
+.epi-hero__badge--online::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.15); }
+}
+
+/* 3) Shell layout */
+.epi-shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px 40px;
+}
+
+.epi-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr 260px;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1280px) {
+  .epi-grid {
+    grid-template-columns: 260px 1fr;
+  }
+  .epi-grid__right {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .epi-grid {
+    grid-template-columns: 1fr;
+  }
+  .epi-grid__left {
+    display: none;
+  }
+}
+
+.epi-grid__left,
+.epi-grid__right {
+  position: sticky;
+  top: 24px;
+}
+
+.epi-grid__center {
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* 4) Exhibit cards - unified chrome */
+.epi-card {
+  position: relative;
+  background: var(--epi-card);
+  border: 1px solid var(--epi-border);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow:
+    var(--epi-shadow),
+    var(--epi-inner),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.epi-card--feature {
+  background: var(--epi-card-feature);
+  border-color: var(--epi-border-strong);
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow:
+    var(--epi-shadow-feature),
+    var(--epi-inner),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+.epi-card--feature::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 3px;
+  background: var(--epi-accent);
+  border-radius: 0 0 3px 3px;
+}
+
+.epi-card--muted {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(122, 42, 126, 0.08);
+  box-shadow: 0 4px 12px rgba(59, 11, 82, 0.06);
+}
+
+.epi-card--interactive {
+  cursor: pointer;
+}
+
+.epi-card--interactive:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 40px rgba(59, 11, 82, 0.2),
+    var(--epi-inner),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.epi-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(122, 42, 126, 0.08);
+}
+
+.epi-card__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #3d1440;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.epi-card__title-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(122, 42, 126, 0.12), rgba(166, 107, 182, 0.12));
+  color: #7a2a7e;
+}
+
+/* 5) Mode tabs */
+.epi-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(122, 42, 126, 0.1);
+  border-radius: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.epi-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.epi-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #5c1e5f;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.epi-tab:hover:not(.is-active) {
+  background: rgba(122, 42, 126, 0.06);
+}
+
+.epi-tab.is-active {
+  background: linear-gradient(135deg, #7a2a7e 0%, #9c3ba0 100%);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 4px 12px rgba(122, 42, 126, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.epi-tab__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.epi-tab:not(.is-active) .epi-tab__count {
+  background: rgba(122, 42, 126, 0.1);
+  color: #7a2a7e;
+}
+
+.epi-tab.is-active .epi-tab__count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+/* 6) Profile card (left sidebar) */
+.epi-profile {
+  text-align: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(122, 42, 126, 0.1);
+  margin-bottom: 16px;
+}
+
+.epi-profile__avatar {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7a2a7e, #a66bb6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  box-shadow:
+    0 8px 20px rgba(122, 42, 126, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.epi-profile__name {
+  font-size: 17px;
+  font-weight: 700;
+  color: #3d1440;
+}
+
+.epi-profile__role {
+  font-size: 13px;
+  color: #7a2a7e;
+  margin-top: 2px;
+}
+
+/* 7) Stats grid */
+.epi-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 14px;
+  background: linear-gradient(135deg, rgba(122, 42, 126, 0.08), rgba(166, 107, 182, 0.08));
+  border-radius: 14px;
+  margin-bottom: 16px;
+}
+
+.epi-stat {
+  text-align: center;
+}
+
+.epi-stat__value {
+  font-size: 20px;
+  font-weight: 800;
+  color: #5c1e5f;
+}
+
+.epi-stat__label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #7a2a7e;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+/* 8) Challenge ledger rows */
+.epi-ledger {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.epi-ledgerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(122, 42, 126, 0.1);
+  border-radius: 14px;
+  transition: all 0.15s ease;
+}
+
+.epi-ledgerRow:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(122, 42, 126, 0.18);
+}
+
+.epi-ledgerRow.is-complete {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(16, 185, 129, 0.08));
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+.epi-ledgerRow__icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(122, 42, 126, 0.1), rgba(166, 107, 182, 0.1));
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.epi-ledgerRow.is-complete .epi-ledgerRow__icon {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(16, 185, 129, 0.15));
+}
+
+.epi-ledgerRow__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.epi-ledgerRow__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #3d1440;
+}
+
+.epi-ledgerRow__desc {
+  font-size: 12px;
+  color: #7a5c7c;
+  margin-top: 2px;
+}
+
+.epi-ledgerRow__progress {
+  height: 4px;
+  background: rgba(122, 42, 126, 0.1);
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.epi-ledgerRow__progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #7a2a7e, #a66bb6);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.epi-ledgerRow.is-complete .epi-ledgerRow__progressFill {
+  background: linear-gradient(90deg, #22c55e, #10b981);
+}
+
+.epi-ledgerRow__points {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(122, 42, 126, 0.1);
+  color: #7a2a7e;
+  flex-shrink: 0;
+}
+
+.epi-ledgerRow.is-complete .epi-ledgerRow__points {
+  background: rgba(34, 197, 94, 0.15);
+  color: #16a34a;
+}
+
+/* 9) Timer stage */
+.epi-timerStage {
+  position: relative;
+  text-align: center;
+  padding: 32px 24px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 30%, rgba(122, 42, 126, 0.08), transparent),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.92));
+  border-radius: 20px;
+  border: 1px solid rgba(122, 42, 126, 0.15);
+  box-shadow:
+    0 20px 50px rgba(59, 11, 82, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.epi-timerStage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 3px;
+  background: linear-gradient(90deg, #7a2a7e, #a66bb6);
+  border-radius: 0 0 3px 3px;
+}
+
+.epi-timerStage__label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #7a2a7e;
+  margin-bottom: 8px;
+}
+
+.epi-timerStage__time {
+  font-size: clamp(56px, 12vw, 80px);
+  font-weight: 800;
+  color: #3d1440;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  text-shadow: 0 4px 20px rgba(122, 42, 126, 0.15);
+}
+
+.epi-timerStage__time--warning {
+  color: #d97706;
+}
+
+.epi-timerStage__time--danger {
+  color: #dc2626;
+  animation: timer-pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes timer-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.epi-timerStage__rules {
+  font-size: 13px;
+  color: #7a5c7c;
+  margin-top: 12px;
+  max-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.epi-timerStage__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+/* 10) Buttons */
+.epi-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.epi-btn--primary {
+  background: linear-gradient(135deg, #7a2a7e 0%, #9c3ba0 100%);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 6px 20px rgba(122, 42, 126, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.epi-btn--primary:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 8px 25px rgba(122, 42, 126, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.epi-btn--secondary {
+  background: rgba(255, 255, 255, 0.9);
+  color: #5c1e5f;
+  border-color: rgba(122, 42, 126, 0.2);
+  box-shadow: 0 4px 12px rgba(59, 11, 82, 0.1);
+}
+
+.epi-btn--secondary:hover {
+  background: #fff;
+  border-color: rgba(122, 42, 126, 0.3);
+}
+
+.epi-btn--success {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.3);
+}
+
+.epi-btn--lg {
+  padding: 16px 32px;
+  font-size: 16px;
+}
+
+.epi-btn--sm {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+/* 11) Pills/badges */
+.epi-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--epi-pill);
+  border: 1px solid rgba(122, 42, 126, 0.12);
+  color: #5c1e5f;
+}
+
+.epi-pill--purple {
+  background: linear-gradient(135deg, rgba(122, 42, 126, 0.12), rgba(166, 107, 182, 0.12));
+  border-color: rgba(122, 42, 126, 0.2);
+  color: #7a2a7e;
+}
+
+.epi-pill--success {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.25);
+  color: #16a34a;
+}
+
+.epi-pill--gold {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(184, 134, 11, 0.15));
+  border-color: rgba(212, 175, 55, 0.3);
+  color: #92400e;
+}
+
+/* 12) Online indicator */
+.epi-online {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #16a34a;
+}
+
+.epi-online::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* 13) Activity feed items */
+.epi-activity {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.epi-activityItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.epi-activityItem__icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(122, 42, 126, 0.1), rgba(166, 107, 182, 0.1));
+  color: #7a2a7e;
+  flex-shrink: 0;
+}
+
+.epi-activityItem__text {
+  flex: 1;
+  color: #5c1e5f;
+}
+
+.epi-activityItem__time {
+  font-size: 11px;
+  color: #9c7a9e;
+}
+
+/* 14) Search input */
+.epi-search {
+  position: relative;
+}
+
+.epi-search__icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9c7a9e;
+  pointer-events: none;
+}
+
+.epi-search__input {
+  width: 100%;
+  padding: 14px 14px 14px 44px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(122, 42, 126, 0.15);
+  border-radius: 14px;
+  font-size: 14px;
+  color: #3d1440;
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 12px rgba(59, 11, 82, 0.06);
+}
+
+.epi-search__input::placeholder {
+  color: #9c7a9e;
+}
+
+.epi-search__input:focus {
+  outline: none;
+  border-color: rgba(122, 42, 126, 0.35);
+  background: #fff;
+  box-shadow:
+    0 4px 16px rgba(59, 11, 82, 0.1),
+    0 0 0 3px rgba(122, 42, 126, 0.08);
+}
+
+/* 15) Progress summary card */
+.epi-progressCard {
+  padding: 20px;
+  background: linear-gradient(135deg, #7a2a7e 0%, #9c3ba0 50%, #a66bb6 100%);
+  border-radius: 18px;
+  color: #fff;
+  box-shadow: 0 12px 30px rgba(122, 42, 126, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.epi-progressCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.epi-progressCard__row {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.epi-progressCard__label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.epi-progressCard__value {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.epi-progressCard__bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  margin-top: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.epi-progressCard__barFill {
+  height: 100%;
+  background: #fff;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* 16) QR code panel */
+.epi-qrPanel {
+  text-align: center;
+  padding: 28px;
+}
+
+.epi-qrPanel__code {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 16px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow:
+    0 8px 24px rgba(59, 11, 82, 0.12),
+    inset 0 0 0 1px rgba(122, 42, 126, 0.1);
+}
+
+.epi-qrPanel__label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #3d1440;
+  margin-bottom: 4px;
+}
+
+.epi-qrPanel__hint {
+  font-size: 13px;
+  color: #7a5c7c;
+}
+
+/* 17) Mobile profile card */
+.epi-mobileProfile {
+  padding: 16px;
+  background: linear-gradient(135deg, #7a2a7e 0%, #9c3ba0 100%);
+  border-radius: 16px;
+  color: #fff;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(122, 42, 126, 0.3);
+}
+
+.epi-mobileProfile__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.epi-mobileProfile__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.epi-mobileProfile__name {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.epi-mobileProfile__stats {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 2px;
+}
+
+/* 18) Responsive */
+@media (max-width: 720px) {
+  .epi-hero {
+    margin: -16px -12px 16px;
+    padding: 16px;
+  }
+
+  .epi-shell {
+    padding: 0 12px 32px;
+  }
+
+  .epi-card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .epi-card--feature {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .epi-tabs {
+    margin: 0 -12px;
+    padding: 4px 12px;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  .epi-timerStage {
+    padding: 24px 16px;
+  }
+
+  .epi-timerStage__time {
+    font-size: 52px;
+  }
+}

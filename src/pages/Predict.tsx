@@ -165,7 +165,6 @@ export function Predict() {
                 <CurveDrawer
                   historicalData={visibleLiveData}
                   maxWeek={20}
-                  maxCases={Math.max(...visibleLiveData.map(d => d.cases)) * 6}
                   onCurveChange={setDrawnCurve}
                 />
               </div>
@@ -289,7 +288,6 @@ export function Predict() {
                 <CurveDrawer
                   historicalData={selectedScenario.historical_data}
                   maxWeek={Math.max(...selectedScenario.historical_data.map(d => d.week)) + 12}
-                  maxCases={Math.max(...selectedScenario.historical_data.map(d => d.cases)) * 4}
                   onCurveChange={() => {}}
                 />
               </div>

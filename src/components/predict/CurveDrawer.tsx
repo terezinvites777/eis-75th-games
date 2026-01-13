@@ -31,9 +31,32 @@ export function CurveDrawer({
   const lastHistorical = historicalData[historicalData.length - 1];
   const effectiveMinWeek = minWeek ?? Math.min(...historicalData.map(d => d.week));
   const effectiveMaxWeek = maxWeek ?? (lastHistorical.week + 12);
-  // Use 12x multiplier to ensure users can predict significantly higher than historical
-  // This allows for realistic outbreak peaks (e.g., 89 historical → 1068 max allows peak of ~234)
-  const effectiveMaxCases = maxCases ?? Math.max(...historicalData.map(d => d.cases)) * 12;
+
+  // Calculate nice round Y-axis scale
+  // Use 5x multiplier - actual peaks are typically 2-4x historical max
+  const rawMaxCases = maxCases ?? Math.max(...historicalData.map(d => d.cases)) * 5;
+
+  // Get nice tick values for the scale
+  const getNiceScale = (max: number): { ticks: number[]; scaleMax: number } => {
+    if (max <= 0) return { ticks: [0], scaleMax: 1 };
+    const roughStep = max / 4;
+    const magnitude = Math.pow(10, Math.floor(Math.log10(roughStep)));
+    const residual = roughStep / magnitude;
+    let niceStep: number;
+    if (residual <= 1.5) niceStep = magnitude;
+    else if (residual <= 3) niceStep = 2 * magnitude;
+    else if (residual <= 7) niceStep = 5 * magnitude;
+    else niceStep = 10 * magnitude;
+    const ticks: number[] = [];
+    for (let tick = 0; tick <= max * 1.1; tick += niceStep) {
+      ticks.push(tick);
+      if (ticks.length >= 6) break;
+    }
+    return { ticks: ticks.reverse(), scaleMax: ticks[0] }; // Reversed, max is first
+  };
+
+  const { ticks: yAxisTicks, scaleMax } = getNiceScale(rawMaxCases);
+  const effectiveMaxCases = scaleMax; // Use nice round number for scale
 
   // SVG viewBox dimensions - wider for better drawing
   const viewBoxWidth = 400;
@@ -163,26 +186,6 @@ export function CurveDrawer({
     return { peakWeek: maxPoint.week, peakCases: maxPoint.cases, totalCases };
   })() : null;
 
-  // Calculate nice round Y-axis tick values
-  const getNiceYTicks = (max: number): number[] => {
-    if (max <= 0) return [0];
-    const roughStep = max / 4;
-    const magnitude = Math.pow(10, Math.floor(Math.log10(roughStep)));
-    const residual = roughStep / magnitude;
-    let niceStep: number;
-    if (residual <= 1.5) niceStep = magnitude;
-    else if (residual <= 3) niceStep = 2 * magnitude;
-    else if (residual <= 7) niceStep = 5 * magnitude;
-    else niceStep = 10 * magnitude;
-    const ticks: number[] = [];
-    for (let tick = 0; tick <= max * 1.1; tick += niceStep) {
-      ticks.push(tick);
-      if (ticks.length >= 6) break;
-    }
-    return ticks.reverse(); // Reverse for top-to-bottom display
-  };
-  const yTicks = getNiceYTicks(effectiveMaxCases);
-
   // X-axis week labels
   const weekRange = effectiveMaxWeek - effectiveMinWeek;
   const weekStep = Math.max(1, Math.ceil(weekRange / 8));
@@ -263,13 +266,13 @@ export function CurveDrawer({
           <rect x={padding.left} y={padding.top} width={chartWidth} height={chartHeight} fill="url(#grid-pattern)" />
 
           {/* Y-axis gridlines and labels */}
-          {yTicks.map((val, i) => {
+          {yAxisTicks.map((val, i) => {
             const y = casesToY(val);
             return (
               <g key={i}>
                 <line x1={padding.left} y1={y} x2={padding.left + chartWidth} y2={y} stroke="rgba(148, 163, 184, 0.2)" strokeWidth="0.5" />
                 <text x={padding.left - 8} y={y + 3} textAnchor="end" className="text-[9px] fill-slate-400 font-medium">
-                  {val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val}
+                  {val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}
                 </text>
               </g>
             );

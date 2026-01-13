@@ -38,9 +38,9 @@ export function WorldMap({ locations, onLocationClick }: WorldMapProps) {
 
   return (
     <OrnateCornersWrapper size="md" className="mb-4">
-      <div className="pz-frame relative">
+      <div className="pz-frame relative" style={{ overflow: 'visible' }}>
         {/* Map container with dark museum background */}
-        <div className="relative bg-gradient-to-br from-[#2a1f15] to-[#1a140d] rounded-lg overflow-visible">
+        <div className="relative bg-gradient-to-br from-[#2a1f15] to-[#1a140d] rounded-lg" style={{ overflow: 'visible' }}>
         {/* US Map SVG using proper state boundaries */}
         <svg
           viewBox={MAP_VIEWBOX}

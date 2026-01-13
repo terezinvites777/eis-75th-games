@@ -33,7 +33,7 @@ export function OrnateCornersWrapper({
   };
 
   return (
-    <div className={`ornate-corners-wrapper relative ${className}`}>
+    <div className={`ornate-corners-wrapper relative ${className}`} style={{ overflow: 'visible' }}>
       {children}
       {/* Top-left corner */}
       <div

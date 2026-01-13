@@ -980,6 +980,7 @@
 */
 
 /* --- Command Header Bar --- */
+.eis-bg[data-theme="command"] .eis-hero,
 .eis-bg[data-theme="command"] .hero-strip,
 .eis-bg[data-theme="command"] [class*="bg-slate-800"] {
   background:
@@ -988,16 +989,20 @@
   border-image: linear-gradient(90deg, transparent, #d4af37, #f0d060, #d4af37, transparent) 1;
 }
 
+.eis-bg[data-theme="command"] .eis-hero h1,
 .eis-bg[data-theme="command"] .hero-strip h1,
 .eis-bg[data-theme="command"] .eis-heroTitle,
-.eis-bg[data-theme="command"] h1 {
+[data-theme="command"] .eis-heroTitle {
   font-family: Georgia, 'Times New Roman', serif;
-  color: #f4e4c1 !important;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  color: #fff8e6 !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.3) !important;
+  -webkit-text-fill-color: #fff8e6 !important;
 }
 
-.eis-bg[data-theme="command"] .eis-heroSub {
-  color: rgba(244, 228, 193, 0.85) !important;
+.eis-bg[data-theme="command"] .eis-heroSub,
+[data-theme="command"] .eis-heroSub {
+  color: rgba(255, 248, 230, 0.9) !important;
+  -webkit-text-fill-color: rgba(255, 248, 230, 0.9) !important;
 }
 
 /* --- Command Panels: Brass-framed parchment --- */

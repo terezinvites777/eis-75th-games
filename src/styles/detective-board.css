@@ -170,12 +170,13 @@
   width: min(1400px, 100%);
   border-radius: 20px;
   padding: 20px;
-  /* Cork texture via gradients */
+  /* Cork texture image */
   background:
-    radial-gradient(ellipse at 15% 20%, rgba(200,160,100,0.25) 0%, transparent 40%),
-    radial-gradient(ellipse at 85% 75%, rgba(140,100,60,0.2) 0%, transparent 45%),
-    radial-gradient(ellipse at 50% 50%, rgba(180,140,80,0.15) 0%, transparent 60%),
-    linear-gradient(180deg, #b89060 0%, #a07848 50%, #8a6438 100%);
+    radial-gradient(ellipse at 15% 20%, rgba(255,255,255,0.08) 0%, transparent 40%),
+    radial-gradient(ellipse at 85% 75%, rgba(0,0,0,0.08) 0%, transparent 45%),
+    url('/images/textures/corkboard.jpg');
+  background-size: auto, auto, cover;
+  background-position: center;
   box-shadow:
     0 40px 80px rgba(0,0,0,0.45),
     inset 0 2px 0 rgba(255,255,255,0.2),

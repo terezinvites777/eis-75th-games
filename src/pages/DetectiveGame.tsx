@@ -221,8 +221,16 @@ export function DetectiveGame() {
             </div>
           </section>
 
-          {/* RIGHT COLUMN: Notes + Status + Polaroid */}
-          <section className="pinned notes-paper taped tape-left r-3" style={{ gridColumn: '9 / span 4', gridRow: '1' }}>
+          {/* RIGHT COLUMN: Polaroid + Notes + Status */}
+          <section className="polaroid r-4" style={{ gridColumn: '9 / span 4', gridRow: '1' }}>
+            <img
+              src={DETECTIVE_PLATES.evidence.src}
+              alt="Case evidence"
+            />
+            <div className="polaroid__caption">Case #{caseData.id}</div>
+          </section>
+
+          <section className="pinned notes-paper taped tape-left r-3" style={{ gridColumn: '9 / span 4', gridRow: '2' }}>
             <div className="tape" />
             <h3 className="pinned__title">Notes</h3>
             <div className="pinned__content">
@@ -244,7 +252,7 @@ export function DetectiveGame() {
             </div>
           </section>
 
-          <section className="pinned r-1" style={{ gridColumn: '9 / span 4', gridRow: '2' }}>
+          <section className="pinned r-1" style={{ gridColumn: '9 / span 4', gridRow: '3' }}>
             <h3 className="pinned__title">Case Status</h3>
             <div className="pinned__content">
               <p><strong>Phase:</strong> {phase.charAt(0).toUpperCase() + phase.slice(1)}</p>
@@ -252,14 +260,6 @@ export function DetectiveGame() {
               <p><strong>Points:</strong> {availablePoints}</p>
               <p><strong>Clues:</strong> {revealedClues.length}/{caseData.clues.length}</p>
             </div>
-          </section>
-
-          <section className="polaroid r-4" style={{ gridColumn: '9 / span 4', gridRow: '3' }}>
-            <img
-              src={DETECTIVE_PLATES.evidence.src}
-              alt="Case evidence"
-            />
-            <div className="polaroid__caption">Case #{caseData.id}</div>
           </section>
 
           {/* EVIDENCE BOARD FORM - spans middle columns at bottom */}

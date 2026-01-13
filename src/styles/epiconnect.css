@@ -61,17 +61,21 @@ html:has([data-theme="connect"]) {
   box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 
-/* Make EpiConnect title lighter/more prominent */
+/* Make EpiConnect title lighter/more prominent - MUST be visible */
 .eis-bg[data-theme="connect"] .eis-heroTitle,
-.eis-bg[data-theme="connect"] .eis-hero h1 {
-  color: #f5e6c8 !important;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-  font-family: Georgia, 'Times New Roman', serif;
-  letter-spacing: 0.05em;
+.eis-bg[data-theme="connect"] .eis-hero h1,
+[data-theme="connect"] .eis-heroTitle,
+[data-theme="connect"] .eis-hero h1 {
+  color: #f5deb3 !important;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.6), 0 0 20px rgba(212,175,55,0.3) !important;
+  font-family: Georgia, 'Times New Roman', serif !important;
+  letter-spacing: 0.05em !important;
 }
 
-.eis-bg[data-theme="connect"] .eis-heroSub {
-  color: rgba(245, 230, 200, 0.8) !important;
+.eis-bg[data-theme="connect"] .eis-heroSub,
+[data-theme="connect"] .eis-heroSub {
+  color: #e8d4a8 !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
 }
 
 /* 4) Layout Shell */
@@ -1218,4 +1222,24 @@ html:has([data-theme="connect"]) {
 [data-theme="connect"] .epi-ledgerRow {
   background: linear-gradient(180deg, #f5edd8, #ede0c5) !important;
   border-left: 3px solid #b8860b !important;
+}
+
+/* 31) EIS 75th Anniversary card - light text on dark background */
+[data-theme="connect"] .epi-card:last-child,
+[data-theme="connect"] .epi-grid__right .epi-card:last-of-type {
+  background: linear-gradient(135deg, #4a3528 0%, #3a2820 100%) !important;
+  border: 2px solid #6b4a35 !important;
+}
+
+[data-theme="connect"] .epi-card:last-child *,
+[data-theme="connect"] .epi-card:last-child h3,
+[data-theme="connect"] .epi-card:last-child p,
+[data-theme="connect"] .epi-card:last-child a,
+[data-theme="connect"] .epi-card:last-child span,
+[data-theme="connect"] .epi-grid__right .epi-card:last-of-type * {
+  color: #f5deb3 !important;
+}
+
+[data-theme="connect"] .epi-card:last-child a:hover {
+  color: #d4af37 !important;
 }

@@ -28,12 +28,15 @@
 [data-theme="detective"] .detective-bg {
   min-height: 100vh;
   color: var(--ink-0);
-  background:
+  background-color: var(--wood-1);
+  background-image:
     radial-gradient(1200px 700px at 50% 15%, rgba(255,255,255,.08), transparent 60%),
     radial-gradient(900px 500px at 50% 85%, rgba(0,0,0,.35), transparent 60%),
     url('/images/textures/wood.png');
   background-size: auto, auto, cover;
   background-attachment: scroll, scroll, fixed;
+  background-position: center, center, center;
+  background-repeat: no-repeat, no-repeat, no-repeat;
   position: relative;
   overflow-x: hidden;
 }

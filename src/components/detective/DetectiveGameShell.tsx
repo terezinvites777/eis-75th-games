@@ -2,8 +2,8 @@
 // Main wrapper for Disease Detective pages - archive/case file aesthetic
 
 import type { ReactNode } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { ArrowLeft, Home, Search, Target, Users, Trophy, Activity, TrendingUp } from 'lucide-react';
 import '../../styles/detective-theme.css';
 
 interface DetectiveGameShellProps {
@@ -14,6 +14,7 @@ interface DetectiveGameShellProps {
   headerRight?: ReactNode;
   statusStrip?: ReactNode;
   backPath?: string;
+  showNav?: boolean;
 }
 
 export function DetectiveGameShell({
@@ -24,9 +25,39 @@ export function DetectiveGameShell({
   statusStrip,
   backPath,
   children,
+  showNav = true,
 }: DetectiveGameShellProps) {
+  const location = useLocation();
+
+  const navItems = [
+    { path: '/', label: 'Home', icon: Home },
+    { path: '/detective', label: 'Detective', icon: Search },
+    { path: '/command', label: 'Command', icon: Target },
+    { path: '/connect', label: 'Connect', icon: Users },
+    { path: '/patient-zero', label: 'Patient 0', icon: Activity },
+    { path: '/predict', label: 'Predict', icon: TrendingUp },
+    { path: '/leaderboard', label: 'Scores', icon: Trophy },
+  ];
+
+  const isActive = (path: string) => {
+    if (path === '/') return location.pathname === '/';
+    return location.pathname.startsWith(path);
+  };
+
   return (
-    <div data-theme="detective" className="detective-bg">
+    <div
+      data-theme="detective"
+      className="detective-bg"
+      style={{
+        backgroundImage: `
+          radial-gradient(1200px 700px at 50% 15%, rgba(255,255,255,.08), transparent 60%),
+          radial-gradient(900px 500px at 50% 85%, rgba(0,0,0,.35), transparent 60%),
+          url('/images/textures/wood.png')
+        `,
+        backgroundSize: 'auto, auto, cover',
+        backgroundColor: '#3a2419',
+      }}
+    >
       <div className="detective-shell">
         {/* Back button + title area */}
         <div className="mb-4">
@@ -80,8 +111,23 @@ export function DetectiveGameShell({
         <div className="mt-2">{children}</div>
       </div>
 
-      {/* Bottom navigation spacer */}
-      <div className="h-20" />
+      {/* Bottom Navigation */}
+      {showNav && (
+        <nav className="eis-nav">
+          <div className="eis-navInner">
+            {navItems.map(({ path, label, icon: Icon }) => (
+              <Link
+                key={path}
+                to={path}
+                className={`eis-navItem ${isActive(path) ? 'active' : ''}`}
+              >
+                <Icon size={22} strokeWidth={isActive(path) ? 2.5 : 2} />
+                <span>{label}</span>
+              </Link>
+            ))}
+          </div>
+        </nav>
+      )}
     </div>
   );
 }

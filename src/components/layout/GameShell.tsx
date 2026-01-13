@@ -3,7 +3,7 @@
 
 import type { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Search, Target, Users, Trophy } from 'lucide-react';
+import { Home, Search, Target, Users, Trophy, Activity, TrendingUp } from 'lucide-react';
 import { AnniversaryLockup } from '../brand/BrandMarks';
 
 type Theme = 'detective' | 'command' | 'connect' | 'patient-zero' | 'predict' | 'default';
@@ -34,6 +34,8 @@ export function GameShell({
     { path: '/detective', label: 'Detective', icon: Search },
     { path: '/command', label: 'Command', icon: Target },
     { path: '/connect', label: 'Connect', icon: Users },
+    { path: '/patient-zero', label: 'Patient 0', icon: Activity },
+    { path: '/predict', label: 'Predict', icon: TrendingUp },
     { path: '/leaderboard', label: 'Scores', icon: Trophy },
   ];
 

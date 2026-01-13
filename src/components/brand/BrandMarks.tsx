@@ -76,7 +76,11 @@ export function EISShield({ size = 'md', className = '' }: LogoProps) {
 export function AnniversaryLockup({ className = '' }: { className?: string }) {
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      <EISShield size="md" />
+      <img
+        src="/images/eis-logo.png"
+        alt="EIS Logo"
+        className="w-12 h-12 object-contain"
+      />
       <div className="flex flex-col">
         <span className="text-lg font-bold tracking-tight text-white">
           EIS 75th Anniversary

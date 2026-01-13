@@ -1,57 +1,30 @@
 // src/components/detective/EvidenceBoardLayout.tsx
-// Evidence board layout matching the corkboard investigation design
+// Full-bleed corkboard evidence board layout
 
 import type { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Search, Target, Users, Trophy, Activity, TrendingUp } from 'lucide-react';
+import '../../styles/evidence-board.css';
 
 type Props = {
   title: string;
+  subtitle?: string;
   year?: string;
-  progressPct?: number;
-  points?: number;
-  timeLeft?: string;
   onBack?: () => void;
-
-  // Left column
-  caseBriefing: ReactNode;
-  timeline: ReactNode;
-  objectives: ReactNode;
-
-  // Center top row
-  clinicalCard: ReactNode;
-  chartCard: ReactNode;
-  menuCard: ReactNode;
-
-  // Center bottom
-  evidenceBoard: ReactNode;
-
-  // Right column
-  notes: ReactNode;
-  caseStatus: ReactNode;
-  polaroid?: ReactNode;
+  timeLabel?: string;
+  pointsLabel?: string;
+  children: ReactNode;
 };
 
-export function EvidenceBoardLayout(props: Props) {
-  const {
-    title,
-    year,
-    progressPct = 0,
-    points = 0,
-    timeLeft = '5:00',
-    onBack,
-    caseBriefing,
-    timeline,
-    objectives,
-    clinicalCard,
-    chartCard,
-    menuCard,
-    evidenceBoard,
-    notes,
-    caseStatus,
-    polaroid,
-  } = props;
-
+export function EvidenceBoardLayout({
+  title,
+  subtitle,
+  year,
+  onBack,
+  timeLabel = '5:00',
+  pointsLabel = '0',
+  children,
+}: Props) {
   const location = useLocation();
 
   const navItems = [
@@ -70,69 +43,35 @@ export function EvidenceBoardLayout(props: Props) {
   };
 
   return (
-    <div className="dd-boardPage">
-      {/* Top wood header bar */}
-      <header className="dd-boardTop">
-        <div className="dd-boardTop__left">
-          <button className="dd-topBtn" type="button" onClick={onBack}>
-            ← Back
-          </button>
+    <div className="eis-board">
+      <header className="eis-board__topbar">
+        <button className="eis-board__back" type="button" onClick={onBack}>
+          ← Back
+        </button>
+
+        <div className="eis-board__nameplate">
+          <div className="eis-board__title">
+            {title}
+            {year && <span className="eis-board__year">{year}</span>}
+          </div>
+          {subtitle && <div className="eis-board__subtitle">{subtitle}</div>}
         </div>
 
-        <div className="dd-boardTop__center">
-          <div className="dd-titlePlaque">
-            <div className="dd-titlePlaque__title">
-              {title}
-              {year && <span className="dd-titlePlaque__year">{year}</span>}
-            </div>
+        <div className="eis-board__hud">
+          <div className="eis-board__hudbox">
+            <div className="k">Time</div>
+            <div className="v">{timeLabel}</div>
           </div>
-
-          <div className="dd-progressRow">
-            <span className="dd-progressLabel">Progress</span>
-            <div className="dd-progressTrack">
-              <div
-                className="dd-progressFill"
-                style={{ width: `${Math.max(0, Math.min(100, progressPct))}%` }}
-              />
-            </div>
-            <span className="dd-progressPoints">Points: {points}</span>
-          </div>
-        </div>
-
-        <div className="dd-boardTop__right">
-          <div className="dd-statPill">
-            <div className="dd-statPill__k">Time</div>
-            <div className="dd-statPill__v">{timeLeft}</div>
-          </div>
-          <div className="dd-statPill">
-            <div className="dd-statPill__k">Points</div>
-            <div className="dd-statPill__v">{points}</div>
+          <div className="eis-board__hudbox">
+            <div className="k">Points</div>
+            <div className="v">{pointsLabel}</div>
           </div>
         </div>
       </header>
 
-      {/* Corkboard */}
-      <main className="dd-boardWrap">
-        <section className="dd-board">
-          <div className="dd-boardGrid">
-            {/* Left column */}
-            <div className="dd-zone dd-brief">{caseBriefing}</div>
-            <div className="dd-zone dd-timeline">{timeline}</div>
-            <div className="dd-zone dd-objectives">{objectives}</div>
-
-            {/* Center */}
-            <div className="dd-zone dd-clinical">{clinicalCard}</div>
-            <div className="dd-zone dd-chart">{chartCard}</div>
-            <div className="dd-zone dd-menu">{menuCard}</div>
-            <div className="dd-zone dd-evidence">{evidenceBoard}</div>
-
-            {/* Right */}
-            <div className="dd-zone dd-notes">{notes}</div>
-            <div className="dd-zone dd-status">{caseStatus}</div>
-            <div className="dd-zone dd-polaroid">{polaroid ?? null}</div>
-          </div>
-        </section>
-      </main>
+      <div className="eis-board__canvas">
+        {children}
+      </div>
 
       {/* Bottom Navigation */}
       <nav className="eis-nav">

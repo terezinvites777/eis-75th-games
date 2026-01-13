@@ -31,8 +31,12 @@
 }
 
 /* 2) Page Background - Wood desk with subtle vignette */
-/* Override eis-brand.css leather texture by setting all properties */
-.eis-bg[data-theme="connect"] {
+/* Ultra-aggressive override for eis-brand.css leather texture */
+html body .eis-bg[data-theme="connect"],
+body .eis-bg[data-theme="connect"],
+.eis-bg[data-theme="connect"],
+div.eis-bg[data-theme="connect"] {
+  background: linear-gradient(180deg, #3b261a, #2a1a12 55%, #1b120d) !important;
   background-color: #2a1a12 !important;
   background-image:
     radial-gradient(1200px 600px at 50% 12%, rgba(0,0,0,0.05), rgba(0,0,0,0.45)),
@@ -50,9 +54,12 @@
 }
 
 /* Hide the overlay pseudo-element for connect theme */
-.eis-bg[data-theme="connect"]::before {
+.eis-bg[data-theme="connect"]::before,
+div.eis-bg[data-theme="connect"]::before {
   display: none !important;
   content: none !important;
+  background: none !important;
+  opacity: 0 !important;
 }
 
 /* 3) Hero header override - Wood/brass nameplate style */

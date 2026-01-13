@@ -181,7 +181,6 @@ export function Predict() {
                     historicalData={visibleLiveData}
                     actualData={MYSTERY_OUTBREAK_2026.full_data.slice(visibleLiveData.length)}
                     showActual={true}
-                    height={180}
                   />
                 </OrnatePanel>
               )}
@@ -291,14 +290,11 @@ export function Predict() {
                 Epidemic Curve
               </BrassPlaque>
               <OrnatePanel pad="md" className="mt-2">
-                <div className="predict-curvePanel__chart">
-                  <EpiCurveChart
-                    historicalData={selectedScenario.historical_data}
-                    actualData={showResult ? selectedScenario.actual_outcome : undefined}
-                    showActual={showResult}
-                    height={280}
-                  />
-                </div>
+                <EpiCurveChart
+                  historicalData={selectedScenario.historical_data}
+                  actualData={showResult ? selectedScenario.actual_outcome : undefined}
+                  showActual={showResult}
+                />
               </OrnatePanel>
             </div>
 

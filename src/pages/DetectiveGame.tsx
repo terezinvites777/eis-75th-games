@@ -1,13 +1,11 @@
 // src/pages/DetectiveGame.tsx
-// Disease Detective - Cork Board Investigation Layout
+// Disease Detective - Evidence Board Layout
 
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate, useParams, Link, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  CheckCircle, XCircle, Eye, Lock,
-  Home, Search, Target, Users, Trophy, Activity, TrendingUp
-} from 'lucide-react';
+import { CheckCircle, XCircle, Eye, Lock } from 'lucide-react';
+import { EvidenceBoardLayout } from '../components/detective/EvidenceBoardLayout';
 import { getCaseById } from '../data/detective';
 import { DETECTIVE_PLATES } from '../data/detectivePlates';
 import { useGameStore } from '../store/gameStore';
@@ -17,7 +15,6 @@ type GamePhase = 'briefing' | 'investigation' | 'diagnosis' | 'result';
 
 export function DetectiveGame() {
   const navigate = useNavigate();
-  const location = useLocation();
   const { era, caseId } = useParams<{ era: string; caseId: string }>();
   const { addScore } = useGameStore();
 
@@ -32,22 +29,6 @@ export function DetectiveGame() {
   const [pointsSpent, setPointsSpent] = useState(0);
   const [isCorrect, setIsCorrect] = useState(false);
   const [showResult, setShowResult] = useState(false);
-
-  // Navigation items
-  const navItems = [
-    { path: '/', label: 'Home', icon: Home },
-    { path: '/detective', label: 'Detective', icon: Search },
-    { path: '/command', label: 'Command', icon: Target },
-    { path: '/connect', label: 'Connect', icon: Users },
-    { path: '/patient-zero', label: 'Patient 0', icon: Activity },
-    { path: '/predict', label: 'Predict', icon: TrendingUp },
-    { path: '/leaderboard', label: 'Scores', icon: Trophy },
-  ];
-
-  const isActive = (path: string) => {
-    if (path === '/') return location.pathname === '/';
-    return location.pathname.startsWith(path);
-  };
 
   useEffect(() => {
     if (phase !== 'investigation' && phase !== 'diagnosis') return;
@@ -99,18 +80,16 @@ export function DetectiveGame() {
 
   if (!caseData) {
     return (
-      <div className="dd-board">
-        <div style={{ padding: 40, textAlign: 'center', color: '#d4af37' }}>
-          Case not found.
-        </div>
+      <div className="dd-boardPage" style={{ padding: 40, textAlign: 'center', color: '#d4af37' }}>
+        Case not found.
       </div>
     );
   }
 
   const availablePoints = caseData.basePoints - pointsSpent;
-  const progressPercent = phase === 'briefing' ? 0 :
-    phase === 'investigation' ? 33 :
-    phase === 'diagnosis' ? 66 : 100;
+  const progressPct = phase === 'briefing' ? 10 :
+    phase === 'investigation' ? 40 :
+    phase === 'diagnosis' ? 70 : 100;
 
   // Era display
   const eraDisplay: Record<string, string> = {
@@ -119,242 +98,261 @@ export function DetectiveGame() {
     global: '2000s+',
   };
 
+  // Get clues by type for different cards
+  const clinicalClues = caseData.clues.filter(c => c.type === 'clinical');
+  const epiClues = caseData.clues.filter(c => c.type === 'epidemiologic');
+  const envClues = caseData.clues.filter(c => c.type === 'environmental');
+
+  // Render a clue card
+  const renderClueCard = (clue: typeof caseData.clues[0], index: number) => {
+    const isRevealed = revealedClues.includes(clue.id);
+    return (
+      <div key={clue.id} style={{ marginBottom: index < caseData.clues.length - 1 ? 12 : 0 }}>
+        <div style={{ fontWeight: 600, marginBottom: 6 }}>{clue.title}</div>
+        {isRevealed ? (
+          <p style={{ margin: 0, fontSize: 13 }}>{clue.content}</p>
+        ) : (
+          <div style={{ textAlign: 'center', padding: '12px 0' }}>
+            <Lock size={18} style={{ opacity: 0.4, marginBottom: 6 }} />
+            <p style={{ fontSize: 12, margin: '0 0 8px 0', opacity: 0.7 }}>Locked</p>
+            {availablePoints >= clue.pointCost ? (
+              <button
+                onClick={() => revealClue(clue.id)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  padding: '6px 12px',
+                  background: 'linear-gradient(145deg, #d4af37, #b8891a)',
+                  border: 'none',
+                  borderRadius: 6,
+                  color: '#1a0f08',
+                  fontWeight: 700,
+                  fontSize: 12,
+                  cursor: 'pointer',
+                }}
+              >
+                <Eye size={14} />
+                Reveal ({clue.pointCost} pts)
+              </button>
+            ) : (
+              <span style={{ fontSize: 11, opacity: 0.6 }}>Not enough points</span>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
-    <div className="dd-board">
-      {/* Brass Header */}
-      <header className="dd-header">
-        <div className="dd-header__inner">
-          <button className="dd-header__back" onClick={() => navigate(`/detective/${era}`)}>
-            ← Back
-          </button>
+    <>
+      <EvidenceBoardLayout
+        title={caseData.title}
+        year={String(caseData.year)}
+        progressPct={progressPct}
+        points={availablePoints}
+        timeLeft={formatTime(timeRemaining)}
+        onBack={() => navigate(`/detective/${era}`)}
 
-          <div className="dd-header__plaque">
-            <h1 className="dd-header__title">
-              {caseData.title}
-              <span className="dd-header__year">{caseData.year}</span>
-            </h1>
-          </div>
-
-          <div className="dd-header__stats">
-            <div className="dd-statBox">
-              <div className="dd-statBox__label">Time</div>
-              <div className="dd-statBox__value" style={timeRemaining < 60 ? { color: '#ef4444' } : undefined}>
-                {formatTime(timeRemaining)}
-              </div>
-            </div>
-            <div className="dd-statBox">
-              <div className="dd-statBox__label">Points</div>
-              <div className="dd-statBox__value">{availablePoints}</div>
+        caseBriefing={
+          <div className="dd-paper">
+            <h3 className="dd-paper__title">Case Briefing</h3>
+            <div className="dd-paper__content">
+              <p><strong>Good morning.</strong></p>
+              <p>{caseData.briefing.content}</p>
             </div>
           </div>
-        </div>
-      </header>
+        }
 
-      {/* Progress Bar */}
-      <div className="dd-progressBar">
-        <div className="dd-progressBar__inner">
-          <span className="dd-progressBar__label">Progress: {progressPercent}%</span>
-          <div className="dd-progressBar__track">
-            <div className="dd-progressBar__fill" style={{ width: `${progressPercent}%` }} />
-          </div>
-          <span className="dd-progressBar__label">Points: {availablePoints}</span>
-        </div>
-      </div>
-
-      {/* Cork Board */}
-      <div className="dd-corkBoard">
-        <div className="dd-boardGrid">
-          {/* Left Column - Case Briefing */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <div className="dd-pinnedCard" style={{ '--rotate': '-1deg' } as React.CSSProperties}>
-              <h3 className="dd-pinnedCard__title">Case Briefing</h3>
-              <div className="dd-pinnedCard__content">
-                <p style={{ marginBottom: 12 }}>
-                  <strong>From:</strong> {caseData.briefing.from}
-                </p>
-                <p>{caseData.briefing.content}</p>
-              </div>
-            </div>
-
-            {/* Outbreak Timeline */}
-            <div className="dd-pinnedCard dd-pinnedCard--clip" style={{ '--rotate': '0.5deg' } as React.CSSProperties}>
-              <h3 className="dd-pinnedCard__title">Outbreak Timeline</h3>
-              <div className="dd-pinnedCard__content">
-                <p><strong>Location:</strong> {caseData.subtitle}</p>
-                <p><strong>Year:</strong> {caseData.year}</p>
-                <p><strong>Era:</strong> {eraDisplay[caseData.era]}</p>
-              </div>
-            </div>
-
-            {/* Objectives */}
-            <div className="dd-pinnedCard" style={{ '--rotate': '-0.5deg' } as React.CSSProperties}>
-              <h3 className="dd-pinnedCard__title">Objectives</h3>
-              <div className="dd-pinnedCard__content">
-                <p style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  {phase === 'result' ? <CheckCircle size={16} color="#16a34a" /> : <span>☐</span>}
-                  Identify the pathogen
-                </p>
-                <p style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  {phase === 'result' ? <CheckCircle size={16} color="#16a34a" /> : <span>☐</span>}
-                  Find the source
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Center Column - Evidence & Answer Board */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {/* Evidence Cards */}
-            <div className="dd-evidenceGrid">
-              {caseData.clues.map((clue, index) => {
-                const isRevealed = revealedClues.includes(clue.id);
-                const rotations = ['-2deg', '1deg', '-1deg', '2deg', '0deg'];
-
-                return (
-                  <div
-                    key={clue.id}
-                    className={`dd-evidenceCard ${!isRevealed ? 'dd-evidenceCard--locked' : ''}`}
-                    style={{ '--rotate': rotations[index % rotations.length] } as React.CSSProperties}
-                    onClick={() => !isRevealed && revealClue(clue.id)}
+        timeline={
+          <div className="dd-paper dd-paper--clip">
+            <h3 className="dd-paper__title">Outbreak Timeline</h3>
+            <div className="dd-paper__content">
+              <p><strong>Location:</strong> {caseData.subtitle}</p>
+              <p><strong>Year:</strong> {caseData.year}</p>
+              <p><strong>Era:</strong> {eraDisplay[caseData.era]}</p>
+              {phase === 'briefing' && (
+                <div style={{ marginTop: 16, textAlign: 'center' }}>
+                  <button
+                    onClick={() => setPhase('investigation')}
+                    className="dd-evidenceForm__submit"
+                    style={{ padding: '10px 20px', fontSize: 13 }}
                   >
-                    <div className="dd-evidenceCard__category">
-                      {clue.type.toUpperCase()}
-                    </div>
-                    <div className="dd-evidenceCard__title">{clue.title}</div>
-
-                    {isRevealed ? (
-                      <div className="dd-evidenceCard__preview">{clue.content}</div>
-                    ) : (
-                      <div className="dd-evidenceCard__locked">
-                        <Lock size={24} style={{ opacity: 0.5, marginBottom: 8 }} />
-                        <p style={{ fontSize: 12, marginBottom: 12 }}>This clue is locked</p>
-                        {availablePoints >= clue.pointCost ? (
-                          <button className="dd-evidenceCard__cost">
-                            <Eye size={14} />
-                            Reveal ({clue.pointCost} pts)
-                          </button>
-                        ) : (
-                          <p style={{ fontSize: 11, color: '#999' }}>Not enough points</p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Evidence Board - Answer Section */}
-            {(phase === 'investigation' || phase === 'diagnosis') && (
-              <div className="dd-answerBoard">
-                <h3 className="dd-answerBoard__title">Evidence Board</h3>
-                <p style={{ textAlign: 'center', marginBottom: 16, fontSize: 14, color: '#5a4a3a' }}>
-                  Make a guess based on your evidence:
-                </p>
-
-                <div className="dd-answerBoard__field">
-                  <label className="dd-answerBoard__label">Outbreak source:</label>
-                  <select
-                    className="dd-answerBoard__select"
-                    value={selectedPathogen || ''}
-                    onChange={(e) => setSelectedPathogen(e.target.value || null)}
-                  >
-                    <option value="">Select pathogen...</option>
-                    {caseData.diagnosis.pathogenOptions.map(opt => (
-                      <option key={opt.id} value={opt.id}>{opt.label}</option>
-                    ))}
-                  </select>
+                    Begin Investigation
+                  </button>
                 </div>
+              )}
+            </div>
+          </div>
+        }
 
-                <div className="dd-answerBoard__field">
-                  <label className="dd-answerBoard__label">Exposure Vehicle:</label>
-                  <select
-                    className="dd-answerBoard__select"
-                    value={selectedSource || ''}
-                    onChange={(e) => setSelectedSource(e.target.value || null)}
-                  >
-                    <option value="">Select source...</option>
-                    {caseData.diagnosis.sourceOptions.map(opt => (
-                      <option key={opt.id} value={opt.id}>{opt.label}</option>
-                    ))}
-                  </select>
+        objectives={
+          <div className="dd-paper">
+            <h3 className="dd-paper__title">Objectives</h3>
+            <div className="dd-paper__content">
+              <p style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                {selectedPathogen ? <CheckCircle size={16} color="#16a34a" /> : <span style={{ opacity: 0.5 }}>☐</span>}
+                Identify the pathogen
+              </p>
+              <p style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                {selectedSource ? <CheckCircle size={16} color="#16a34a" /> : <span style={{ opacity: 0.5 }}>☐</span>}
+                Find the source/vehicle
+              </p>
+            </div>
+          </div>
+        }
+
+        clinicalCard={
+          <div className="dd-paper">
+            <h3 className="dd-paper__title">Clinical Presentation</h3>
+            <div className="dd-paper__content">
+              {clinicalClues.length > 0 ? (
+                clinicalClues.map((clue, i) => renderClueCard(clue, i))
+              ) : (
+                <p style={{ opacity: 0.7, fontStyle: 'italic' }}>
+                  All cases reported nausea, diarrhea, and abdominal pain. Onset was rapid.
+                </p>
+              )}
+            </div>
+          </div>
+        }
+
+        chartCard={
+          <div className="dd-paper dd-paper--tape">
+            <h3 className="dd-paper__title">Epidemiologic Data</h3>
+            <div className="dd-paper__content">
+              {epiClues.length > 0 ? (
+                epiClues.map((clue, i) => renderClueCard(clue, i))
+              ) : (
+                <>
+                  <p><strong>Attack Rate:</strong> ~50%</p>
+                  <p><strong>Cases:</strong> {caseData.solution.totalCases || '42+ identified'}</p>
+                  <p style={{ marginTop: 8, fontSize: 12, opacity: 0.8 }}>
+                    Field Interviews: In progress
+                  </p>
+                </>
+              )}
+            </div>
+          </div>
+        }
+
+        menuCard={
+          <div className="dd-paper">
+            <h3 className="dd-paper__title">Environmental Data</h3>
+            <div className="dd-paper__content">
+              {envClues.length > 0 ? (
+                envClues.map((clue, i) => renderClueCard(clue, i))
+              ) : (
+                <p style={{ opacity: 0.7, fontStyle: 'italic' }}>
+                  Review evidence to uncover environmental factors.
+                </p>
+              )}
+              {/* Show remaining clues */}
+              {caseData.clues.filter(c => !['clinical', 'epidemiologic', 'environmental'].includes(c.type)).length > 0 && (
+                <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px dashed rgba(0,0,0,0.15)' }}>
+                  <p style={{ fontWeight: 600, marginBottom: 8 }}>Additional Evidence:</p>
+                  {caseData.clues
+                    .filter(c => !['clinical', 'epidemiologic', 'environmental'].includes(c.type))
+                    .map((clue, i) => renderClueCard(clue, i))}
                 </div>
-
-                <button
-                  className="dd-answerBoard__submit"
-                  onClick={submitDiagnosis}
-                  disabled={!selectedPathogen || !selectedSource}
-                >
-                  Submit Theory
-                </button>
-              </div>
-            )}
-
-            {/* Start Investigation Button (Briefing phase) */}
-            {phase === 'briefing' && (
-              <div style={{ textAlign: 'center' }}>
-                <button
-                  className="dd-answerBoard__submit"
-                  style={{ maxWidth: 300 }}
-                  onClick={() => setPhase('investigation')}
-                >
-                  Begin Investigation
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Right Column - Notes & Photos */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {/* Notes */}
-            <div className="dd-notes" style={{ transform: 'rotate(1deg)' }}>
-              <h3 className="dd-notes__title">Notes</h3>
-              <div className="dd-notes__content">
-                {phase === 'briefing' && (
-                  <p>Read the case briefing carefully. Note key symptoms and timeline.</p>
-                )}
-                {phase === 'investigation' && (
-                  <>
-                    <p>Evidence reviewed: {revealedClues.length}/{caseData.clues.length}</p>
-                    <p style={{ marginTop: 12 }}>Look for patterns in symptoms, timing, and exposure.</p>
-                  </>
-                )}
-                {phase === 'diagnosis' && (
-                  <>
-                    <p>Selected pathogen: {selectedPathogen ? caseData.diagnosis.pathogenOptions.find(p => p.id === selectedPathogen)?.label : '—'}</p>
-                    <p>Selected source: {selectedSource ? caseData.diagnosis.sourceOptions.find(s => s.id === selectedSource)?.label : '—'}</p>
-                  </>
-                )}
-                {phase === 'result' && (
-                  <p>Case {isCorrect ? 'solved!' : 'reviewed.'} Check your results.</p>
-                )}
-              </div>
-            </div>
-
-            {/* Status Card */}
-            <div className="dd-pinnedCard dd-pinnedCard--tape" style={{ '--rotate': '-2deg' } as React.CSSProperties}>
-              <h3 className="dd-pinnedCard__title">Case Status</h3>
-              <div className="dd-pinnedCard__content">
-                <p><strong>Phase:</strong> {phase.charAt(0).toUpperCase() + phase.slice(1)}</p>
-                <p><strong>Time:</strong> {formatTime(timeRemaining)}</p>
-                <p><strong>Points:</strong> {availablePoints}</p>
-                <p><strong>Clues:</strong> {revealedClues.length}/{caseData.clues.length}</p>
-              </div>
-            </div>
-
-            {/* Photo placeholder */}
-            <div className="dd-photo" style={{ '--rotate': '3deg' } as React.CSSProperties}>
-              <img
-                src={DETECTIVE_PLATES.evidence.src}
-                alt="Case evidence"
-                className="dd-photo__img"
-              />
-              <div className="dd-photo__caption">Case #{caseData.id}</div>
+              )}
             </div>
           </div>
-        </div>
-      </div>
+        }
 
-      {/* Result Overlay */}
+        evidenceBoard={
+          <div className="dd-evidenceForm">
+            <h3 className="dd-evidenceForm__title">Evidence Board</h3>
+            <p style={{ textAlign: 'center', marginBottom: 16, fontSize: 14, color: '#5a4a3a' }}>
+              Make a guess based on your evidence:
+            </p>
+
+            <div className="dd-evidenceForm__field">
+              <label className="dd-evidenceForm__label">Outbreak source:</label>
+              <select
+                className="dd-evidenceForm__select"
+                value={selectedPathogen || ''}
+                onChange={(e) => setSelectedPathogen(e.target.value || null)}
+              >
+                <option value="">Select pathogen...</option>
+                {caseData.diagnosis.pathogenOptions.map(opt => (
+                  <option key={opt.id} value={opt.id}>{opt.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="dd-evidenceForm__field">
+              <label className="dd-evidenceForm__label">Exposure Vehicle:</label>
+              <select
+                className="dd-evidenceForm__select"
+                value={selectedSource || ''}
+                onChange={(e) => setSelectedSource(e.target.value || null)}
+              >
+                <option value="">Select source...</option>
+                {caseData.diagnosis.sourceOptions.map(opt => (
+                  <option key={opt.id} value={opt.id}>{opt.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <button
+              className="dd-evidenceForm__submit"
+              onClick={submitDiagnosis}
+              disabled={!selectedPathogen || !selectedSource}
+            >
+              Submit Theory
+            </button>
+          </div>
+        }
+
+        notes={
+          <div className="dd-notes-paper">
+            <h3 className="dd-notes-paper__title">Notes</h3>
+            <div className="dd-notes-paper__content">
+              {phase === 'briefing' && (
+                <p>Read the case briefing. Note symptoms, timeline, and population.</p>
+              )}
+              {phase === 'investigation' && (
+                <>
+                  <p>Evidence: {revealedClues.length}/{caseData.clues.length}</p>
+                  <p style={{ marginTop: 8 }}>Look for patterns in symptoms and exposure.</p>
+                </>
+              )}
+              {(phase === 'diagnosis' || phase === 'result') && (
+                <>
+                  <p>Pathogen: {selectedPathogen ? caseData.diagnosis.pathogenOptions.find(p => p.id === selectedPathogen)?.label : '—'}</p>
+                  <p>Source: {selectedSource ? caseData.diagnosis.sourceOptions.find(s => s.id === selectedSource)?.label : '—'}</p>
+                </>
+              )}
+            </div>
+          </div>
+        }
+
+        caseStatus={
+          <div className="dd-paper dd-paper--tape">
+            <h3 className="dd-paper__title">Case Status</h3>
+            <div className="dd-paper__content">
+              <p><strong>Phase:</strong> {phase.charAt(0).toUpperCase() + phase.slice(1)}</p>
+              <p><strong>Time:</strong> {formatTime(timeRemaining)}</p>
+              <p><strong>Points:</strong> {availablePoints}</p>
+              <p><strong>Clues:</strong> {revealedClues.length}/{caseData.clues.length}</p>
+            </div>
+          </div>
+        }
+
+        polaroid={
+          <div className="dd-polaroid">
+            <img
+              src={DETECTIVE_PLATES.evidence.src}
+              alt="Case evidence"
+              className="dd-polaroid__img"
+            />
+            <div className="dd-polaroid__caption">Case #{caseData.id}</div>
+          </div>
+        }
+      />
+
+      {/* Result Modal */}
       <AnimatePresence>
         {showResult && (
           <motion.div
@@ -370,7 +368,7 @@ export function DetectiveGame() {
               exit={{ scale: 0.8, opacity: 0 }}
             >
               <div className={`dd-resultCard__icon ${isCorrect ? 'dd-resultCard__icon--success' : 'dd-resultCard__icon--fail'}`}>
-                {isCorrect ? <CheckCircle size={48} /> : <XCircle size={48} />}
+                {isCorrect ? <CheckCircle size={40} /> : <XCircle size={40} />}
               </div>
 
               <h2 className="dd-resultCard__title" style={{ color: isCorrect ? '#16a34a' : '#dc2626' }}>
@@ -383,10 +381,10 @@ export function DetectiveGame() {
 
               <div className="dd-resultCard__score">+{score} pts</div>
 
-              <div style={{ textAlign: 'left', marginTop: 20, padding: 16, background: 'rgba(0,0,0,0.05)', borderRadius: 8 }}>
+              <div className="dd-resultCard__explanation">
                 <p style={{ marginBottom: 8 }}><strong>Pathogen:</strong> {caseData.solution.pathogen}</p>
                 <p style={{ marginBottom: 8 }}><strong>Source:</strong> {caseData.solution.source}</p>
-                <p style={{ fontSize: 13, color: '#666' }}>{caseData.solution.explanation}</p>
+                <p style={{ fontSize: 13 }}>{caseData.solution.explanation}</p>
               </div>
 
               <div className="dd-resultCard__actions">
@@ -407,23 +405,7 @@ export function DetectiveGame() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Bottom Navigation */}
-      <nav className="eis-nav">
-        <div className="eis-navInner">
-          {navItems.map(({ path, label, icon: Icon }) => (
-            <Link
-              key={path}
-              to={path}
-              className={`eis-navItem ${isActive(path) ? 'active' : ''}`}
-            >
-              <Icon size={22} strokeWidth={isActive(path) ? 2.5 : 2} />
-              <span>{label}</span>
-            </Link>
-          ))}
-        </div>
-      </nav>
-    </div>
+    </>
   );
 }
 

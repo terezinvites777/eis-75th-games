@@ -36,12 +36,9 @@ export function WorldMap({ locations, onLocationClick }: WorldMapProps) {
   const [hoveredLocation, setHoveredLocation] = useState<string | null>(null);
 
   return (
-    <div className="panel relative overflow-hidden">
-      {/* Top accent bar */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--theme-primary)] to-[var(--theme-secondary)]" />
-
-      {/* Map container with dark background */}
-      <div className="relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg overflow-hidden border border-slate-700 mt-1">
+    <div className="pz-frame relative">
+      {/* Map container with dark museum background */}
+      <div className="relative bg-gradient-to-br from-[#2a1f15] to-[#1a140d] rounded-xl overflow-hidden">
         {/* US Map SVG using proper state boundaries */}
         <svg
           viewBox={MAP_VIEWBOX}
@@ -51,14 +48,14 @@ export function WorldMap({ locations, onLocationClick }: WorldMapProps) {
           {/* Background */}
           <rect x="192" y="9" width="1028" height="746" fill="transparent" />
 
-          {/* State paths - all states in theme-tinted red */}
+          {/* State paths - sepia/parchment tones for museum aesthetic */}
           <g>
             {usStates.map(state => (
               <path
                 key={state.id}
                 d={state.path}
-                fill="rgba(220, 38, 38, 0.15)"
-                stroke="rgba(220, 38, 38, 0.4)"
+                fill="rgba(212, 175, 55, 0.12)"
+                stroke="rgba(184, 134, 11, 0.4)"
                 strokeWidth="1"
                 className="transition-colors"
               />
@@ -87,7 +84,7 @@ export function WorldMap({ locations, onLocationClick }: WorldMapProps) {
                     cy={coords.y}
                     r={size + 15}
                     fill="none"
-                    stroke={loc.isFeatured ? '#f59e0b' : '#dc2626'}
+                    stroke={loc.isFeatured ? '#d4af37' : '#c9a227'}
                     strokeWidth="2"
                     opacity="0.4"
                     className="animate-ping"
@@ -95,13 +92,13 @@ export function WorldMap({ locations, onLocationClick }: WorldMapProps) {
                   />
                 )}
 
-                {/* Main marker */}
+                {/* Main marker - brass/gold tones */}
                 <circle
                   cx={coords.x}
                   cy={coords.y}
                   r={size}
-                  fill={loc.isFeatured ? '#f59e0b' : loc.revealed ? '#22c55e' : '#dc2626'}
-                  stroke="#fff"
+                  fill={loc.isFeatured ? '#d4af37' : loc.revealed ? '#8b6914' : '#c9a227'}
+                  stroke="rgba(255,255,255,0.8)"
                   strokeWidth="3"
                   className="drop-shadow-lg"
                 />
@@ -136,24 +133,24 @@ export function WorldMap({ locations, onLocationClick }: WorldMapProps) {
           return (
             <div
               key={`tooltip-${loc.id}`}
-              className="absolute panel !p-3 z-30 pointer-events-none animate-fade-in"
+              className="absolute pz-parchment !p-3 z-30 pointer-events-none animate-fade-in"
               style={{
                 left: `${xPercent}%`,
                 top: `${yPercent}%`,
                 transform: 'translate(-50%, -120%)',
               }}
             >
-              <div className="text-sm font-bold text-slate-800 whitespace-nowrap">{loc.title}</div>
+              <div className="text-sm font-bold text-[#2d1f10] whitespace-nowrap font-serif">{loc.title}</div>
               {loc.isFeatured && (
-                <div className="flex items-center gap-1 text-xs text-amber-600 font-semibold mt-1">
+                <div className="flex items-center gap-1 text-xs text-[#8b6914] font-semibold mt-1">
                   <Star size={10} />
                   75th Anniversary Feature
                 </div>
               )}
-              <div className="flex items-center gap-1 text-xs text-slate-500 mt-1">
+              <div className="flex items-center gap-1 text-xs text-[#4a3728] mt-1">
                 {loc.revealed ? (
                   <>
-                    <CheckCircle size={10} className="text-green-500" />
+                    <CheckCircle size={10} className="text-[#8b6914]" />
                     Case solved
                   </>
                 ) : (
@@ -167,35 +164,35 @@ export function WorldMap({ locations, onLocationClick }: WorldMapProps) {
           );
         })}
 
-        {/* Title overlay with brand styling */}
+        {/* Title overlay - brass plaque style */}
         <div className="absolute top-3 left-3">
-          <div className="section-header mb-0 bg-slate-900/80 backdrop-blur-sm rounded-lg px-3 py-2">
-            <MapPin size={14} className="text-red-400" />
-            <span className="text-xs font-bold text-white drop-shadow-lg">Mystery Locations</span>
+          <div className="flex items-center gap-2 bg-gradient-to-r from-[#c9a227] to-[#8b6914] rounded-lg px-3 py-2 shadow-lg border border-[rgba(255,255,255,0.3)]">
+            <MapPin size={14} className="text-[#1a140d]" />
+            <span className="text-xs font-bold text-[#1a140d] drop-shadow-sm">Mystery Locations</span>
           </div>
         </div>
 
-        {/* Legend with pills */}
+        {/* Legend with vintage pills */}
         <div className="absolute bottom-3 right-3 flex items-center gap-2">
-          <span className="pill text-xs bg-red-900/80 text-red-200 border-red-700">
-            <div className="w-2 h-2 bg-red-500 rounded-full" />
+          <span className="flex items-center gap-1.5 text-xs px-2 py-1 rounded bg-[rgba(26,20,13,0.7)] text-[#f4e4c1] border border-[rgba(212,175,55,0.3)]">
+            <div className="w-2 h-2 bg-[#c9a227] rounded-full" />
             Active
           </span>
-          <span className="pill text-xs bg-green-900/80 text-green-200 border-green-700">
-            <div className="w-2 h-2 bg-green-500 rounded-full" />
+          <span className="flex items-center gap-1.5 text-xs px-2 py-1 rounded bg-[rgba(26,20,13,0.7)] text-[#f4e4c1] border border-[rgba(212,175,55,0.3)]">
+            <div className="w-2 h-2 bg-[#8b6914] rounded-full" />
             Solved
           </span>
-          <span className="pill text-xs bg-amber-900/80 text-amber-200 border-amber-700">
-            <div className="w-2 h-2 bg-amber-500 rounded-full" />
+          <span className="flex items-center gap-1.5 text-xs px-2 py-1 rounded bg-[rgba(26,20,13,0.7)] text-[#f4e4c1] border border-[rgba(212,175,55,0.3)]">
+            <div className="w-2 h-2 bg-[#d4af37] rounded-full" />
             Featured
           </span>
         </div>
       </div>
 
-      {/* Bottom instruction */}
-      <div className="mt-3 text-center">
-        <span className="pill text-xs">
-          <Search size={12} />
+      {/* Bottom instruction - parchment style */}
+      <div className="p-3 bg-gradient-to-r from-[rgba(248,240,210,0.95)] to-[rgba(230,215,170,0.95)] text-center border-t border-[rgba(139,115,85,0.3)]">
+        <span className="flex items-center justify-center gap-2 text-xs text-[#3d2b1f] font-medium">
+          <Search size={12} className="text-[#8b6914]" />
           Click a location marker to begin your investigation
         </span>
       </div>

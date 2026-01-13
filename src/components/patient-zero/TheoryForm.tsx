@@ -55,22 +55,25 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
   ];
 
   return (
-    <form onSubmit={handleSubmit} className="panel animate-slide-up">
-      {/* Top accent */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--theme-primary)] to-[var(--theme-secondary)]" />
-
-      <div className="flex items-center justify-between mb-4 pt-1">
-        <div className="section-header mb-0">
-          <Target size={18} className="text-[var(--theme-primary)]" />
-          <span className="section-title">
+    <form onSubmit={handleSubmit} className="pz-frame animate-slide-up">
+      {/* Case File Header */}
+      <div className="pz-caseHeader">
+        <div className="pz-caseIcon">
+          <Target size={24} className="text-[#1a140d]" />
+        </div>
+        <div className="flex-1">
+          <h3 className="pz-caseTitle">
             {existingTheory ? 'Update Your Theory' : 'Submit Your Theory'}
-          </span>
+          </h3>
+          <p className="pz-caseSubtitle">Case File Investigation Report</p>
         </div>
         <button
           type="button"
           onClick={() => setShowHints(!showHints)}
-          className={`pill transition-colors ${
-            showHints ? 'pill-gold' : 'hover:bg-slate-100'
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+            showHints
+              ? 'bg-gradient-to-r from-[#d4af37] to-[#b8860b] text-[#1a140d] border border-[rgba(255,255,255,0.3)]'
+              : 'bg-[rgba(139,115,85,0.3)] text-[#f4e4c1] border border-[rgba(212,175,55,0.3)] hover:bg-[rgba(139,115,85,0.5)]'
           }`}
         >
           <Lightbulb size={14} />
@@ -78,20 +81,23 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
         </button>
       </div>
 
+      {/* Form body - parchment style */}
+      <div className="pz-parchment !rounded-t-none !border-t-0">
+
       {showHints && (
-        <div className="panel-themed p-3 mb-4 animate-slide-up">
-          <div className="font-medium text-amber-800 mb-1 text-sm">Hints enabled!</div>
-          <p className="text-amber-700 text-xs">Start typing to see suggestions. These are common outbreak names, pathogens, and sources from EIS history.</p>
+        <div className="p-3 mb-4 animate-slide-up bg-gradient-to-r from-[rgba(212,175,55,0.15)] to-[rgba(184,134,11,0.1)] border border-[rgba(212,175,55,0.3)] rounded-lg">
+          <div className="font-medium text-[#705812] mb-1 text-sm font-serif">Hints enabled!</div>
+          <p className="text-[#4a3728] text-xs">Start typing to see suggestions. These are common outbreak names, pathogens, and sources from EIS history.</p>
         </div>
       )}
 
       {errors.length > 0 && (
-        <div className="panel-themed p-4 mb-4 border-red-200 bg-red-50">
-          <div className="flex gap-2 text-red-700">
+        <div className="p-4 mb-4 border border-[#8b4444] bg-gradient-to-r from-[rgba(139,68,68,0.15)] to-[rgba(139,68,68,0.1)] rounded-lg">
+          <div className="flex gap-2 text-[#6b3030]">
             <AlertCircle size={20} />
             <div>
               {errors.map((err, i) => (
-                <div key={i} className="text-sm">{err}</div>
+                <div key={i} className="text-sm font-medium">{err}</div>
               ))}
             </div>
           </div>
@@ -100,9 +106,9 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
 
       <div className="space-y-5">
         {/* Outbreak Name */}
-        <div className="stat-card !text-left !p-4">
-          <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-            <FileQuestion size={16} className="text-slate-400" />
+        <div className="p-4 bg-gradient-to-b from-[rgba(248,240,210,0.5)] to-[rgba(230,215,170,0.3)] border border-[rgba(139,115,85,0.3)] rounded-lg">
+          <label className="flex items-center gap-2 text-sm font-semibold text-[#2d1f10] mb-2 font-serif">
+            <FileQuestion size={16} className="text-[#8b6914]" />
             What was this outbreak called?
           </label>
           <input
@@ -111,7 +117,7 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
             value={theory.outbreak_name}
             onChange={e => setTheory(prev => ({ ...prev, outbreak_name: e.target.value }))}
             placeholder="e.g., Legionnaires' Disease, Hantavirus..."
-            className="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-[var(--theme-primary)] focus:border-[var(--theme-primary)] transition-colors"
+            className="w-full px-4 py-2.5 bg-white border-2 border-[#8b7355] rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-[#d4af37] transition-colors text-[#2d1f10]"
           />
           {showHints && (
             <datalist id="outbreak-suggestions">
@@ -121,9 +127,9 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
         </div>
 
         {/* Year */}
-        <div className="stat-card !text-left !p-4">
-          <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-            <Calendar size={16} className="text-slate-400" />
+        <div className="p-4 bg-gradient-to-b from-[rgba(248,240,210,0.5)] to-[rgba(230,215,170,0.3)] border border-[rgba(139,115,85,0.3)] rounded-lg">
+          <label className="flex items-center gap-2 text-sm font-semibold text-[#2d1f10] mb-2 font-serif">
+            <Calendar size={16} className="text-[#8b6914]" />
             What year did this occur?
           </label>
           <input
@@ -132,17 +138,17 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
             onChange={e => setTheory(prev => ({ ...prev, year: parseInt(e.target.value) || 1980 }))}
             min={1950}
             max={2024}
-            className="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-[var(--theme-primary)] focus:border-[var(--theme-primary)] transition-colors"
+            className="w-full px-4 py-2.5 bg-white border-2 border-[#8b7355] rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-[#d4af37] transition-colors text-[#2d1f10]"
           />
-          <p className="text-xs text-slate-500 mt-2">
-            <span className="pill text-xs">Hint: Within 2 years still earns partial points!</span>
+          <p className="text-xs text-[#4a3728] mt-2">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-semibold bg-[rgba(139,115,85,0.15)] text-[#3d2b1f] rounded border border-[rgba(139,115,85,0.3)]">Hint: Within 2 years still earns partial points!</span>
           </p>
         </div>
 
         {/* Location */}
-        <div className="stat-card !text-left !p-4">
-          <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-            <MapPin size={16} className="text-slate-400" />
+        <div className="p-4 bg-gradient-to-b from-[rgba(248,240,210,0.5)] to-[rgba(230,215,170,0.3)] border border-[rgba(139,115,85,0.3)] rounded-lg">
+          <label className="flex items-center gap-2 text-sm font-semibold text-[#2d1f10] mb-2 font-serif">
+            <MapPin size={16} className="text-[#8b6914]" />
             Where did this outbreak occur?
           </label>
           <input
@@ -151,7 +157,7 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
             value={theory.location}
             onChange={e => setTheory(prev => ({ ...prev, location: e.target.value }))}
             placeholder="e.g., Philadelphia, Pennsylvania"
-            className="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-[var(--theme-primary)] focus:border-[var(--theme-primary)] transition-colors"
+            className="w-full px-4 py-2.5 bg-white border-2 border-[#8b7355] rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-[#d4af37] transition-colors text-[#2d1f10]"
           />
           {showHints && (
             <datalist id="location-suggestions">
@@ -161,9 +167,9 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
         </div>
 
         {/* Pathogen */}
-        <div className="stat-card !text-left !p-4">
-          <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-            <Bug size={16} className="text-slate-400" />
+        <div className="p-4 bg-gradient-to-b from-[rgba(248,240,210,0.5)] to-[rgba(230,215,170,0.3)] border border-[rgba(139,115,85,0.3)] rounded-lg">
+          <label className="flex items-center gap-2 text-sm font-semibold text-[#2d1f10] mb-2 font-serif">
+            <Bug size={16} className="text-[#8b6914]" />
             What was the pathogen/cause?
           </label>
           <input
@@ -172,7 +178,7 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
             value={theory.pathogen}
             onChange={e => setTheory(prev => ({ ...prev, pathogen: e.target.value }))}
             placeholder="e.g., Legionella pneumophila, virus..."
-            className="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-[var(--theme-primary)] focus:border-[var(--theme-primary)] transition-colors"
+            className="w-full px-4 py-2.5 bg-white border-2 border-[#8b7355] rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-[#d4af37] transition-colors text-[#2d1f10]"
           />
           {showHints && (
             <datalist id="pathogen-suggestions">
@@ -182,11 +188,11 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
         </div>
 
         {/* Source (optional) */}
-        <div className="stat-card !text-left !p-4">
-          <label className="flex items-center gap-2 text-sm font-medium text-slate-700 mb-2">
-            <Target size={16} className="text-slate-400" />
+        <div className="p-4 bg-gradient-to-b from-[rgba(248,240,210,0.5)] to-[rgba(230,215,170,0.3)] border border-[rgba(139,115,85,0.3)] rounded-lg">
+          <label className="flex items-center gap-2 text-sm font-semibold text-[#2d1f10] mb-2 font-serif">
+            <Target size={16} className="text-[#8b6914]" />
             What was the source?
-            <span className="pill pill-gold text-xs">+100 bonus pts!</span>
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold bg-gradient-to-r from-[#d4af37] to-[#b8860b] text-[#1a140d] rounded border border-[rgba(255,255,255,0.3)]">+100 bonus pts!</span>
           </label>
           <input
             type="text"
@@ -194,7 +200,7 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
             value={theory.source}
             onChange={e => setTheory(prev => ({ ...prev, source: e.target.value }))}
             placeholder="e.g., Cooling tower, contaminated food..."
-            className="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:ring-2 focus:ring-[var(--theme-primary)] focus:border-[var(--theme-primary)] transition-colors"
+            className="w-full px-4 py-2.5 bg-white border-2 border-[#8b7355] rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-[#d4af37] transition-colors text-[#2d1f10]"
           />
           {showHints && (
             <datalist id="source-suggestions">
@@ -205,7 +211,7 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
 
         {/* Confidence */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-3">
+          <label className="block text-sm font-semibold text-[#2d1f10] mb-3 font-serif">
             How confident are you?
           </label>
           <div className="grid grid-cols-3 gap-3">
@@ -215,15 +221,16 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
                 type="button"
                 onClick={() => setTheory(prev => ({ ...prev, confidence: opt.value }))}
                 className={`
-                  stat-card !p-3 cursor-pointer transition-all
+                  p-3 cursor-pointer transition-all rounded-lg border-2
+                  bg-gradient-to-b from-[rgba(248,240,210,0.6)] to-[rgba(230,215,170,0.4)]
                   ${theory.confidence === opt.value
-                    ? 'ring-2 ring-[var(--theme-primary)] !border-[var(--theme-primary)]'
-                    : 'hover:border-slate-300'
+                    ? 'ring-2 ring-[#d4af37] border-[#d4af37]'
+                    : 'border-[rgba(139,115,85,0.3)] hover:border-[#8b7355]'
                   }
                 `}
               >
-                <div className="font-medium text-sm text-slate-800">{opt.label}</div>
-                <div className="text-xs text-slate-500 mt-1">{opt.description}</div>
+                <div className="font-semibold text-sm text-[#2d1f10] font-serif">{opt.label}</div>
+                <div className="text-xs text-[#4a3728] mt-1">{opt.description}</div>
               </button>
             ))}
           </div>
@@ -240,10 +247,11 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
       </button>
 
       <p className="mt-4 text-center">
-        <span className="pill text-xs">
+        <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium bg-[rgba(139,115,85,0.15)] text-[#3d2b1f] rounded-lg border border-[rgba(139,115,85,0.3)]">
           Tip: Submit early for bonus points! You can update your theory as new clues are revealed.
         </span>
       </p>
+      </div>
     </form>
   );
 }

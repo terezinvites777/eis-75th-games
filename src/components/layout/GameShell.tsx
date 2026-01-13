@@ -42,8 +42,19 @@ export function GameShell({
     return location.pathname.startsWith(path);
   };
 
+  // Wood desk background for connect theme - inline style ensures highest specificity
+  const connectBgStyle = theme === 'connect' ? {
+    background: `
+      radial-gradient(1200px 600px at 50% 12%, rgba(0,0,0,0.05), rgba(0,0,0,0.45)),
+      linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.55)),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 6px, rgba(0,0,0,0.03) 6px, rgba(0,0,0,0.03) 12px),
+      linear-gradient(180deg, #3b261a, #2a1a12 55%, #1b120d)
+    `.replace(/\s+/g, ' ').trim(),
+    backgroundColor: '#2a1a12',
+  } : {};
+
   return (
-    <div className="eis-bg min-h-screen" data-theme={theme}>
+    <div className="eis-bg min-h-screen" data-theme={theme} style={connectBgStyle}>
       {/* Hero Header */}
       {showHero && (
         <header className="eis-hero">

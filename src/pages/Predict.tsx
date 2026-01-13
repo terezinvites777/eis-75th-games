@@ -332,12 +332,15 @@ export function Predict() {
                       <div className="stat-value text-amber-700">
                         {existingPrediction.total_cases.toLocaleString()}
                       </div>
-                      <div className="stat-label">Your Total Cases</div>
+                      <div className="stat-label">Your Total (All Weeks)</div>
                       <div className="text-xs text-[#4a3728] mt-1">
                         Actual: {selectedScenario.total_cases.toLocaleString()}
                       </div>
                     </div>
                   </div>
+                  <p className="text-xs text-slate-500 mt-3 text-center italic">
+                    Note: Chart shows weekly cases. Total = sum of all weeks.
+                  </p>
 
                   <button
                     onClick={() => setSelectedScenario(null)}

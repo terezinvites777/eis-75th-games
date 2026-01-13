@@ -475,14 +475,14 @@ export function CurveDrawer({
               <div className="stat-value text-amber-500">{stats.peakCases.toLocaleString()}</div>
               <div className="stat-label flex items-center justify-center gap-1">
                 <TrendingUp size={10} />
-                Peak Cases
+                Peak (1 Week)
               </div>
             </div>
             <div className="stat-card">
               <div className="stat-value text-green-600">{stats.totalCases.toLocaleString()}</div>
               <div className="stat-label flex items-center justify-center gap-1">
                 <Target size={10} />
-                Total Cases
+                Total (All Weeks)
               </div>
             </div>
           </div>

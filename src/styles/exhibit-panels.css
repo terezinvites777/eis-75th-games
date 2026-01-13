@@ -960,6 +960,8 @@
 }
 
 /* --- Ornate Victorian Frame Border --- */
+/* Disabled - was overlapping nav and causing layout issues */
+/*
 .eis-bg[data-theme="command"]::after {
   content: "";
   position: fixed;
@@ -975,6 +977,7 @@
   pointer-events: none;
   z-index: 1000;
 }
+*/
 
 /* --- Command Header Bar --- */
 .eis-bg[data-theme="command"] .hero-strip,
@@ -986,10 +989,15 @@
 }
 
 .eis-bg[data-theme="command"] .hero-strip h1,
-.eis-bg[data-theme="command"] [class*="text-white"] {
+.eis-bg[data-theme="command"] .eis-heroTitle,
+.eis-bg[data-theme="command"] h1 {
   font-family: Georgia, 'Times New Roman', serif;
   color: #f4e4c1 !important;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.eis-bg[data-theme="command"] .eis-heroSub {
+  color: rgba(244, 228, 193, 0.85) !important;
 }
 
 /* --- Command Panels: Brass-framed parchment --- */

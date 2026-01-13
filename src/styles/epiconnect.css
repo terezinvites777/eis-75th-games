@@ -5,9 +5,9 @@
 
 /* 1) Theme CSS Variables - Override for connect theme */
 [data-theme="connect"] {
-  --epi-wood-1: #3b261a;
-  --epi-wood-2: #2a1a12;
-  --epi-wood-3: #1b120d;
+  --epi-wood-1: #6b4a32;
+  --epi-wood-2: #5a3d28;
+  --epi-wood-3: #4a3020;
 
   --epi-parchment-1: #f3e6cc;
   --epi-parchment-2: #ead7b7;
@@ -34,38 +34,20 @@
 /* Override body background when connect theme is active */
 body:has([data-theme="connect"]),
 html:has([data-theme="connect"]) {
-  background: #2a1a12 !important;
+  background: #5a3d28 !important;
 }
 
-/* Ultra-aggressive override for eis-brand.css leather texture */
-html body .eis-bg[data-theme="connect"],
-body .eis-bg[data-theme="connect"],
-.eis-bg[data-theme="connect"],
-div.eis-bg[data-theme="connect"] {
-  background: linear-gradient(180deg, #3b261a, #2a1a12 55%, #1b120d) !important;
-  background-color: #2a1a12 !important;
-  background-image:
-    radial-gradient(1200px 600px at 50% 12%, rgba(0,0,0,0.05), rgba(0,0,0,0.45)),
-    linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.55)),
-    repeating-linear-gradient(90deg,
-      rgba(255,255,255,0.03) 0px,
-      rgba(255,255,255,0.03) 6px,
-      rgba(0,0,0,0.03) 6px,
-      rgba(0,0,0,0.03) 12px),
-    linear-gradient(180deg, #3b261a, #2a1a12 55%, #1b120d) !important;
-  background-size: auto !important;
-  background-position: center !important;
-  background-attachment: scroll !important;
+/* CSS fallback - lighter warm wood tones */
+.eis-bg[data-theme="connect"] {
+  background: linear-gradient(180deg, #6b4a32, #5a3d28 40%, #4a3020 100%) !important;
+  background-color: #5a3d28 !important;
   min-height: 100vh;
 }
 
 /* Hide the overlay pseudo-element for connect theme */
-.eis-bg[data-theme="connect"]::before,
-div.eis-bg[data-theme="connect"]::before {
+.eis-bg[data-theme="connect"]::before {
   display: none !important;
   content: none !important;
-  background: none !important;
-  opacity: 0 !important;
 }
 
 /* 3) Hero header override - Wood/brass nameplate style */

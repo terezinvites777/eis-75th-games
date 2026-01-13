@@ -42,15 +42,14 @@ export function GameShell({
     return location.pathname.startsWith(path);
   };
 
-  // Wood desk background for connect theme - inline style ensures highest specificity
+  // Wood desk background for connect theme - lighter warm brown to match design
   const connectBgStyle = theme === 'connect' ? {
     background: `
-      radial-gradient(1200px 600px at 50% 12%, rgba(0,0,0,0.05), rgba(0,0,0,0.45)),
-      linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.55)),
-      repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 6px, rgba(0,0,0,0.03) 6px, rgba(0,0,0,0.03) 12px),
-      linear-gradient(180deg, #3b261a, #2a1a12 55%, #1b120d)
+      linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.15) 100%),
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 8px),
+      linear-gradient(180deg, #6b4a32, #5a3d28 40%, #4a3020 100%)
     `.replace(/\s+/g, ' ').trim(),
-    backgroundColor: '#2a1a12',
+    backgroundColor: '#5a3d28',
   } : {};
 
   return (

@@ -77,6 +77,28 @@ export function PatientZero() {
       ...prev,
       [selectedMystery.id]: theory,
     }));
+
+    // Auto-reveal solution if all clues are available (day 3)
+    if (currentDay >= 3) {
+      const breakdown = calculateTheoryScoreDetailed(
+        theoryData,
+        selectedMystery.solution,
+        currentDay
+      );
+
+      setCompletedMysteries(prev => ({
+        ...prev,
+        [selectedMystery.id]: {
+          score: breakdown.totalScore,
+          breakdown,
+          daySubmitted: currentDay,
+        },
+      }));
+
+      // Trigger confetti celebration
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 100);
+    }
   };
 
   const handleRevealSolution = () => {

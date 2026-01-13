@@ -1116,13 +1116,18 @@
 }
 
 .eis-bg[data-theme="patient-zero"] .eis-hero h1,
-.eis-bg[data-theme="patient-zero"] .hero-strip h1 {
+.eis-bg[data-theme="patient-zero"] .hero-strip h1,
+.eis-bg[data-theme="patient-zero"] .eis-heroTitle,
+[data-theme="patient-zero"] .eis-heroTitle {
   color: #fff !important;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 0, 0, 0.3) !important;
+  -webkit-text-fill-color: #fff !important;
 }
 
-.eis-bg[data-theme="patient-zero"] .eis-heroSub {
-  color: rgba(254, 202, 202, 0.9) !important;
+.eis-bg[data-theme="patient-zero"] .eis-heroSub,
+[data-theme="patient-zero"] .eis-heroSub {
+  color: rgba(254, 202, 202, 0.95) !important;
+  -webkit-text-fill-color: rgba(254, 202, 202, 0.95) !important;
 }
 
 /* --- Patient Zero Cards --- */

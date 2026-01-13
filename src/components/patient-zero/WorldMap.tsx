@@ -40,7 +40,7 @@ export function WorldMap({ locations, onLocationClick }: WorldMapProps) {
     <OrnateCornersWrapper size="md" className="mb-4">
       <div className="pz-frame relative">
         {/* Map container with dark museum background */}
-        <div className="relative bg-gradient-to-br from-[#2a1f15] to-[#1a140d] rounded-lg overflow-hidden">
+        <div className="relative bg-gradient-to-br from-[#2a1f15] to-[#1a140d] rounded-lg overflow-visible">
         {/* US Map SVG using proper state boundaries */}
         <svg
           viewBox={MAP_VIEWBOX}
@@ -135,32 +135,34 @@ export function WorldMap({ locations, onLocationClick }: WorldMapProps) {
           return (
             <div
               key={`tooltip-${loc.id}`}
-              className="absolute pz-parchment !p-3 z-30 pointer-events-none animate-fade-in"
+              className="absolute z-50 pointer-events-none animate-fade-in"
               style={{
                 left: `${xPercent}%`,
                 top: `${yPercent}%`,
                 transform: 'translate(-50%, -120%)',
               }}
             >
-              <div className="text-sm font-bold text-[#2d1f10] whitespace-nowrap font-serif">{loc.title}</div>
-              {loc.isFeatured && (
-                <div className="flex items-center gap-1 text-xs text-[#8b6914] font-semibold mt-1">
-                  <Star size={10} />
-                  75th Anniversary Feature
-                </div>
-              )}
-              <div className="flex items-center gap-1 text-xs text-[#4a3728] mt-1">
-                {loc.revealed ? (
-                  <>
-                    <CheckCircle size={10} className="text-[#8b6914]" />
-                    Case solved
-                  </>
-                ) : (
-                  <>
-                    <Search size={10} />
-                    Click to investigate
-                  </>
+              <div className="bg-[#f8f0d2] border-2 border-[#8b7355] rounded-lg p-3 shadow-xl min-w-[180px] max-w-[280px]">
+                <div className="text-sm font-bold text-[#2d1f10] font-serif">{loc.title}</div>
+                {loc.isFeatured && (
+                  <div className="flex items-center gap-1 text-xs text-[#8b6914] font-semibold mt-1">
+                    <Star size={10} />
+                    75th Anniversary Feature
+                  </div>
                 )}
+                <div className="flex items-center gap-1 text-xs text-[#4a3728] mt-2">
+                  {loc.revealed ? (
+                    <>
+                      <CheckCircle size={10} className="text-[#8b6914]" />
+                      Case solved
+                    </>
+                  ) : (
+                    <>
+                      <Search size={10} />
+                      Click to investigate
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           );

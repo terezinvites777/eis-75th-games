@@ -17,11 +17,26 @@ export function EpiCurveChart({
   actualData,
   showActual = false,
 }: EpiCurveChartProps) {
+  // Handle year-wraparound weeks (e.g., week 52 -> week 1 becomes week 53)
+  const normalizeWeeks = (data: DataPoint[], baseWeek: number): DataPoint[] => {
+    return data.map(d => ({
+      ...d,
+      week: d.week < baseWeek - 10 ? d.week + 52 : d.week // If week is much lower, it's next year
+    }));
+  };
+
+  const baseWeek = historicalData.length > 0 ? historicalData[0].week : 1;
+
+  // Normalize all data to handle year wraparound
+  const normalizedHistorical = normalizeWeeks(historicalData, baseWeek);
+  const normalizedPredicted = predictedData ? normalizeWeeks(predictedData, baseWeek) : [];
+  const normalizedActual = actualData ? normalizeWeeks(actualData, baseWeek) : [];
+
   // Combine all data to find scale
   const allData = [
-    ...historicalData,
-    ...(predictedData || []),
-    ...(showActual && actualData ? actualData : []),
+    ...normalizedHistorical,
+    ...normalizedPredicted,
+    ...(showActual && normalizedActual.length > 0 ? normalizedActual : []),
   ];
 
   const maxCases = Math.max(...allData.map(d => d.cases), 1);
@@ -109,9 +124,9 @@ export function EpiCurveChart({
         />
 
         {/* Predicted area (if exists) */}
-        {predictedData && predictedData.length > 0 && (
+        {normalizedPredicted.length > 0 && (
           <path
-            d={createArea(predictedData)}
+            d={createArea(normalizedPredicted)}
             fill="#3b82f6"
             fillOpacity="0.1"
           />
@@ -119,15 +134,15 @@ export function EpiCurveChart({
 
         {/* Historical area */}
         <path
-          d={createArea(historicalData)}
+          d={createArea(normalizedHistorical)}
           fill="#64748b"
           fillOpacity="0.2"
         />
 
         {/* Actual area (if showing) */}
-        {showActual && actualData && (
+        {showActual && normalizedActual.length > 0 && (
           <path
-            d={createArea(actualData)}
+            d={createArea(normalizedActual)}
             fill="#22c55e"
             fillOpacity="0.2"
           />
@@ -135,7 +150,7 @@ export function EpiCurveChart({
 
         {/* Historical line */}
         <path
-          d={createPath(historicalData)}
+          d={createPath(normalizedHistorical)}
           fill="none"
           stroke="#64748b"
           strokeWidth="2"
@@ -144,9 +159,9 @@ export function EpiCurveChart({
         />
 
         {/* Predicted line */}
-        {predictedData && predictedData.length > 0 && (
+        {normalizedPredicted.length > 0 && (
           <path
-            d={createPath(predictedData)}
+            d={createPath(normalizedPredicted)}
             fill="none"
             stroke="#3b82f6"
             strokeWidth="2"
@@ -157,9 +172,9 @@ export function EpiCurveChart({
         )}
 
         {/* Actual line (if showing) */}
-        {showActual && actualData && (
+        {showActual && normalizedActual.length > 0 && (
           <path
-            d={createPath(actualData)}
+            d={createPath(normalizedActual)}
             fill="none"
             stroke="#22c55e"
             strokeWidth="2"
@@ -169,7 +184,7 @@ export function EpiCurveChart({
         )}
 
         {/* Data points for historical */}
-        {historicalData.map((d, i) => (
+        {normalizedHistorical.map((d, i) => (
           <circle
             key={`hist-${i}`}
             cx={xScale(d.week)}
@@ -182,17 +197,21 @@ export function EpiCurveChart({
         {/* Week labels - show every few weeks based on data density */}
         {allData
           .filter((_, i, arr) => i % Math.max(1, Math.floor(arr.length / 8)) === 0)
-          .map((d, i) => (
-            <text
-              key={`label-${i}`}
-              x={xScale(d.week)}
-              y={viewBoxHeight - 10}
-              textAnchor="middle"
-              className="text-[11px] fill-slate-500"
-            >
-              W{d.week}
-            </text>
-          ))}
+          .map((d, i) => {
+            // Display original week number (handle year wraparound)
+            const displayWeek = d.week > 52 ? d.week - 52 : d.week;
+            return (
+              <text
+                key={`label-${i}`}
+                x={xScale(d.week)}
+                y={viewBoxHeight - 10}
+                textAnchor="middle"
+                className="text-[11px] fill-slate-500"
+              >
+                W{displayWeek}
+              </text>
+            );
+          })}
       </svg>
 
       {/* Legend */}
@@ -201,13 +220,13 @@ export function EpiCurveChart({
           <div className="w-3 h-0.5 bg-slate-500" />
           <span className="text-slate-600">Historical</span>
         </div>
-        {predictedData && (
+        {normalizedPredicted.length > 0 && (
           <div className="flex items-center gap-1">
             <div className="w-3 h-0.5 bg-blue-500 border-dashed" style={{ borderTopWidth: 2, borderStyle: 'dashed' }} />
             <span className="text-slate-600">Your Prediction</span>
           </div>
         )}
-        {showActual && (
+        {showActual && normalizedActual.length > 0 && (
           <div className="flex items-center gap-1">
             <div className="w-3 h-0.5 bg-green-500" />
             <span className="text-slate-600">Actual</span>

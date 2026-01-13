@@ -159,14 +159,14 @@ export function EpiCurveChart({
           </linearGradient>
         </defs>
 
-        {/* Grid lines */}
-        {[0.25, 0.5, 0.75, 1].map(ratio => (
+        {/* Grid lines - aligned with Y-axis ticks */}
+        {yTicks.slice(1).map((val) => (
           <line
-            key={ratio}
+            key={val}
             x1={padding.left}
-            y1={padding.top + chartHeight * (1 - ratio)}
+            y1={yScale(val)}
             x2={viewBoxWidth - padding.right}
-            y2={padding.top + chartHeight * (1 - ratio)}
+            y2={yScale(val)}
             stroke="#e2e8f0"
             strokeWidth="0.5"
             strokeDasharray="3 3"
@@ -219,7 +219,7 @@ export function EpiCurveChart({
           fill="#94a3b8"
           transform={`rotate(-90, 12, ${padding.top + chartHeight / 2})`}
         >
-          Cases
+          Weekly Cases
         </text>
 
         {/* When showing actual: render combined smooth curve */}

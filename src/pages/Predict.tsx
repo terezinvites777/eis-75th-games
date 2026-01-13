@@ -103,7 +103,7 @@ export function Predict() {
         theme="predict"
         heroTitle="Mystery Outbreak 2026"
         heroSubtitle="Live Conference Challenge"
-        showNav={false}
+        showNav={true}
       >
         {/* Confetti celebration */}
         <Confetti active={showConfetti} />
@@ -252,7 +252,7 @@ export function Predict() {
         theme="predict"
         heroTitle="Predict the Outbreak"
         heroSubtitle={selectedScenario.title}
-        showNav={false}
+        showNav={true}
       >
         <div className="px-4 py-6 max-w-2xl mx-auto animate-slide-up">
           {/* Back button */}

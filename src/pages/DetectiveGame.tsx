@@ -114,7 +114,7 @@ export function DetectiveGame() {
       heroTitle={caseData.title}
       heroSubtitle={caseData.subtitle}
       backPath={`/detective/${era}`}
-      showNav={phase === 'briefing' || phase === 'result'}
+      showNav={true}
       showHero={false}
     >
       {/* Phase Plate - Changes based on current game phase */}

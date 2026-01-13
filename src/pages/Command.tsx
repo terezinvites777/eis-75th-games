@@ -39,7 +39,7 @@ export function Command() {
         theme="command"
         heroTitle={selectedScenario.title}
         heroSubtitle="Outbreak Command"
-        showNav={false}
+        showNav={true}
       >
         <CommandGame
           scenario={selectedScenario}

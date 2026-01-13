@@ -131,7 +131,7 @@ export function PatientZero() {
         theme="patient-zero"
         heroTitle={selectedMystery.title}
         heroSubtitle="Where in the World is Patient Zero?"
-        showNav={false}
+        showNav={true}
       >
         <div className="px-4 py-6 max-w-3xl mx-auto">
           {/* Back button */}

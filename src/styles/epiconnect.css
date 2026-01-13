@@ -827,17 +827,19 @@ html:has([data-theme="connect"]) {
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 12px;
-  font-weight: 700;
-  background: linear-gradient(135deg, rgba(210,178,92,0.15), rgba(178,138,46,0.15));
-  color: var(--epi-brass-3);
-  border: 1px solid rgba(178,138,46,0.25);
+  font-weight: 800;
+  background: linear-gradient(135deg, #c9a227, #a88520);
+  color: #1a1008 !important;
+  border: 1px solid #8b6914;
   flex-shrink: 0;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.3);
 }
 
 .epi-ledgerRow.is-complete .epi-ledgerRow__points {
-  background: linear-gradient(135deg, rgba(74,124,74,0.15), rgba(60,100,60,0.15));
-  color: #3d6b3d;
-  border-color: rgba(74,124,74,0.3);
+  background: linear-gradient(135deg, #5a9a5a, #4a8a4a);
+  color: #0a2a0a !important;
+  border-color: #3a6a3a;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.3);
 }
 
 /* 18) Progress Card */

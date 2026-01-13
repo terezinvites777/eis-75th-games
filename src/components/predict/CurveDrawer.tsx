@@ -31,7 +31,9 @@ export function CurveDrawer({
   const lastHistorical = historicalData[historicalData.length - 1];
   const effectiveMinWeek = minWeek ?? Math.min(...historicalData.map(d => d.week));
   const effectiveMaxWeek = maxWeek ?? (lastHistorical.week + 12);
-  const effectiveMaxCases = maxCases ?? Math.max(...historicalData.map(d => d.cases)) * 4;
+  // Use 12x multiplier to ensure users can predict significantly higher than historical
+  // This allows for realistic outbreak peaks (e.g., 89 historical → 1068 max allows peak of ~234)
+  const effectiveMaxCases = maxCases ?? Math.max(...historicalData.map(d => d.cases)) * 12;
 
   // SVG viewBox dimensions - wider for better drawing
   const viewBoxWidth = 400;

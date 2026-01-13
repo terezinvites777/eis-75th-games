@@ -1,5 +1,5 @@
 // src/pages/Connect.tsx
-// EpiConnect - Speed networking for EIS officers
+// EpiConnect - Instagram-style networking for EIS officers
 
 import { useState, useMemo, useEffect } from 'react';
 import { GameShell } from '../components/layout/GameShell';
@@ -9,6 +9,9 @@ import { MatchFilters } from '../components/connect/MatchFilters';
 import { ProfileSetup } from '../components/connect/ProfileSetup';
 import { QRCodeConnect } from '../components/connect/QRCodeConnect';
 import { SpeedNetworking } from '../components/connect/SpeedNetworking';
+import { ConnectLeftSidebar } from '../components/connect/ConnectLeftSidebar';
+import { ConnectRightSidebar } from '../components/connect/ConnectRightSidebar';
+import { OnlineNowCarousel } from '../components/connect/OnlineNowCarousel';
 import {
   mockAttendees,
   connectChallenges,
@@ -17,7 +20,7 @@ import {
   getAttendeeById,
 } from '../data/connect-data';
 import type { AttendeeProfile, MatchFilter, Topic, Connection, UserProfile, ConnectView } from '../types/connect';
-import { Users, Target, Sparkles, QrCode, Timer, User, Trophy, Zap } from 'lucide-react';
+import { Users, Target, Sparkles, QrCode, Timer, Trophy, Zap, Search, Home } from 'lucide-react';
 import { Confetti } from '../components/patient-zero/Confetti';
 
 // Storage keys
@@ -43,6 +46,7 @@ export function Connect() {
   const [activeFilter, setActiveFilter] = useState<MatchFilter | Topic | null>(null);
   const [view, setView] = useState<ConnectView>('discover');
   const [showConfetti, setShowConfetti] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Persist profile to localStorage
   useEffect(() => {
@@ -65,11 +69,21 @@ export function Connect() {
     return getTopMatches(userProfile, mockAttendees, 20);
   }, [userProfile]);
 
-  // Filter attendees based on active filter
+  // Filter attendees based on active filter and search
   const filteredAttendees = useMemo(() => {
     let attendees = mockAttendees.filter(a =>
       a.id !== userProfile?.id && !connectedIds.has(a.id)
     );
+
+    // Search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      attendees = attendees.filter(a =>
+        a.name.toLowerCase().includes(query) ||
+        a.home_state?.toLowerCase().includes(query) ||
+        a.topics.some(t => topicLabels[t].toLowerCase().includes(query))
+      );
+    }
 
     if (activeFilter === 'new-alumni') {
       attendees = attendees.filter(a => a.role === 'alumni' || a.role === 'supervisor');
@@ -80,7 +94,7 @@ export function Connect() {
     }
 
     // Sort by match score if we have a user profile
-    if (userProfile && !activeFilter) {
+    if (userProfile && !activeFilter && !searchQuery) {
       const scoreMap = new Map(rankedAttendees.map(r => [r.attendeeId, r]));
       attendees.sort((a, b) => {
         const scoreA = scoreMap.get(a.id)?.score || 0;
@@ -90,7 +104,7 @@ export function Connect() {
     }
 
     return attendees;
-  }, [activeFilter, connectedIds, userProfile, rankedAttendees]);
+  }, [activeFilter, connectedIds, userProfile, rankedAttendees, searchQuery]);
 
   // Calculate total points
   const totalPoints = connections.reduce((sum, c) => sum + c.points_earned, 0);
@@ -232,6 +246,17 @@ export function Connect() {
 
   const completedChallenges = Object.values(challengeProgress).filter(p => p.complete).length;
 
+  // Handle selecting an online user
+  const handleSelectOnlineUser = (id: string) => {
+    // Scroll to that user in the feed or show their card
+    const element = document.getElementById(`attendee-${id}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      element.classList.add('ring-2', 'ring-purple-500');
+      setTimeout(() => element.classList.remove('ring-2', 'ring-purple-500'), 2000);
+    }
+  };
+
   // Show profile setup if no profile exists
   if (showProfileSetup || !userProfile) {
     return (
@@ -251,292 +276,273 @@ export function Connect() {
     >
       <Confetti active={showConfetti} />
 
-      <div className="px-4 py-6 max-w-4xl mx-auto">
-        {/* User Profile Card */}
-        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-4 mb-6 text-white shadow-lg">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-white/20 flex items-center justify-center text-xl font-bold">
-              {userProfile.name.split(' ').map(n => n[0]).join('')}
-            </div>
-            <div className="flex-1">
-              <div className="font-bold text-lg">{userProfile.name}</div>
-              <div className="text-purple-200 text-sm">
-                {userProfile.role === 'incoming' ? 'Incoming EIS' :
-                 userProfile.role === 'second_year' ? '2nd Year EIS' :
-                 userProfile.role === 'alumni' ? 'Alumni' : 'Supervisor'}
-                {userProfile.eis_class_year && ` '${String(userProfile.eis_class_year).slice(-2)}`}
-              </div>
-            </div>
-            <button
-              onClick={() => setShowProfileSetup(true)}
-              className="p-2 bg-white/20 rounded-lg hover:bg-white/30 transition-colors"
-            >
-              <User size={20} />
-            </button>
-          </div>
-        </div>
+      <div className="px-4 py-6 max-w-7xl mx-auto">
+        <div className="flex gap-6">
+          {/* LEFT SIDEBAR - Desktop only */}
+          <aside className="hidden lg:block w-72 flex-shrink-0">
+            <ConnectLeftSidebar
+              userProfile={userProfile}
+              connections={connections}
+              totalPoints={totalPoints}
+              completedChallenges={completedChallenges}
+              onEditProfile={() => setShowProfileSetup(true)}
+            />
+          </aside>
 
-        {/* Stats Bar */}
-        <div className="bg-white/95 rounded-xl p-4 shadow-lg mb-6 grid grid-cols-3 gap-4 text-center">
-          <div>
-            <div className="text-2xl font-bold text-purple-600">{connections.length}</div>
-            <div className="text-xs text-slate-500">Connections</div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-amber-500">{totalPoints}</div>
-            <div className="text-xs text-slate-500">Points</div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-green-600">{completedChallenges}/{connectChallenges.length}</div>
-            <div className="text-xs text-slate-500">Challenges</div>
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          <button
-            onClick={() => setView('speed')}
-            className={`p-4 rounded-xl font-semibold transition-all flex items-center gap-3 ${
-              view === 'speed'
-                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-                : 'bg-white text-slate-700 border border-slate-200 hover:border-purple-300'
-            }`}
-          >
-            <div className={`p-2 rounded-lg ${view === 'speed' ? 'bg-white/20' : 'bg-purple-100'}`}>
-              <Timer size={20} className={view === 'speed' ? 'text-white' : 'text-purple-600'} />
-            </div>
-            <div className="text-left">
-              <div className="font-semibold">Speed Network</div>
-              <div className={`text-xs ${view === 'speed' ? 'text-purple-200' : 'text-slate-500'}`}>5-min sessions</div>
-            </div>
-          </button>
-
-          <button
-            onClick={() => setView('qr')}
-            className={`p-4 rounded-xl font-semibold transition-all flex items-center gap-3 ${
-              view === 'qr'
-                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-                : 'bg-white text-slate-700 border border-slate-200 hover:border-purple-300'
-            }`}
-          >
-            <div className={`p-2 rounded-lg ${view === 'qr' ? 'bg-white/20' : 'bg-purple-100'}`}>
-              <QrCode size={20} className={view === 'qr' ? 'text-white' : 'text-purple-600'} />
-            </div>
-            <div className="text-left">
-              <div className="font-semibold">QR Connect</div>
-              <div className={`text-xs ${view === 'qr' ? 'text-purple-200' : 'text-slate-500'}`}>Scan in person</div>
-            </div>
-          </button>
-        </div>
-
-        {/* View Tabs */}
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-          <button
-            onClick={() => setView('discover')}
-            className={`px-4 py-2.5 rounded-xl font-semibold transition-all flex items-center gap-2 whitespace-nowrap ${
-              view === 'discover'
-                ? 'bg-purple-600 text-white shadow-lg'
-                : 'bg-white text-slate-700 border border-slate-200'
-            }`}
-          >
-            <Sparkles size={18} />
-            Discover
-          </button>
-          <button
-            onClick={() => setView('connections')}
-            className={`px-4 py-2.5 rounded-xl font-semibold transition-all flex items-center gap-2 whitespace-nowrap ${
-              view === 'connections'
-                ? 'bg-purple-600 text-white shadow-lg'
-                : 'bg-white text-slate-700 border border-slate-200'
-            }`}
-          >
-            <Users size={18} />
-            My Network
-            {connections.length > 0 && (
-              <span className={`px-2 py-0.5 rounded-full text-xs ${
-                view === 'connections' ? 'bg-white/20' : 'bg-purple-100 text-purple-700'
-              }`}>
-                {connections.length}
-              </span>
-            )}
-          </button>
-          <button
-            onClick={() => setView('challenges')}
-            className={`px-4 py-2.5 rounded-xl font-semibold transition-all flex items-center gap-2 whitespace-nowrap ${
-              view === 'challenges'
-                ? 'bg-purple-600 text-white shadow-lg'
-                : 'bg-white text-slate-700 border border-slate-200'
-            }`}
-          >
-            <Target size={18} />
-            Challenges
-          </button>
-        </div>
-
-        {/* Speed Networking View */}
-        {view === 'speed' && (
-          <SpeedNetworking
-            userProfile={userProfile}
-            onConnect={(id, rating) => handleConnect(id, 'speed_session', rating)}
-            onSkip={handleSkip}
-            connectedIds={connectedIds}
-            skippedIds={skippedIds}
-          />
-        )}
-
-        {/* QR Code View */}
-        {view === 'qr' && (
-          <QRCodeConnect
-            userProfile={userProfile}
-            onConnect={(id) => handleConnect(id, 'qr_scan')}
-            connectedIds={connectedIds}
-          />
-        )}
-
-        {/* Discover View */}
-        {view === 'discover' && (
-          <>
-            <MatchFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
-
-            {/* Suggested matches header */}
-            {!activeFilter && rankedAttendees.length > 0 && (
-              <div className="mt-4 mb-2 flex items-center gap-2 text-purple-700">
-                <Zap size={16} />
-                <span className="text-sm font-medium">Suggested for you</span>
-              </div>
-            )}
-
-            <div className="mt-4 space-y-4">
-              {filteredAttendees.length === 0 ? (
-                <div className="bg-white/95 rounded-xl p-8 text-center">
-                  <div className="text-4xl mb-3">🎉</div>
-                  <h3 className="text-lg font-semibold text-slate-800">No more matches!</h3>
-                  <p className="text-slate-600 mt-2">
-                    You've connected with everyone in this category. Try a different filter!
-                  </p>
-                </div>
-              ) : (
-                filteredAttendees.slice(0, 10).map(attendee => {
-                  const matchInfo = rankedAttendees.find(r => r.attendeeId === attendee.id);
-                  return (
-                    <AttendeeCard
-                      key={attendee.id}
-                      attendee={attendee}
-                      onConnect={(id) => handleConnect(id, 'app_connect')}
-                      isConnected={false}
-                      matchReasons={matchInfo?.reasons}
-                    />
-                  );
-                })
-              )}
-
-              {filteredAttendees.length > 10 && (
-                <div className="text-center py-4">
-                  <p className="text-slate-500 text-sm">
-                    Showing top 10 matches. Use filters to narrow down.
-                  </p>
-                </div>
-              )}
-            </div>
-          </>
-        )}
-
-        {/* Connections View */}
-        {view === 'connections' && (
-          <div className="space-y-4">
-            {connectedAttendees.length === 0 ? (
-              <div className="bg-white/95 rounded-xl p-8 text-center">
-                <div className="text-4xl mb-3">👋</div>
-                <h3 className="text-lg font-semibold text-slate-800">No connections yet</h3>
-                <p className="text-slate-600 mt-2">
-                  Start networking! Browse attendees and make your first connection.
-                </p>
-                <button
-                  onClick={() => setView('discover')}
-                  className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700"
-                >
-                  Find People
-                </button>
-              </div>
-            ) : (
-              <>
-                <div className="bg-purple-50 rounded-xl p-4 border border-purple-100">
-                  <div className="flex items-center gap-2 text-purple-700 font-medium mb-2">
-                    <Trophy size={18} />
-                    Your Network
+          {/* CENTER FEED */}
+          <main className="flex-1 min-w-0 max-w-2xl">
+            {/* Mobile Profile Summary */}
+            <div className="lg:hidden mb-4">
+              <div className="panel bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center font-bold text-lg">
+                    {userProfile.name.split(' ').map(n => n[0]).join('')}
                   </div>
-                  <p className="text-sm text-purple-600">
-                    You've connected with {connectedAttendees.length} people and earned {totalPoints} points!
-                  </p>
-                </div>
-                {connectedAttendees.map(attendee => {
-                  const connection = connections.find(c => c.connected_player_id === attendee.id);
-                  return (
-                    <div key={attendee.id} className="relative">
-                      <AttendeeCard
-                        attendee={attendee}
-                        isConnected={true}
-                        showFullBio={true}
-                      />
-                      {connection && (
-                        <div className="absolute top-4 right-4 flex items-center gap-2">
-                          <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full font-medium">
-                            +{connection.points_earned} pts
-                          </span>
-                          {connection.connection_method === 'qr_scan' && (
-                            <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-full">
-                              QR
-                            </span>
-                          )}
-                          {connection.connection_method === 'speed_session' && (
-                            <span className="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded-full">
-                              Speed
-                            </span>
-                          )}
-                        </div>
-                      )}
+                  <div className="flex-1">
+                    <div className="font-bold">{userProfile.name}</div>
+                    <div className="text-purple-200 text-sm">
+                      {connections.length} connections | {totalPoints} pts
                     </div>
-                  );
-                })}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Search Bar */}
+            <div className="mb-4">
+              <div className="flex items-center gap-3">
+                <div className="flex-1 relative">
+                  <Search className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    placeholder="Search attendees by name, location, or topic..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-colors"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Feed Filter Tabs */}
+            <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
+              {[
+                { key: 'discover', label: 'Discover', icon: Home },
+                { key: 'connections', label: 'My Network', icon: Users, count: connections.length },
+                { key: 'challenges', label: 'Challenges', icon: Target },
+                { key: 'speed', label: 'Speed', icon: Timer },
+                { key: 'qr', label: 'QR Code', icon: QrCode },
+              ].map(tab => {
+                const Icon = tab.icon;
+                const isActive = view === tab.key;
+                return (
+                  <button
+                    key={tab.key}
+                    onClick={() => setView(tab.key as ConnectView)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all flex items-center gap-2 ${
+                      isActive
+                        ? 'bg-purple-600 text-white shadow-md'
+                        : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200'
+                    }`}
+                  >
+                    <Icon size={16} />
+                    {tab.label}
+                    {tab.count !== undefined && tab.count > 0 && (
+                      <span className={`px-1.5 py-0.5 rounded-full text-xs ${
+                        isActive ? 'bg-white/20' : 'bg-purple-100 text-purple-700'
+                      }`}>
+                        {tab.count}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Speed Networking View */}
+            {view === 'speed' && (
+              <SpeedNetworking
+                userProfile={userProfile}
+                onConnect={(id, rating) => handleConnect(id, 'speed_session', rating)}
+                onSkip={handleSkip}
+                connectedIds={connectedIds}
+                skippedIds={skippedIds}
+              />
+            )}
+
+            {/* QR Code View */}
+            {view === 'qr' && (
+              <QRCodeConnect
+                userProfile={userProfile}
+                onConnect={(id) => handleConnect(id, 'qr_scan')}
+                connectedIds={connectedIds}
+              />
+            )}
+
+            {/* Discover View */}
+            {view === 'discover' && (
+              <>
+                {/* Online Now Carousel */}
+                <OnlineNowCarousel
+                  attendees={filteredAttendees}
+                  onSelect={handleSelectOnlineUser}
+                  connectedIds={connectedIds}
+                />
+
+                {/* Match Filters */}
+                <MatchFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
+
+                {/* Suggested matches header */}
+                {!activeFilter && !searchQuery && rankedAttendees.length > 0 && (
+                  <div className="mt-4 mb-2 flex items-center gap-2">
+                    <span className="pill pill-themed text-xs">
+                      <Zap size={12} />
+                      Suggested for you
+                    </span>
+                  </div>
+                )}
+
+                {/* Attendee Feed */}
+                <div className="mt-4 space-y-4">
+                  {filteredAttendees.length === 0 ? (
+                    <div className="panel text-center py-8">
+                      <div className="text-4xl mb-3">🎉</div>
+                      <h3 className="text-lg font-semibold text-slate-800">No more matches!</h3>
+                      <p className="text-slate-600 mt-2 text-sm">
+                        You've connected with everyone in this category. Try a different filter!
+                      </p>
+                    </div>
+                  ) : (
+                    filteredAttendees.slice(0, 10).map(attendee => {
+                      const matchInfo = rankedAttendees.find(r => r.attendeeId === attendee.id);
+                      return (
+                        <div key={attendee.id} id={`attendee-${attendee.id}`} className="transition-all">
+                          <AttendeeCard
+                            attendee={attendee}
+                            onConnect={(id) => handleConnect(id, 'app_connect')}
+                            isConnected={false}
+                            matchReasons={matchInfo?.reasons}
+                          />
+                        </div>
+                      );
+                    })
+                  )}
+
+                  {filteredAttendees.length > 10 && (
+                    <div className="text-center py-4">
+                      <p className="text-slate-500 text-sm">
+                        Showing top 10 matches. Use search or filters to find more.
+                      </p>
+                    </div>
+                  )}
+                </div>
               </>
             )}
-          </div>
-        )}
 
-        {/* Challenges View */}
-        {view === 'challenges' && (
-          <div className="space-y-3">
-            {/* Progress summary */}
-            <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl p-4 text-white mb-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-sm opacity-80">Challenge Progress</div>
-                  <div className="text-2xl font-bold">{completedChallenges} / {connectChallenges.length}</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-sm opacity-80">Total Points</div>
-                  <div className="text-2xl font-bold">{totalPoints}</div>
-                </div>
+            {/* Connections View */}
+            {view === 'connections' && (
+              <div className="space-y-4">
+                {connectedAttendees.length === 0 ? (
+                  <div className="panel text-center py-8">
+                    <div className="text-4xl mb-3">👋</div>
+                    <h3 className="text-lg font-semibold text-slate-800">No connections yet</h3>
+                    <p className="text-slate-600 mt-2 text-sm">
+                      Start networking! Browse attendees and make your first connection.
+                    </p>
+                    <button
+                      onClick={() => setView('discover')}
+                      className="btn-emboss btn-emboss-primary mt-4"
+                    >
+                      <Sparkles size={16} />
+                      Find People
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="panel bg-gradient-to-r from-purple-50 to-pink-50 border-purple-100">
+                      <div className="flex items-center gap-2 text-purple-700 font-medium mb-2">
+                        <Trophy size={18} />
+                        Your Network
+                      </div>
+                      <p className="text-sm text-purple-600">
+                        You've connected with {connectedAttendees.length} people and earned {totalPoints} points!
+                      </p>
+                    </div>
+                    {connectedAttendees.map(attendee => {
+                      const connection = connections.find(c => c.connected_player_id === attendee.id);
+                      return (
+                        <div key={attendee.id} className="relative">
+                          <AttendeeCard
+                            attendee={attendee}
+                            isConnected={true}
+                            showFullBio={true}
+                          />
+                          {connection && (
+                            <div className="absolute top-4 right-4 flex items-center gap-2">
+                              <span className="pill bg-green-100 text-green-700 border-green-200 text-xs">
+                                +{connection.points_earned} pts
+                              </span>
+                              {connection.connection_method === 'qr_scan' && (
+                                <span className="pill bg-purple-100 text-purple-700 border-purple-200 text-xs">
+                                  QR
+                                </span>
+                              )}
+                              {connection.connection_method === 'speed_session' && (
+                                <span className="pill bg-amber-100 text-amber-700 border-amber-200 text-xs">
+                                  Speed
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
               </div>
-              <div className="mt-3 h-2 bg-white/20 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-white transition-all"
-                  style={{ width: `${(completedChallenges / connectChallenges.length) * 100}%` }}
-                />
-              </div>
-            </div>
+            )}
 
-            {connectChallenges.map(challenge => (
-              <ChallengeCard
-                key={challenge.id}
-                challenge={challenge}
-                progress={challengeProgress[challenge.id]?.progress || 0}
-                target={challengeProgress[challenge.id]?.target || 1}
-                isComplete={challengeProgress[challenge.id]?.complete || false}
-              />
-            ))}
-          </div>
-        )}
+            {/* Challenges View */}
+            {view === 'challenges' && (
+              <div className="space-y-3">
+                {/* Progress summary */}
+                <div className="panel bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-sm text-white/80">Challenge Progress</div>
+                      <div className="text-2xl font-bold">{completedChallenges} / {connectChallenges.length}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm text-white/80">Total Points</div>
+                      <div className="text-2xl font-bold">{totalPoints}</div>
+                    </div>
+                  </div>
+                  <div className="mt-3 h-2 bg-white/20 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-white transition-all"
+                      style={{ width: `${(completedChallenges / connectChallenges.length) * 100}%` }}
+                    />
+                  </div>
+                </div>
+
+                {connectChallenges.map(challenge => (
+                  <ChallengeCard
+                    key={challenge.id}
+                    challenge={challenge}
+                    progress={challengeProgress[challenge.id]?.progress || 0}
+                    target={challengeProgress[challenge.id]?.target || 1}
+                    isComplete={challengeProgress[challenge.id]?.complete || false}
+                  />
+                ))}
+              </div>
+            )}
+          </main>
+
+          {/* RIGHT SIDEBAR - XL screens only */}
+          <aside className="hidden xl:block w-64 flex-shrink-0">
+            <ConnectRightSidebar onNavigate={setView} />
+          </aside>
+        </div>
       </div>
     </GameShell>
   );

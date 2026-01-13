@@ -680,3 +680,56 @@
 .safe-area-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
+
+/* ============================================
+   BUTTON COLOR FIXES - January 13, 2026
+   Force gold styling on primary buttons for
+   Predict and Patient Zero games
+   ============================================ */
+
+/* Gold buttons for Predict the Outbreak */
+[data-theme="predict"] .btn-emboss-primary {
+  background: linear-gradient(135deg, #D4AF37, #B8860B) !important;
+  color: #0f0f0f !important;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.30);
+}
+
+/* Gold buttons for Patient Zero */
+[data-theme="patient-zero"] .btn-emboss-primary {
+  background: linear-gradient(135deg, #D4AF37, #B8860B) !important;
+  color: #0f0f0f !important;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.30);
+}
+
+/* Gold progress bars for Predict */
+[data-theme="predict"] .progress-fill {
+  background: linear-gradient(90deg, #D4AF37, #B8860B) !important;
+}
+
+/* Gold progress bars for Patient Zero */
+[data-theme="patient-zero"] .progress-fill {
+  background: linear-gradient(90deg, #dc2626, #ef4444) !important;
+}
+
+/* ============================================
+   PATIENT ZERO BACKGROUND - Warm Cork Board
+   ============================================ */
+
+[data-theme="patient-zero"] .app-bg {
+  background: #d8c8b8 !important;
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% 0%, rgba(255,240,230,0.7) 0%, transparent 60%),
+    linear-gradient(180deg, #d4c4b4 0%, #c9b9a9 20%, #bfafa0 50%, #b5a595 100%) !important;
+}
+
+[data-theme="patient-zero"] .app-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: radial-gradient(circle, rgba(139,69,69,0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+}

@@ -1,5 +1,5 @@
 // src/pages/DetectiveGame.tsx
-// Main gameplay screen for Disease Detective cases
+// Main gameplay screen for Disease Detective cases - Investigation Workspace Layout
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,12 +7,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Clock, AlertTriangle, CheckCircle, XCircle,
   MessageSquare, ChevronDown, ChevronUp,
-  Lightbulb, BookOpen, RotateCcw, FileText, Search
+  Lightbulb, BookOpen, RotateCcw, Search, Clipboard
 } from 'lucide-react';
-import { DetectiveGameShell } from '../components/detective/DetectiveGameShell';
-import { ParchmentPanel } from '../components/detective/ParchmentPanel';
+import { CaseBanner } from '../components/detective/CaseBanner';
+import { InvestigationLayout } from '../components/detective/InvestigationLayout';
 import { ClueCard } from '../components/detective/ClueCard';
-import { EraBadge, DifficultyStars } from '../components/brand/BrandMarks';
 import { getCaseById } from '../data/detective';
 import { DETECTIVE_PLATES, type PlateMeta } from '../data/detectivePlates';
 import { useGameStore } from '../store/gameStore';
@@ -23,9 +22,9 @@ export function DetectiveGame() {
   const navigate = useNavigate();
   const { era, caseId } = useParams<{ era: string; caseId: string }>();
   const { addScore } = useGameStore();
-  
+
   const caseData = caseId ? getCaseById(caseId) : null;
-  
+
   const [phase, setPhase] = useState<GamePhase>('briefing');
   const [timeRemaining, setTimeRemaining] = useState(caseData?.timeLimit || 300);
   const [revealedClues, setRevealedClues] = useState<string[]>([]);
@@ -85,14 +84,21 @@ export function DetectiveGame() {
 
   if (!caseData) {
     return (
-      <DetectiveGameShell
-        title="Case Not Found"
-        backPath="/detective"
-      >
-        <ParchmentPanel title="Error" icon={<AlertTriangle size={14} />}>
-          <p className="text-center">This case could not be loaded.</p>
-        </ParchmentPanel>
-      </DetectiveGameShell>
+      <InvestigationLayout
+        banner={
+          <CaseBanner
+            title="Case Not Found"
+            imageUrl={DETECTIVE_PLATES.caseSelect.src}
+            onBack={() => navigate('/detective')}
+          />
+        }
+        left={
+          <div className="dd-panel">
+            <p style={{ textAlign: 'center' }}>This case could not be loaded.</p>
+          </div>
+        }
+        right={<div />}
+      />
     );
   }
 
@@ -111,7 +117,7 @@ export function DetectiveGame() {
 
   const plate = getCurrentPlate();
 
-  // Phase title for status strip
+  // Phase label for banner
   const phaseLabel = {
     briefing: 'Case Briefing',
     investigation: 'Investigation',
@@ -119,50 +125,126 @@ export function DetectiveGame() {
     result: isCorrect ? 'Case Solved' : 'Review',
   }[phase];
 
-  return (
-    <DetectiveGameShell
-      title={caseData.title}
-      subtitle={caseData.subtitle}
-      stageImageUrl={plate.src}
-      backPath={`/detective/${era}`}
-      statusStrip={
-        <>
-          <div className="status-item">
-            <Clock
-              size={16}
-              className={timeRemaining < 60 ? 'text-red-500' : 'text-[var(--brass-1)]'}
-            />
-            <span className="status-label">Time:</span>
-            <span
-              className="status-value"
-              style={timeRemaining < 60 ? { color: '#ef4444' } : undefined}
-            >
-              {formatTime(timeRemaining)}
-            </span>
-          </div>
-          <div className="status-item">
-            <FileText size={16} className="text-[var(--brass-1)]" />
-            <span className="status-label">Phase:</span>
-            <span className="status-value">{phaseLabel}</span>
-          </div>
-          <div className="status-item">
-            <Search size={16} className="text-[var(--brass-1)]" />
-            <span className="status-label">Points:</span>
-            <span className="status-value">{availablePoints}</span>
-          </div>
-        </>
-      }
-    >
-      {/* Progress bar for active phases */}
-      {(phase === 'investigation' || phase === 'diagnosis') && (
-        <div className="detective-progress mt-2">
-          <div
-            className="detective-progress-fill"
-            style={{ width: `${(timeRemaining / caseData.timeLimit) * 100}%` }}
-          />
-        </div>
-      )}
+  // Difficulty mapping
+  const difficultyMap: Record<number, 'Easy' | 'Medium' | 'Hard'> = {
+    1: 'Easy',
+    2: 'Medium',
+    3: 'Hard',
+  };
 
+  // Era tag
+  const eraTagMap: Record<string, string> = {
+    founding: '1950s',
+    modern: '1970-90s',
+    global: '2000s+',
+  };
+
+  // Notebook content based on phase
+  const renderNotebook = () => {
+    if (phase === 'result') {
+      return (
+        <div className="dd-notebook">
+          <div className="dd-notebook__title">
+            <BookOpen size={14} />
+            Case Summary
+          </div>
+          <div className="dd-notebook__content">
+            <p style={{ marginBottom: 8 }}>
+              <strong>Your diagnosis:</strong>
+            </p>
+            <p style={{ marginBottom: 4 }}>
+              Pathogen: {caseData.diagnosis.pathogenOptions.find(p => p.id === selectedPathogen)?.label || 'None'}
+            </p>
+            <p>
+              Source: {caseData.diagnosis.sourceOptions.find(s => s.id === selectedSource)?.label || 'None'}
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <div className="dd-notebook">
+          <div className="dd-notebook__title">
+            <Clipboard size={14} />
+            Case Notebook
+          </div>
+          <div className="dd-notebook__content">
+            {phase === 'briefing' && (
+              <p>Read the briefing carefully. Note key symptoms, timeline, and affected population.</p>
+            )}
+            {phase === 'investigation' && (
+              <>
+                <p style={{ marginBottom: 8 }}>
+                  <strong>Evidence reviewed:</strong> {revealedClues.length} / {caseData.clues.length}
+                </p>
+                <div className="dd-progress">
+                  <div
+                    className="dd-progress__fill"
+                    style={{ width: `${(revealedClues.length / caseData.clues.length) * 100}%` }}
+                  />
+                </div>
+                <p style={{ marginTop: 12, fontSize: 12, opacity: 0.8 }}>
+                  Tip: Look for patterns in symptoms, timing, and exposure routes.
+                </p>
+              </>
+            )}
+            {phase === 'diagnosis' && (
+              <>
+                <p style={{ marginBottom: 8 }}>
+                  <strong>Selected:</strong>
+                </p>
+                <p style={{ fontSize: 13 }}>
+                  Pathogen: {selectedPathogen ? caseData.diagnosis.pathogenOptions.find(p => p.id === selectedPathogen)?.label : '—'}
+                </p>
+                <p style={{ fontSize: 13 }}>
+                  Source: {selectedSource ? caseData.diagnosis.sourceOptions.find(s => s.id === selectedSource)?.label : '—'}
+                </p>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Stats panel */}
+        <div className="dd-notebook">
+          <div className="dd-notebook__title">
+            <Clock size={14} />
+            Investigation Status
+          </div>
+          <div className="dd-notebook__content">
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+              <span>Time Remaining:</span>
+              <strong style={{ color: timeRemaining < 60 ? '#dc2626' : '#8a6a14' }}>
+                {formatTime(timeRemaining)}
+              </strong>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <span>Points Available:</span>
+              <strong style={{ color: '#8a6a14' }}>{availablePoints}</strong>
+            </div>
+            {(phase === 'investigation' || phase === 'diagnosis') && (
+              <div className="dd-progress" style={{ marginTop: 10 }}>
+                <div
+                  className="dd-progress__fill"
+                  style={{
+                    width: `${(timeRemaining / caseData.timeLimit) * 100}%`,
+                    background: timeRemaining < 60
+                      ? 'linear-gradient(90deg, #dc2626, #ef4444)'
+                      : undefined
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  // Main content based on phase
+  const renderMainContent = () => {
+    return (
       <AnimatePresence mode="wait">
         {phase === 'briefing' && (
           <motion.div
@@ -171,45 +253,57 @@ export function DetectiveGame() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <ParchmentPanel
-              title={caseData.briefing.type === 'email' ? 'Incoming Email' : caseData.briefing.type === 'phone' ? 'Phone Briefing' : caseData.briefing.type === 'alert' ? 'Alert' : 'Memo'}
-              icon={<MessageSquare size={14} />}
-              showPins
-              right={
-                <div className="flex items-center gap-3">
-                  <EraBadge era={caseData.era} />
-                  <span style={{ color: 'var(--ink-1)' }}>{caseData.year}</span>
-                  <DifficultyStars level={caseData.difficulty} />
-                  {caseData.briefing.urgency === 'critical' && (
-                    <span className="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-bold rounded-full">
-                      URGENT
-                    </span>
-                  )}
+            <div className="dd-panel">
+              <div className="dd-panel__header">
+                <div className="dd-panel__icon">
+                  <MessageSquare size={16} />
                 </div>
-              }
-            >
-              <div className="space-y-2 mb-4">
-                <p><strong>From:</strong> {caseData.briefing.from}</p>
-                <p><strong>Subject:</strong> {caseData.briefing.subject}</p>
-                {caseData.briefing.timestamp && (
-                  <p><strong>Date:</strong> {caseData.briefing.timestamp}</p>
+                <h2 className="dd-panel__title">
+                  {caseData.briefing.type === 'email' ? 'Incoming Email' :
+                   caseData.briefing.type === 'phone' ? 'Phone Briefing' :
+                   caseData.briefing.type === 'alert' ? 'Alert' : 'Memo'}
+                </h2>
+                {caseData.briefing.urgency === 'critical' && (
+                  <span style={{
+                    marginLeft: 'auto',
+                    padding: '4px 10px',
+                    background: '#fee2e2',
+                    color: '#b91c1c',
+                    fontSize: 11,
+                    fontWeight: 700,
+                    borderRadius: 999,
+                  }}>
+                    URGENT
+                  </span>
                 )}
               </div>
-              <hr className="border-dashed border-[var(--ink-0)]/20 my-4" />
-              <div className="whitespace-pre-wrap">{caseData.briefing.content}</div>
 
-              <div className="text-center space-y-3 mt-6">
+              <div style={{ fontSize: 13, marginBottom: 16, opacity: 0.85 }}>
+                <p style={{ margin: '4px 0' }}><strong>From:</strong> {caseData.briefing.from}</p>
+                <p style={{ margin: '4px 0' }}><strong>Subject:</strong> {caseData.briefing.subject}</p>
+                {caseData.briefing.timestamp && (
+                  <p style={{ margin: '4px 0' }}><strong>Date:</strong> {caseData.briefing.timestamp}</p>
+                )}
+              </div>
+
+              <hr style={{ border: 'none', borderTop: '1px dashed rgba(60,40,28,.22)', margin: '16px 0' }} />
+
+              <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.65 }}>
+                {caseData.briefing.content}
+              </div>
+
+              <div style={{ textAlign: 'center', marginTop: 24 }}>
                 <button
                   onClick={() => setPhase('investigation')}
-                  className="detective-btn-primary"
+                  className="dd-btn dd-btn--primary"
                 >
                   Begin Investigation
                 </button>
-                <p className="text-sm" style={{ color: 'var(--muted)' }}>
+                <p style={{ marginTop: 12, fontSize: 13, opacity: 0.7 }}>
                   You have {Math.floor(caseData.timeLimit / 60)} minutes to solve this case
                 </p>
               </div>
-            </ParchmentPanel>
+            </div>
           </motion.div>
         )}
 
@@ -219,14 +313,26 @@ export function DetectiveGame() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
           >
             {/* Collapsible briefing */}
-            <ParchmentPanel>
+            <div className="dd-panel">
               <button
                 onClick={() => setShowBriefing(!showBriefing)}
-                className="w-full flex items-center justify-between"
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0,
+                  font: 'inherit',
+                  color: 'inherit',
+                }}
               >
-                <span className="font-semibold">Case Briefing</span>
+                <span style={{ fontWeight: 600 }}>Case Briefing</span>
                 {showBriefing ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
               </button>
               <AnimatePresence>
@@ -235,23 +341,28 @@ export function DetectiveGame() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden"
+                    style={{ overflow: 'hidden' }}
                   >
-                    <div className="pt-4 text-sm whitespace-pre-wrap">
+                    <div style={{ paddingTop: 16, fontSize: 14, whiteSpace: 'pre-wrap' }}>
                       {caseData.briefing.content}
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
-            </ParchmentPanel>
+            </div>
 
             {/* Evidence Panel */}
-            <ParchmentPanel
-              title={`Evidence (${revealedClues.length}/${caseData.clues.length})`}
-              icon={<Search size={14} />}
-              showPins
-            >
-              <div className="space-y-4">
+            <div className="dd-panel">
+              <div className="dd-panel__header">
+                <div className="dd-panel__icon">
+                  <Search size={16} />
+                </div>
+                <h2 className="dd-panel__title">
+                  Evidence ({revealedClues.length}/{caseData.clues.length})
+                </h2>
+              </div>
+
+              <div className="dd-evidenceList">
                 {caseData.clues.map((clue) => (
                   <ClueCard
                     key={clue.id}
@@ -263,17 +374,17 @@ export function DetectiveGame() {
                 ))}
               </div>
 
-              <div className="text-center mt-6">
+              <div style={{ textAlign: 'center', marginTop: 20 }}>
                 <button
                   onClick={() => setPhase('diagnosis')}
-                  className="detective-btn-primary"
+                  className="dd-btn dd-btn--primary"
                   disabled={revealedClues.length === 0}
                 >
                   <Lightbulb size={18} />
                   Ready to Diagnose
                 </button>
               </div>
-            </ParchmentPanel>
+            </div>
           </motion.div>
         )}
 
@@ -284,73 +395,64 @@ export function DetectiveGame() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
           >
-            <ParchmentPanel
-              title="Make Your Diagnosis"
-              icon={<AlertTriangle size={14} />}
-              showPins
-            >
-              <p className="mb-4">
+            <div className="dd-panel">
+              <div className="dd-panel__header">
+                <div className="dd-panel__icon">
+                  <AlertTriangle size={16} />
+                </div>
+                <h2 className="dd-panel__title">Make Your Diagnosis</h2>
+              </div>
+
+              <p style={{ marginBottom: 20 }}>
                 Identify both the <strong>pathogen</strong> AND the <strong>source</strong> of this outbreak.
               </p>
 
-              <div className="space-y-4 mb-6">
-                <h3 className="font-semibold">What caused this outbreak?</h3>
-                <div className="space-y-2">
+              <div style={{ marginBottom: 24 }}>
+                <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>
+                  What caused this outbreak?
+                </h3>
+                <div className="dd-answerGrid">
                   {caseData.diagnosis.pathogenOptions.map((option) => (
                     <button
                       key={option.id}
                       onClick={() => setSelectedPathogen(option.id)}
-                      className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
-                        selectedPathogen === option.id
-                          ? 'border-[var(--brass-0)] bg-[var(--paper-0)]'
-                          : 'border-[var(--ink-0)]/20 bg-white/50 hover:border-[var(--brass-1)]'
-                      }`}
+                      className={`dd-answerOption ${selectedPathogen === option.id ? 'dd-answerOption--selected' : ''}`}
                     >
-                      <div className="font-semibold" style={{ color: 'var(--ink-0)' }}>
-                        {option.label}
-                      </div>
-                      <div className="text-sm" style={{ color: 'var(--muted)' }}>
-                        {option.description}
-                      </div>
+                      <div className="dd-answerOption__label">{option.label}</div>
+                      <div className="dd-answerOption__desc">{option.description}</div>
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="space-y-4 mb-6">
-                <h3 className="font-semibold">What was the source?</h3>
-                <div className="space-y-2">
+              <div style={{ marginBottom: 24 }}>
+                <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>
+                  What was the source?
+                </h3>
+                <div className="dd-answerGrid">
                   {caseData.diagnosis.sourceOptions.map((option) => (
                     <button
                       key={option.id}
                       onClick={() => setSelectedSource(option.id)}
-                      className={`w-full text-left p-4 rounded-xl border-2 transition-all ${
-                        selectedSource === option.id
-                          ? 'border-[var(--brass-0)] bg-[var(--paper-0)]'
-                          : 'border-[var(--ink-0)]/20 bg-white/50 hover:border-[var(--brass-1)]'
-                      }`}
+                      className={`dd-answerOption ${selectedSource === option.id ? 'dd-answerOption--selected' : ''}`}
                     >
-                      <div className="font-semibold" style={{ color: 'var(--ink-0)' }}>
-                        {option.label}
-                      </div>
-                      <div className="text-sm" style={{ color: 'var(--muted)' }}>
-                        {option.description}
-                      </div>
+                      <div className="dd-answerOption__label">{option.label}</div>
+                      <div className="dd-answerOption__desc">{option.description}</div>
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="text-center">
+              <div style={{ textAlign: 'center' }}>
                 <button
                   onClick={submitDiagnosis}
-                  className="detective-btn-primary"
+                  className="dd-btn dd-btn--primary"
                   disabled={!selectedPathogen || !selectedSource}
                 >
                   Submit Diagnosis
                 </button>
               </div>
-            </ParchmentPanel>
+            </div>
           </motion.div>
         )}
 
@@ -359,105 +461,125 @@ export function DetectiveGame() {
             key="result"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
+            style={{ display: 'flex', flexDirection: 'column', gap: 16 }}
           >
             {/* Result Banner */}
-            <ParchmentPanel showPins>
-              <div className="text-center py-4">
+            <div className="dd-panel">
+              <div className="dd-result">
                 {isCorrect ? (
                   <>
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
-                      <CheckCircle size={32} className="text-green-600" />
+                    <div className="dd-result__icon dd-result__icon--success">
+                      <CheckCircle size={32} />
                     </div>
-                    <h2 className="text-2xl font-bold text-green-700 mb-2">
+                    <h2 className="dd-result__title dd-result__title--success">
                       Case Solved!
                     </h2>
-                    <p className="text-green-600 mb-4">Excellent detective work</p>
-                    <div
-                      className="text-4xl font-bold animate-score-pop"
-                      style={{ color: 'var(--brass-0)' }}
-                    >
-                      +{score} pts
-                    </div>
+                    <p style={{ color: '#16a34a' }}>Excellent detective work</p>
+                    <div className="dd-result__score">+{score} pts</div>
                   </>
                 ) : (
                   <>
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-100 flex items-center justify-center">
-                      <XCircle size={32} className="text-red-600" />
+                    <div className="dd-result__icon dd-result__icon--fail">
+                      <XCircle size={32} />
                     </div>
-                    <h2 className="text-2xl font-bold text-red-700 mb-2">
+                    <h2 className="dd-result__title dd-result__title--fail">
                       Not Quite
                     </h2>
-                    <p className="text-red-600 mb-4">
-                      Review the evidence and try again
-                    </p>
+                    <p style={{ color: '#dc2626' }}>Review the evidence and try again</p>
                     {score > 0 && (
-                      <div className="text-2xl font-bold" style={{ color: 'var(--muted)' }}>
+                      <div className="dd-result__score" style={{ color: '#6b7280' }}>
                         +{score} pts (partial credit)
                       </div>
                     )}
                   </>
                 )}
               </div>
-            </ParchmentPanel>
+            </div>
 
             {/* The Real Story */}
-            <ParchmentPanel
-              title="The Real Story"
-              icon={<BookOpen size={14} />}
-            >
-              <div className="space-y-4">
+            <div className="dd-panel">
+              <div className="dd-panel__header">
+                <div className="dd-panel__icon">
+                  <BookOpen size={16} />
+                </div>
+                <h2 className="dd-panel__title">The Real Story</h2>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 <div>
-                  <h4 className="font-semibold mb-1">Pathogen</h4>
-                  <p>{caseData.solution.pathogen}</p>
+                  <h4 style={{ fontWeight: 600, marginBottom: 4 }}>Pathogen</h4>
+                  <p style={{ margin: 0 }}>{caseData.solution.pathogen}</p>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-1">Source</h4>
-                  <p>{caseData.solution.source}</p>
+                  <h4 style={{ fontWeight: 600, marginBottom: 4 }}>Source</h4>
+                  <p style={{ margin: 0 }}>{caseData.solution.source}</p>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-1">What Happened</h4>
-                  <p>{caseData.solution.explanation}</p>
+                  <h4 style={{ fontWeight: 600, marginBottom: 4 }}>What Happened</h4>
+                  <p style={{ margin: 0 }}>{caseData.solution.explanation}</p>
                 </div>
                 {caseData.solution.realOutcome && (
                   <div>
-                    <h4 className="font-semibold mb-1">Outcome</h4>
-                    <p>{caseData.solution.realOutcome}</p>
+                    <h4 style={{ fontWeight: 600, marginBottom: 4 }}>Outcome</h4>
+                    <p style={{ margin: 0 }}>{caseData.solution.realOutcome}</p>
                   </div>
                 )}
-                <div
-                  className="mt-4 p-4 rounded-lg"
-                  style={{ background: 'var(--paper-0)' }}
-                >
-                  <h4
-                    className="font-semibold mb-1"
-                    style={{ color: 'var(--brass-2)' }}
-                  >
+                <div style={{
+                  marginTop: 8,
+                  padding: 16,
+                  background: 'rgba(212,175,55,0.08)',
+                  borderRadius: 12,
+                  border: '1px solid rgba(212,175,55,0.25)',
+                }}>
+                  <h4 style={{ fontWeight: 600, marginBottom: 4, color: '#8a6a14' }}>
                     EIS Legacy
                   </h4>
-                  <p>{caseData.solution.eisLegacy}</p>
+                  <p style={{ margin: 0 }}>{caseData.solution.eisLegacy}</p>
                 </div>
               </div>
 
-              <div className="flex gap-3 mt-6">
+              <div style={{ display: 'flex', gap: 12, marginTop: 24 }}>
                 <button
                   onClick={() => navigate(`/detective/${era}`)}
-                  className="flex-1 detective-btn-secondary"
+                  className="dd-btn dd-btn--secondary"
+                  style={{ flex: 1 }}
                 >
                   <RotateCcw size={18} />
                   More Cases
                 </button>
                 <button
                   onClick={() => navigate('/leaderboard')}
-                  className="flex-1 detective-btn-primary"
+                  className="dd-btn dd-btn--primary"
+                  style={{ flex: 1 }}
                 >
                   Leaderboard
                 </button>
               </div>
-            </ParchmentPanel>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </DetectiveGameShell>
+    );
+  };
+
+  return (
+    <InvestigationLayout
+      banner={
+        <CaseBanner
+          title={caseData.title}
+          location={caseData.subtitle}
+          imageUrl={plate.src}
+          phaseLabel={phaseLabel}
+          timeLeft={phase !== 'briefing' ? formatTime(timeRemaining) : undefined}
+          points={phase !== 'briefing' ? availablePoints : undefined}
+          difficulty={difficultyMap[caseData.difficulty]}
+          eraTag={eraTagMap[caseData.era]}
+          onBack={() => navigate(`/detective/${era}`)}
+        />
+      }
+      left={renderMainContent()}
+      right={renderNotebook()}
+    />
   );
 }
 

@@ -1,0 +1,695 @@
+/* src/styles/detective-board.css */
+/* Disease Detective - Cork Board Investigation Aesthetic */
+
+/* ===== Main Page Container ===== */
+.dd-board {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #2a1a12 0%, #1a0f0a 100%);
+  padding-bottom: 100px;
+}
+
+/* ===== Brass Frame Header ===== */
+.dd-header {
+  background:
+    linear-gradient(180deg,
+      #5a4030 0%,
+      #3a2518 8%,
+      #4a3020 50%,
+      #3a2518 92%,
+      #5a4030 100%
+    );
+  border-bottom: 4px solid #1a0f0a;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.15),
+    inset 0 -2px 0 rgba(0,0,0,0.3),
+    0 8px 24px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+.dd-header::before,
+.dd-header::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  background: linear-gradient(90deg, rgba(212,175,55,0.15), transparent);
+}
+
+.dd-header::before { left: 0; }
+.dd-header::after { right: 0; transform: scaleX(-1); }
+
+.dd-header__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.dd-header__back {
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(212,175,55,0.35);
+  color: #d4af37;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.dd-header__back:hover {
+  background: rgba(212,175,55,0.15);
+  border-color: #d4af37;
+}
+
+/* Title plaque in center */
+.dd-header__plaque {
+  background:
+    linear-gradient(145deg, #d4af37 0%, #b8891a 50%, #8a6a14 100%);
+  border: 2px solid #5a4020;
+  border-radius: 8px;
+  padding: 12px 32px;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.35),
+    inset 0 -2px 4px rgba(0,0,0,0.2),
+    0 6px 16px rgba(0,0,0,0.4);
+  text-align: center;
+}
+
+.dd-header__title {
+  margin: 0;
+  font-size: 22px;
+  font-family: Georgia, 'Times New Roman', serif;
+  color: #1a0f0a;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+  font-weight: 700;
+}
+
+.dd-header__year {
+  font-size: 14px;
+  color: #3a2518;
+  margin-left: 12px;
+  font-weight: 600;
+}
+
+/* Stats boxes */
+.dd-header__stats {
+  display: flex;
+  gap: 12px;
+}
+
+.dd-statBox {
+  background: rgba(0,0,0,0.35);
+  border: 2px solid rgba(212,175,55,0.4);
+  border-radius: 10px;
+  padding: 8px 16px;
+  min-width: 90px;
+  text-align: center;
+}
+
+.dd-statBox__label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(212,175,55,0.8);
+  margin-bottom: 2px;
+}
+
+.dd-statBox__value {
+  font-size: 18px;
+  font-weight: 800;
+  color: #d4af37;
+  font-family: 'Courier New', monospace;
+}
+
+/* Progress bar under header */
+.dd-progressBar {
+  background: rgba(0,0,0,0.4);
+  border-top: 1px solid rgba(212,175,55,0.25);
+  padding: 10px 20px;
+}
+
+.dd-progressBar__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dd-progressBar__label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #d4af37;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.dd-progressBar__track {
+  flex: 1;
+  height: 10px;
+  background: rgba(0,0,0,0.4);
+  border-radius: 5px;
+  border: 1px solid rgba(212,175,55,0.3);
+  overflow: hidden;
+}
+
+.dd-progressBar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8a6a14, #d4af37);
+  border-radius: 5px;
+  transition: width 0.3s;
+}
+
+/* ===== Cork Board Main Area ===== */
+.dd-corkBoard {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  /* Cork texture via CSS */
+  background-color: #b08858;
+  background-image:
+    radial-gradient(ellipse at 20% 30%, rgba(180,140,90,0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(140,100,60,0.4) 0%, transparent 50%),
+    radial-gradient(circle at 10% 90%, rgba(90,60,30,0.2) 0%, transparent 30%),
+    radial-gradient(circle at 90% 10%, rgba(200,160,100,0.3) 0%, transparent 40%),
+    repeating-radial-gradient(circle at 50% 50%, transparent 0, rgba(120,80,40,0.03) 1px, transparent 2px),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E");
+  min-height: calc(100vh - 200px);
+  border: 8px solid #3a2518;
+  border-top: none;
+  box-shadow:
+    inset 0 4px 20px rgba(0,0,0,0.3),
+    inset 0 0 60px rgba(80,50,20,0.2),
+    0 10px 40px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+/* Wood frame edges */
+.dd-corkBoard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.2), transparent);
+}
+
+/* ===== Board Layout Grid ===== */
+.dd-boardGrid {
+  display: grid;
+  grid-template-columns: 280px 1fr 280px;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 1200px) {
+  .dd-boardGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 800px) {
+  .dd-boardGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Pinned Paper Card ===== */
+.dd-pinnedCard {
+  background:
+    linear-gradient(180deg, #f8f0d8 0%, #e8d8b8 100%);
+  border-radius: 4px;
+  padding: 20px;
+  position: relative;
+  box-shadow:
+    3px 4px 12px rgba(0,0,0,0.35),
+    0 1px 0 rgba(255,255,255,0.5) inset;
+  transform: rotate(var(--rotate, 0deg));
+}
+
+/* Paper texture overlay */
+.dd-pinnedCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('/images/textures/paper-grain.png');
+  opacity: 0.08;
+  pointer-events: none;
+  border-radius: 4px;
+}
+
+/* Push pin */
+.dd-pinnedCard::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 18px;
+  background: radial-gradient(circle at 30% 30%, #ff6b6b, #c0392b 60%, #8b1a1a);
+  border-radius: 50%;
+  box-shadow:
+    0 3px 6px rgba(0,0,0,0.4),
+    inset 0 2px 4px rgba(255,255,255,0.3);
+}
+
+.dd-pinnedCard--clip::after {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 32px;
+  background: linear-gradient(180deg, #333 0%, #666 50%, #333 100%);
+  border-radius: 4px 4px 0 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.dd-pinnedCard--tape::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 60px;
+  height: 20px;
+  background: rgba(255,235,180,0.7);
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Card title styling */
+.dd-pinnedCard__title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2a1a10;
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(42,26,16,0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dd-pinnedCard__content {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #3a2a1a;
+}
+
+/* ===== Evidence Cards on Board ===== */
+.dd-evidenceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.dd-evidenceCard {
+  background:
+    linear-gradient(180deg, #fffef8 0%, #f4ead4 100%);
+  border-radius: 3px;
+  padding: 16px;
+  position: relative;
+  box-shadow:
+    2px 3px 10px rgba(0,0,0,0.3),
+    0 1px 0 rgba(255,255,255,0.6) inset;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.dd-evidenceCard:hover {
+  transform: translateY(-3px) rotate(0deg) !important;
+  box-shadow:
+    4px 8px 20px rgba(0,0,0,0.4),
+    0 1px 0 rgba(255,255,255,0.6) inset;
+}
+
+/* Pin for evidence card */
+.dd-evidenceCard::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  right: 16px;
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle at 30% 30%, #4ecdc4, #1abc9c 60%, #0a8a7a);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.dd-evidenceCard__category {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #8a7a6a;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dd-evidenceCard__title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #2a1a10;
+  margin-bottom: 8px;
+}
+
+.dd-evidenceCard__preview {
+  font-size: 13px;
+  color: #5a4a3a;
+  line-height: 1.5;
+}
+
+.dd-evidenceCard--locked {
+  opacity: 0.85;
+}
+
+.dd-evidenceCard--locked .dd-evidenceCard__locked {
+  text-align: center;
+  padding: 16px 0;
+  color: #8a7a6a;
+}
+
+.dd-evidenceCard__cost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 6px 12px;
+  background: linear-gradient(145deg, #d4af37, #b8891a);
+  color: #1a0f0a;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.dd-evidenceCard__cost:hover {
+  filter: brightness(1.1);
+}
+
+/* ===== Photo Polaroid Style ===== */
+.dd-photo {
+  background: #fff;
+  padding: 8px 8px 32px 8px;
+  box-shadow: 3px 4px 12px rgba(0,0,0,0.35);
+  transform: rotate(var(--rotate, 3deg));
+}
+
+.dd-photo__img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+}
+
+.dd-photo__caption {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: #555;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* ===== Newspaper Clipping ===== */
+.dd-newspaper {
+  background: #f5f0e0;
+  padding: 12px;
+  border: 1px solid #ccc;
+  position: relative;
+  box-shadow: 2px 3px 8px rgba(0,0,0,0.25);
+  transform: rotate(var(--rotate, -2deg));
+}
+
+.dd-newspaper::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 20px;
+  right: 20px;
+  height: 16px;
+  background: rgba(255,235,180,0.6);
+  transform: rotate(1deg);
+}
+
+.dd-newspaper__header {
+  font-size: 10px;
+  color: #666;
+  border-bottom: 1px solid #999;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+
+.dd-newspaper__headline {
+  font-family: Georgia, serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+
+/* ===== Evidence Board (Answer Panel) ===== */
+.dd-answerBoard {
+  background:
+    linear-gradient(180deg, #f6ebcf 0%, #e8d8b8 100%);
+  border: 3px solid rgba(212,175,55,0.5);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.3),
+    inset 0 2px 0 rgba(255,255,255,0.5);
+}
+
+.dd-answerBoard__title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #2a1a10;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(42,26,16,0.2);
+}
+
+.dd-answerBoard__field {
+  margin-bottom: 16px;
+}
+
+.dd-answerBoard__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a3a2a;
+  margin-bottom: 6px;
+}
+
+.dd-answerBoard__select {
+  width: 100%;
+  padding: 12px 14px;
+  background: #fff;
+  border: 2px solid rgba(139,115,85,0.4);
+  border-radius: 8px;
+  font-size: 14px;
+  color: #2a1a10;
+  cursor: pointer;
+}
+
+.dd-answerBoard__select:focus {
+  outline: none;
+  border-color: #d4af37;
+}
+
+.dd-answerBoard__submit {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(145deg, #d4af37, #b8891a);
+  border: 2px solid #8a6a14;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a0f0a;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.25),
+    inset 0 2px 0 rgba(255,255,255,0.3);
+  transition: all 0.15s;
+}
+
+.dd-answerBoard__submit:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.3),
+    inset 0 2px 0 rgba(255,255,255,0.35);
+}
+
+.dd-answerBoard__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== Notes Section ===== */
+.dd-notes {
+  background:
+    repeating-linear-gradient(
+      transparent,
+      transparent 23px,
+      #c9bfb0 24px
+    ),
+    linear-gradient(180deg, #fffef8, #f4ead4);
+  padding: 16px;
+  border-radius: 3px;
+  box-shadow: 2px 3px 10px rgba(0,0,0,0.25);
+  min-height: 150px;
+}
+
+.dd-notes__title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2a1a10;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.dd-notes__content {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 24px;
+  color: #3a2a1a;
+}
+
+/* ===== Magnifying Glass Decoration ===== */
+.dd-magnifier {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 80px;
+  height: 80px;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+/* ===== Result Overlay ===== */
+.dd-resultOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+.dd-resultCard {
+  background:
+    linear-gradient(180deg, #f8f0d8 0%, #e8d8b8 100%);
+  border: 4px solid #d4af37;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.5),
+    inset 0 2px 0 rgba(255,255,255,0.5);
+}
+
+.dd-resultCard__icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dd-resultCard__icon--success {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.dd-resultCard__icon--fail {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.dd-resultCard__title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.dd-resultCard__score {
+  font-size: 42px;
+  font-weight: 800;
+  color: #d4af37;
+  margin: 16px 0;
+}
+
+.dd-resultCard__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.dd-resultCard__btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.dd-resultCard__btn--primary {
+  background: linear-gradient(145deg, #d4af37, #b8891a);
+  border: 2px solid #8a6a14;
+  color: #1a0f0a;
+}
+
+.dd-resultCard__btn--secondary {
+  background: #fff;
+  border: 2px solid #ccc;
+  color: #3a2a1a;
+}
+
+/* ===== Mobile Adjustments ===== */
+@media (max-width: 900px) {
+  .dd-header__plaque {
+    padding: 10px 20px;
+  }
+
+  .dd-header__title {
+    font-size: 18px;
+  }
+
+  .dd-corkBoard {
+    padding: 12px;
+    border-width: 4px;
+  }
+
+  .dd-boardGrid {
+    gap: 12px;
+  }
+}

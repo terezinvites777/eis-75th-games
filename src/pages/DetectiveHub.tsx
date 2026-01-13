@@ -78,7 +78,7 @@ export function DetectiveHub() {
           <div className="detective-split-left">
             <div className="detective-showcase">
               <img
-                src={DETECTIVE_PLATES.caseSelect.src}
+                src="/images/plates/detective/CaseSelect-Vertical.png"
                 alt="Case files"
                 className="detective-showcase__img"
               />

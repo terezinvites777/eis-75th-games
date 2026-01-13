@@ -37,7 +37,7 @@ export function EpiLedgerRow({
           </div>
         )}
       </div>
-      <div className="epi-ledgerRow__points">
+      <div className="epi-ledgerRow__points" style={{ color: '#2a1a0a', fontWeight: 700 }}>
         {isComplete ? `+${points}` : `${progress}/${target}`}
       </div>
     </div>

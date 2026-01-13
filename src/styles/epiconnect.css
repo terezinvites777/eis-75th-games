@@ -30,17 +30,20 @@
   --theme-ink: var(--epi-ink);
 }
 
-/* 2) Page Background - Wood desk with subtle vignette */
+/* 2) Page Background - Wood desk texture */
 /* Override body background when connect theme is active */
 body:has([data-theme="connect"]),
 html:has([data-theme="connect"]) {
-  background: #7A4A32 !important;
+  background: #5a3d28 !important;
 }
 
-/* CSS fallback - warm reddish-brown mahogany */
+/* CSS fallback - use actual wood texture image */
 .eis-bg[data-theme="connect"] {
-  background: linear-gradient(180deg, #8B5A3C, #7A4A32 50%, #5C3A28 100%) !important;
-  background-color: #7A4A32 !important;
+  background-image: url('/images/textures/wood.png') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+  background-color: #5a3d28 !important;
   min-height: 100vh;
 }
 

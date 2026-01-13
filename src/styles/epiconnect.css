@@ -1,187 +1,82 @@
-/* ================================
-   EPICONNECT - ARCHIVAL REGISTRY THEME
-   ================================
-   Officer Registry aesthetic matching
-   Disease Detective / Patient Zero museum world
+/* ============================================
+   EPICONNECT THEME (Archive Desk)
+   Wood desk + parchment panels + brass hardware
+   ============================================ */
 
-   Visual Identity:
-   - Historic officers' registry lounge
-   - Brass nameplates, corkboards, file drawers
-   - Parchment dossiers and calling cards
-   - Warm, tactile, archival feel
-*/
+/* 1) Theme CSS Variables */
+:root {
+  --epi-wood-1: #3b261a;
+  --epi-wood-2: #2a1a12;
+  --epi-wood-3: #1b120d;
 
-/* 1) Theme tokens - Brass/Parchment/Wood */
-[data-theme="connect"] {
-  /* Primary brass tones */
-  --epi-brass: #b8860b;
-  --epi-brass-light: #d4af37;
-  --epi-brass-dark: #8b6914;
+  --epi-parchment-1: #f3e6cc;
+  --epi-parchment-2: #ead7b7;
+  --epi-parchment-3: #ddc49d;
 
-  /* Parchment/paper tones */
-  --epi-parchment: #f5f0e1;
-  --epi-parchment-dark: #e8dcc8;
-  --epi-vellum: #faf6eb;
+  --epi-ink: #2a2018;
+  --epi-ink-muted: rgba(42, 32, 24, 0.72);
 
-  /* Wood/leather tones */
-  --epi-wood: #4a3728;
-  --epi-wood-light: #5c4a3d;
-  --epi-leather: #3d2b1f;
+  --epi-brass-1: #d2b25c;
+  --epi-brass-2: #b28a2e;
+  --epi-brass-3: #7a5b1a;
 
-  /* Card styling */
-  --epi-card: rgba(250, 246, 235, 0.95);
-  --epi-card-feature: rgba(245, 240, 225, 0.98);
-  --epi-border: rgba(139, 105, 20, 0.2);
-  --epi-border-strong: rgba(139, 105, 20, 0.35);
-
-  /* Shadows - warm */
-  --epi-shadow: 0 8px 24px rgba(61, 43, 31, 0.15);
-  --epi-shadow-feature: 0 12px 32px rgba(61, 43, 31, 0.2);
-  --epi-inner: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  --epi-shadow: 0 18px 45px rgba(0,0,0,0.35);
+  --epi-radius: 16px;
 }
 
-/* 2) Hero header - Wood/leather registry header */
-.epi-hero {
-  position: relative;
-  background: linear-gradient(180deg, #3d2b1f 0%, #4a3728 50%, #5c4a3d 100%);
-  padding: 20px 24px 24px;
-  margin: -24px -16px 24px;
-  border-bottom: 3px solid var(--epi-brass);
-  overflow: hidden;
-}
-
-/* Leather texture overlay */
-.epi-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+/* 2) Page Background - Wood desk with subtle vignette */
+.eis-bg[data-theme="connect"] {
   background:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
-  pointer-events: none;
+    /* Subtle vignette */
+    radial-gradient(1200px 600px at 50% 12%, rgba(0,0,0,0.05), rgba(0,0,0,0.45)),
+    /* Top to bottom darkening */
+    linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.55)),
+    /* Wood grain texture */
+    repeating-linear-gradient(90deg,
+      rgba(255,255,255,0.03) 0px,
+      rgba(255,255,255,0.03) 6px,
+      rgba(0,0,0,0.03) 6px,
+      rgba(0,0,0,0.03) 12px),
+    /* Base wood gradient */
+    linear-gradient(180deg, var(--epi-wood-1), var(--epi-wood-2) 55%, var(--epi-wood-3));
+  min-height: 100vh;
 }
 
-/* Brass bottom accent */
-.epi-hero::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg,
-    transparent,
-    var(--epi-brass-light) 20%,
-    var(--epi-brass) 50%,
-    var(--epi-brass-light) 80%,
-    transparent
-  );
+/* Override any leather texture from base theme */
+.eis-bg[data-theme="connect"],
+.eis-bg[data-theme="connect"]::before {
+  background-image: none !important;
 }
 
-.epi-hero__content {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+.eis-bg[data-theme="connect"]::before {
+  display: none;
 }
 
-.epi-hero__left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+/* 3) Hero header override - Wood/brass nameplate style */
+.eis-bg[data-theme="connect"] .eis-hero {
+  background: none;
+  border-bottom: none;
 }
 
-.epi-hero__back {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 6px;
-  background: rgba(212, 175, 55, 0.15);
-  color: var(--epi-brass-light);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.epi-hero__back:hover {
-  background: rgba(212, 175, 55, 0.25);
-  color: var(--epi-brass-light);
-  border-color: var(--epi-brass);
-}
-
-.epi-hero__title {
-  font-size: clamp(22px, 3.5vw, 32px);
-  font-weight: 800;
-  color: var(--epi-parchment);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  letter-spacing: 0.02em;
-  font-family: Georgia, 'Times New Roman', serif;
-}
-
-.epi-hero__subtitle {
-  font-size: 14px;
-  color: rgba(245, 240, 225, 0.7);
-  margin-top: 2px;
-  font-style: italic;
-}
-
-/* Brass registry badge */
-.epi-hero__badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 4px;
-  background: linear-gradient(135deg, rgba(184, 134, 11, 0.3), rgba(139, 105, 20, 0.3));
-  border: 1px solid var(--epi-brass);
-  color: var(--epi-brass-light);
-  font-size: 13px;
-  font-weight: 600;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.epi-hero__badge--online {
-  background: linear-gradient(135deg, rgba(34, 100, 34, 0.4), rgba(20, 80, 20, 0.4));
-  border-color: #4a7c4a;
-}
-
-.epi-hero__badge--online::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #6b8e6b;
-  box-shadow: 0 0 6px rgba(107, 142, 107, 0.6);
-  animation: registry-pulse 2s ease-in-out infinite;
-}
-
-@keyframes registry-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-
-/* 3) Shell layout */
+/* 4) Layout Shell */
 .epi-shell {
   position: relative;
   z-index: 1;
-  max-width: 1400px;
+  max-width: 1220px;
   margin: 0 auto;
-  padding: 0 16px 40px;
+  padding: 18px 20px 32px;
 }
 
 .epi-grid {
   display: grid;
-  grid-template-columns: 280px 1fr 260px;
-  gap: 24px;
+  grid-template-columns: 300px 1fr 300px;
+  gap: 22px;
   align-items: start;
 }
 
 @media (max-width: 1280px) {
   .epi-grid {
-    grid-template-columns: 260px 1fr;
+    grid-template-columns: 280px 1fr;
   }
   .epi-grid__right {
     display: none;
@@ -209,141 +104,237 @@
   margin: 0 auto;
 }
 
-/* 4) Exhibit cards - Parchment dossier folders */
-.epi-card {
+/* 5) Header Plate - Brass nameplate at top */
+.epi-hero {
+  width: min(1220px, calc(100% - 40px));
+  margin: 18px auto 12px;
+  border-radius: 14px;
+  padding: 14px 16px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.18)),
+    linear-gradient(180deg, #3d2b20, #2a1b14);
+  box-shadow: var(--epi-shadow);
+  border: 1px solid rgba(210,178,92,0.28);
   position: relative;
-  background: var(--epi-card);
-  border: 1px solid var(--epi-border);
-  border-radius: 4px;
-  padding: 18px;
-  box-shadow:
-    var(--epi-shadow),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.3);
-
-  /* Parchment texture */
-  background-image:
-    linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 20%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  background-color: var(--epi-card);
+  overflow: hidden;
 }
 
-/* Brass corner pins */
-.epi-card::before,
-.epi-card::after {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, var(--epi-brass-light), var(--epi-brass-dark));
-  box-shadow:
-    inset 0 -1px 2px rgba(0,0,0,0.3),
-    0 1px 2px rgba(0,0,0,0.2);
-}
-
-.epi-card::before {
-  top: 8px;
-  left: 8px;
-}
-
-.epi-card::after {
-  top: 8px;
-  right: 8px;
-}
-
-/* Feature card - prominent dossier */
-.epi-card--feature {
-  background: var(--epi-card-feature);
-  border-color: var(--epi-border-strong);
-  padding: 22px;
-  box-shadow:
-    var(--epi-shadow-feature),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-}
-
-/* Brass nameplate accent at top */
-.epi-card--feature::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 20px;
-  right: 20px;
-  height: 4px;
-  background: linear-gradient(90deg, var(--epi-brass-dark), var(--epi-brass-light), var(--epi-brass-dark));
-  border-radius: 0 0 2px 2px;
-  width: auto;
-}
-
-.epi-card--feature::after {
-  top: 8px;
-  right: 8px;
-}
-
-.epi-card--muted {
-  background: rgba(245, 240, 225, 0.7);
-  border-color: rgba(139, 105, 20, 0.12);
-  box-shadow: 0 4px 12px rgba(61, 43, 31, 0.08);
-}
-
-.epi-card--interactive {
-  cursor: pointer;
-}
-
-.epi-card--interactive:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 12px 32px rgba(61, 43, 31, 0.18),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-  border-color: var(--epi-brass);
-}
-
-.epi-card__header {
+.epi-hero__content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid rgba(139, 105, 20, 0.15);
+  gap: 16px;
 }
 
-.epi-card__title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--epi-wood);
+.epi-hero__left {
   display: flex;
   align-items: center;
-  gap: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-family: Georgia, 'Times New Roman', serif;
+  gap: 12px;
 }
 
-.epi-card__title-icon {
-  width: 28px;
-  height: 28px;
+.epi-hero__back {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
-  background: linear-gradient(135deg, rgba(184, 134, 11, 0.15), rgba(139, 105, 20, 0.15));
-  color: var(--epi-brass-dark);
-  border: 1px solid rgba(139, 105, 20, 0.2);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: rgba(210, 178, 92, 0.15);
+  color: var(--epi-brass-1);
+  border: 1px solid rgba(210, 178, 92, 0.3);
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-/* 5) Mode tabs - File drawer tabs */
+.epi-hero__back:hover {
+  background: rgba(210, 178, 92, 0.25);
+  border-color: var(--epi-brass-1);
+}
+
+/* Brass nameplate */
+.epi-hero__nameplate {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55)),
+    linear-gradient(180deg, #e6cf8f, #c79d3a);
+  border: 1px solid rgba(0,0,0,0.25);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    0 10px 22px rgba(0,0,0,0.25);
+}
+
+.epi-hero__title {
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #2a2018;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.35);
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.epi-hero__subtitle {
+  font-size: 13px;
+  color: rgba(245, 240, 225, 0.75);
+  margin-top: 2px;
+  font-style: italic;
+}
+
+/* Badge on right side of hero */
+.epi-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(184, 134, 11, 0.3), rgba(139, 105, 20, 0.3));
+  border: 1px solid var(--epi-brass-1);
+  color: var(--epi-brass-1);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.epi-hero__badge--online {
+  background: linear-gradient(135deg, rgba(34, 100, 34, 0.4), rgba(20, 80, 20, 0.4));
+  border-color: #4a7c4a;
+}
+
+/* 6) Parchment Panel Base */
+.epi-panel {
+  border-radius: var(--epi-radius);
+  background:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, var(--epi-parchment-1), var(--epi-parchment-2) 55%, var(--epi-parchment-3));
+  border: 1px solid rgba(178,138,46,0.35);
+  box-shadow: var(--epi-shadow);
+  position: relative;
+  color: var(--epi-ink);
+  overflow: hidden;
+}
+
+.epi-panel--tight { padding: 14px; }
+.epi-panel--pad { padding: 16px 18px; }
+
+/* Brass screws in corners */
+.epi-panel::before,
+.epi-panel::after {
+  content: "";
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff2c2, var(--epi-brass-1) 45%, var(--epi-brass-3) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 2px 6px rgba(0,0,0,0.25);
+  top: 12px;
+  z-index: 10;
+}
+.epi-panel::before { left: 12px; }
+.epi-panel::after { right: 12px; }
+
+/* Bottom screws (add via spans in JSX) */
+.epi-screwBottomLeft,
+.epi-screwBottomRight {
+  position: absolute;
+  bottom: 12px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff2c2, var(--epi-brass-1) 45%, var(--epi-brass-3) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 2px 6px rgba(0,0,0,0.25);
+  z-index: 10;
+}
+.epi-screwBottomLeft { left: 12px; }
+.epi-screwBottomRight { right: 12px; }
+
+/* Panel variants */
+.epi-panel--feature {
+  background:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, #faf6eb, var(--epi-parchment-1) 40%, var(--epi-parchment-2));
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+}
+
+.epi-panel--muted {
+  background: rgba(243, 230, 204, 0.85);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+/* 7) Panel Headings */
+.epi-hdr {
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: rgba(42,32,24,0.82);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+.epi-hdr::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, rgba(178,138,46,0.55), rgba(0,0,0,0));
+}
+
+/* 8) Search Bar */
+.epi-search {
+  position: relative;
+}
+
+.epi-search__icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--epi-brass-2);
+  pointer-events: none;
+}
+
+.epi-search__input,
+.epi-searchInput {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(178,138,46,0.45);
+  background: rgba(255,255,255,0.45);
+  padding: 11px 12px 11px 44px;
+  color: var(--epi-ink);
+  outline: none;
+  font-size: 14px;
+  transition: all 0.15s ease;
+}
+
+.epi-search__input:focus,
+.epi-searchInput:focus {
+  box-shadow: 0 0 0 3px rgba(210,178,92,0.25);
+  border-color: rgba(178,138,46,0.70);
+  background: rgba(255,255,255,0.65);
+}
+
+.epi-search__input::placeholder,
+.epi-searchInput::placeholder {
+  color: var(--epi-ink-muted);
+  font-style: italic;
+}
+
+/* 9) Tab Strip - File Drawer Tabs */
 .epi-tabs {
   display: flex;
   gap: 4px;
   padding: 0;
-  background: linear-gradient(180deg, var(--epi-wood-light) 0%, var(--epi-wood) 100%);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, #4a3728 0%, #3b261a 100%);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 8px 8px 0 0;
   overflow-x: auto;
   scrollbar-width: none;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 4px 8px rgba(0, 0, 0, 0.15);
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .epi-tabs::-webkit-scrollbar {
@@ -355,12 +346,12 @@
   align-items: center;
   gap: 6px;
   padding: 12px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(245, 240, 225, 0.7);
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(243, 230, 204, 0.7);
   background: transparent;
   border: none;
-  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.15s ease;
@@ -374,20 +365,22 @@
 
 .epi-tab:hover:not(.is-active) {
   background: rgba(255, 255, 255, 0.05);
-  color: var(--epi-parchment);
+  color: var(--epi-parchment-1);
 }
 
 /* Active tab - pulled file drawer */
 .epi-tab.is-active {
-  background: var(--epi-parchment);
-  color: var(--epi-wood);
+  background: linear-gradient(180deg, #f0d788, #c79d3a);
+  color: #2a2018;
+  border-color: rgba(0,0,0,0.25);
   position: relative;
   margin-top: -2px;
   padding-top: 14px;
-  border-radius: 4px 4px 0 0;
+  border-radius: 6px 6px 0 0;
   box-shadow:
-    0 -2px 8px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    0 -2px 8px rgba(0, 0, 0, 0.15),
+    0 10px 18px rgba(0,0,0,0.18);
 }
 
 .epi-tab__count {
@@ -397,26 +390,68 @@
   min-width: 20px;
   height: 20px;
   padding: 0 6px;
-  border-radius: 3px;
+  border-radius: 4px;
   font-size: 11px;
   font-weight: 700;
 }
 
 .epi-tab:not(.is-active) .epi-tab__count {
-  background: rgba(212, 175, 55, 0.2);
-  color: var(--epi-brass-light);
+  background: rgba(210, 178, 92, 0.2);
+  color: var(--epi-brass-1);
 }
 
 .epi-tab.is-active .epi-tab__count {
-  background: linear-gradient(135deg, var(--epi-brass), var(--epi-brass-dark));
-  color: white;
+  background: rgba(42, 32, 24, 0.2);
+  color: #2a2018;
 }
 
-/* 6) Profile card - Officer dossier folder */
+/* 10) Person Chip Row (People Near You) */
+.epi-chipRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 8px 2px 12px;
+  scrollbar-width: none;
+}
+
+.epi-chipRow::-webkit-scrollbar {
+  display: none;
+}
+
+.epi-chip {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.22);
+  border: 1px solid rgba(178,138,46,0.55);
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  color: rgba(42,32,24,0.92);
+  flex: 0 0 auto;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.epi-chip:hover {
+  background: rgba(255,255,255,0.4);
+  border-color: var(--epi-brass-1);
+  transform: scale(1.05);
+}
+
+.epi-chip small {
+  display: block;
+  font-weight: 700;
+  color: rgba(42,32,24,0.62);
+  margin-top: 2px;
+}
+
+/* 11) Profile Card - Officer Dossier */
 .epi-profile {
   text-align: center;
   padding-bottom: 16px;
-  border-bottom: 1px dashed rgba(139, 105, 20, 0.2);
+  border-bottom: 1px dashed rgba(178,138,46,0.3);
   margin-bottom: 16px;
 }
 
@@ -448,251 +483,65 @@
 .epi-profile__name {
   font-size: 18px;
   font-weight: 700;
-  color: var(--epi-wood);
+  color: var(--epi-ink);
   font-family: Georgia, 'Times New Roman', serif;
 }
 
 .epi-profile__role {
   font-size: 12px;
-  color: var(--epi-brass-dark);
+  color: var(--epi-brass-2);
   margin-top: 4px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 600;
 }
 
-/* 7) Stats grid - Brass engraved plates */
+/* 12) Stats Grid - Brass Plates */
 .epi-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   padding: 12px;
   background: linear-gradient(135deg, rgba(184, 134, 11, 0.08), rgba(139, 105, 20, 0.08));
-  border-radius: 4px;
+  border-radius: 8px;
   margin-bottom: 16px;
-  border: 1px solid rgba(139, 105, 20, 0.15);
+  border: 1px solid rgba(178,138,46,0.2);
 }
 
 .epi-stat {
   text-align: center;
   padding: 8px 4px;
-  background: linear-gradient(180deg,
-    rgba(255, 255, 255, 0.4) 0%,
-    rgba(255, 255, 255, 0.1) 100%
-  );
-  border-radius: 3px;
-  border: 1px solid rgba(139, 105, 20, 0.1);
+  background: linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.2));
+  border-radius: 6px;
+  border: 1px solid rgba(178,138,46,0.15);
 }
 
 .epi-stat__value {
   font-size: 22px;
   font-weight: 800;
-  color: var(--epi-brass-dark);
+  color: var(--epi-brass-2);
   font-family: Georgia, 'Times New Roman', serif;
 }
 
 .epi-stat__label {
   font-size: 9px;
   font-weight: 700;
-  color: var(--epi-wood-light);
+  color: var(--epi-ink-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-top: 2px;
 }
 
-/* 8) Challenge ledger - Filing cabinet slips */
-.epi-ledger {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.epi-ledgerRow {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  background: linear-gradient(180deg,
-    rgba(255, 255, 255, 0.6) 0%,
-    rgba(250, 246, 235, 0.8) 100%
-  );
-  border: 1px solid rgba(139, 105, 20, 0.15);
-  border-left: 3px solid var(--epi-brass);
-  border-radius: 2px;
-  transition: all 0.15s ease;
-}
-
-.epi-ledgerRow:hover {
-  background: rgba(255, 255, 255, 0.8);
-  border-left-color: var(--epi-brass-light);
-  transform: translateX(2px);
-}
-
-.epi-ledgerRow.is-complete {
-  background: linear-gradient(180deg,
-    rgba(240, 248, 240, 0.8) 0%,
-    rgba(230, 245, 230, 0.9) 100%
-  );
-  border-left-color: #4a7c4a;
-}
-
-.epi-ledgerRow__icon {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  background: linear-gradient(135deg, rgba(184, 134, 11, 0.12), rgba(139, 105, 20, 0.12));
-  border: 1px solid rgba(139, 105, 20, 0.2);
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
-.epi-ledgerRow.is-complete .epi-ledgerRow__icon {
-  background: linear-gradient(135deg, rgba(74, 124, 74, 0.15), rgba(60, 100, 60, 0.15));
-  border-color: rgba(74, 124, 74, 0.3);
-}
-
-.epi-ledgerRow__content {
-  flex: 1;
-  min-width: 0;
-}
-
-.epi-ledgerRow__title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--epi-wood);
-}
-
-.epi-ledgerRow__desc {
-  font-size: 12px;
-  color: var(--epi-wood-light);
-  margin-top: 2px;
-}
-
-.epi-ledgerRow__progress {
-  height: 4px;
-  background: rgba(139, 105, 20, 0.12);
-  border-radius: 2px;
-  margin-top: 8px;
-  overflow: hidden;
-}
-
-.epi-ledgerRow__progressFill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--epi-brass-dark), var(--epi-brass-light));
-  border-radius: 2px;
-  transition: width 0.3s ease;
-}
-
-.epi-ledgerRow.is-complete .epi-ledgerRow__progressFill {
-  background: linear-gradient(90deg, #4a7c4a, #6b8e6b);
-}
-
-/* Brass tag for points */
-.epi-ledgerRow__points {
-  padding: 6px 12px;
-  border-radius: 3px;
-  font-size: 12px;
-  font-weight: 700;
-  background: linear-gradient(135deg, rgba(184, 134, 11, 0.15), rgba(139, 105, 20, 0.15));
-  color: var(--epi-brass-dark);
-  border: 1px solid rgba(139, 105, 20, 0.25);
-  flex-shrink: 0;
-}
-
-.epi-ledgerRow.is-complete .epi-ledgerRow__points {
-  background: linear-gradient(135deg, rgba(74, 124, 74, 0.15), rgba(60, 100, 60, 0.15));
-  color: #3d6b3d;
-  border-color: rgba(74, 124, 74, 0.3);
-}
-
-/* 9) Timer stage - Registry clock */
-.epi-timerStage {
-  position: relative;
-  text-align: center;
-  padding: 32px 24px;
-  background: var(--epi-parchment);
-  border-radius: 4px;
-  border: 2px solid var(--epi-brass);
-  box-shadow:
-    var(--epi-shadow-feature),
-    inset 0 0 20px rgba(139, 105, 20, 0.05);
-}
-
-/* Brass frame top */
-.epi-timerStage::before {
-  content: "";
-  position: absolute;
-  top: -2px;
-  left: 20px;
-  right: 20px;
-  height: 6px;
-  background: linear-gradient(90deg, var(--epi-brass-dark), var(--epi-brass-light), var(--epi-brass-dark));
-  border-radius: 0 0 3px 3px;
-}
-
-.epi-timerStage__label {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--epi-brass-dark);
-  margin-bottom: 8px;
-}
-
-.epi-timerStage__time {
-  font-size: clamp(56px, 12vw, 80px);
-  font-weight: 800;
-  color: var(--epi-wood);
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-  font-family: Georgia, 'Times New Roman', serif;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.epi-timerStage__time--warning {
-  color: #b8860b;
-}
-
-.epi-timerStage__time--danger {
-  color: #8b1a1a;
-  animation: timer-pulse 0.5s ease-in-out infinite;
-}
-
-@keyframes timer-pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-}
-
-.epi-timerStage__rules {
-  font-size: 13px;
-  color: var(--epi-wood-light);
-  margin-top: 12px;
-  max-width: 280px;
-  margin-left: auto;
-  margin-right: auto;
-  font-style: italic;
-}
-
-.epi-timerStage__actions {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 24px;
-}
-
-/* 10) Buttons - Brass plate buttons */
+/* 13) Buttons - Brass Plate Style */
 .epi-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   padding: 12px 24px;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.15s ease;
   border: 1px solid transparent;
@@ -700,92 +549,72 @@
   letter-spacing: 0.04em;
 }
 
-/* Primary - brass plate */
-.epi-btn--primary {
-  background: linear-gradient(180deg, var(--epi-brass-light) 0%, var(--epi-brass) 50%, var(--epi-brass-dark) 100%);
-  color: white;
-  border-color: var(--epi-brass-dark);
-  box-shadow:
-    0 4px 12px rgba(139, 105, 20, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+/* Primary - brass */
+.epi-btn--primary,
+.epi-primaryBtn {
+  width: 100%;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-weight: 900;
+  border: 1px solid rgba(0,0,0,0.25);
+  background: linear-gradient(180deg, #f0d788, #c79d3a);
+  color: #2a2018;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 12px 18px rgba(0,0,0,0.20);
+  cursor: pointer;
+  transition: all 0.15s ease;
 }
 
-.epi-btn--primary:hover {
+.epi-btn--primary:hover,
+.epi-primaryBtn:hover {
+  filter: brightness(1.05);
   transform: translateY(-1px);
-  box-shadow:
-    0 6px 16px rgba(139, 105, 20, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 16px 24px rgba(0,0,0,0.25);
 }
 
 /* Secondary - parchment */
 .epi-btn--secondary {
-  background: var(--epi-parchment);
-  color: var(--epi-wood);
-  border-color: var(--epi-border-strong);
-  box-shadow: 0 2px 8px rgba(61, 43, 31, 0.1);
+  background: var(--epi-parchment-1);
+  color: var(--epi-ink);
+  border-color: rgba(178,138,46,0.4);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .epi-btn--secondary:hover {
-  background: var(--epi-vellum);
-  border-color: var(--epi-brass);
+  background: #faf6eb;
+  border-color: var(--epi-brass-1);
 }
 
-/* Success - green wax seal */
-.epi-btn--success {
-  background: linear-gradient(180deg, #5a8f5a 0%, #4a7c4a 50%, #3d6b3d 100%);
-  color: white;
-  border-color: #2d4d2d;
-  box-shadow: 0 4px 12px rgba(74, 124, 74, 0.3);
-}
+.epi-btn--sm { padding: 8px 16px; font-size: 12px; }
+.epi-btn--lg { padding: 16px 32px; font-size: 15px; }
 
-.epi-btn--lg {
-  padding: 16px 32px;
-  font-size: 15px;
-}
-
-.epi-btn--sm {
-  padding: 8px 16px;
-  font-size: 12px;
-}
-
-/* 11) Pills/badges - Brass registry tags */
+/* 14) Pills/Badges */
 .epi-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 5px 10px;
-  border-radius: 3px;
-  font-size: 11px;
-  font-weight: 600;
-  background: linear-gradient(180deg, rgba(245, 240, 225, 0.9), rgba(232, 220, 200, 0.9));
-  border: 1px solid rgba(139, 105, 20, 0.2);
-  color: var(--epi-wood);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 12px;
+  color: rgba(42,32,24,0.92);
+  background: rgba(255,255,255,0.32);
+  border: 1px solid rgba(178,138,46,0.40);
 }
 
-.epi-pill--purple {
-  background: linear-gradient(135deg, rgba(184, 134, 11, 0.15), rgba(139, 105, 20, 0.15));
-  border-color: rgba(139, 105, 20, 0.3);
-  color: var(--epi-brass-dark);
+.epi-pill--purple,
+.epi-pill--gold {
+  background: linear-gradient(135deg, rgba(210,178,92,0.2), rgba(178,138,46,0.2));
+  border-color: var(--epi-brass-1);
+  color: var(--epi-brass-3);
 }
 
 .epi-pill--success {
-  background: linear-gradient(135deg, rgba(74, 124, 74, 0.12), rgba(60, 100, 60, 0.12));
-  border-color: rgba(74, 124, 74, 0.3);
+  background: linear-gradient(135deg, rgba(74,124,74,0.15), rgba(60,100,60,0.15));
+  border-color: rgba(74,124,74,0.4);
   color: #3d6b3d;
 }
 
-.epi-pill--gold {
-  background: linear-gradient(135deg, rgba(184, 134, 11, 0.2), rgba(139, 105, 20, 0.2));
-  border-color: var(--epi-brass);
-  color: var(--epi-brass-dark);
-}
-
-/* 12) Online indicator - Registry lamp */
+/* 15) Online Indicator */
 .epi-online {
   display: flex;
   align-items: center;
@@ -803,11 +632,16 @@
   height: 8px;
   border-radius: 50%;
   background: #6b8e6b;
-  box-shadow: 0 0 6px rgba(107, 142, 107, 0.5);
-  animation: registry-pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(107, 142, 107, 0.6);
+  animation: epi-pulse 2s ease-in-out infinite;
 }
 
-/* 13) Activity feed - Calling card list */
+@keyframes epi-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* 16) Activity Feed */
 .epi-activity {
   display: flex;
   flex-direction: column;
@@ -820,8 +654,8 @@
   gap: 10px;
   padding: 10px;
   background: rgba(255, 255, 255, 0.5);
-  border-radius: 3px;
-  border-left: 2px solid var(--epi-brass);
+  border-radius: 6px;
+  border-left: 2px solid var(--epi-brass-1);
   font-size: 13px;
 }
 
@@ -831,78 +665,131 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 3px;
-  background: linear-gradient(135deg, rgba(184, 134, 11, 0.1), rgba(139, 105, 20, 0.1));
-  color: var(--epi-brass-dark);
+  border-radius: 6px;
+  background: linear-gradient(135deg, rgba(210,178,92,0.15), rgba(178,138,46,0.15));
+  color: var(--epi-brass-2);
   flex-shrink: 0;
-  border: 1px solid rgba(139, 105, 20, 0.15);
+  border: 1px solid rgba(178,138,46,0.2);
 }
 
 .epi-activityItem__text {
   flex: 1;
-  color: var(--epi-wood);
+  color: var(--epi-ink);
 }
 
-.epi-activityItem__time {
-  font-size: 11px;
-  color: var(--epi-wood-light);
+/* 17) Challenge Ledger */
+.epi-ledger {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-/* 14) Search input - Registry lookup */
-.epi-search {
-  position: relative;
-}
-
-.epi-search__icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--epi-brass);
-  pointer-events: none;
-}
-
-.epi-search__input {
-  width: 100%;
-  padding: 14px 14px 14px 44px;
-  background: var(--epi-parchment);
-  border: 1px solid var(--epi-border);
-  border-radius: 4px;
-  font-size: 14px;
-  color: var(--epi-wood);
+.epi-ledgerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,246,235,0.8));
+  border: 1px solid rgba(178,138,46,0.15);
+  border-left: 3px solid var(--epi-brass-1);
+  border-radius: 6px;
   transition: all 0.15s ease;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.epi-search__input::placeholder {
-  color: var(--epi-wood-light);
-  font-style: italic;
+.epi-ledgerRow:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-left-color: var(--epi-brass-1);
+  transform: translateX(2px);
 }
 
-.epi-search__input:focus {
-  outline: none;
-  border-color: var(--epi-brass);
-  background: var(--epi-vellum);
-  box-shadow:
-    inset 0 2px 4px rgba(0, 0, 0, 0.05),
-    0 0 0 2px rgba(184, 134, 11, 0.15);
+.epi-ledgerRow.is-complete {
+  background: linear-gradient(180deg, rgba(240,248,240,0.8), rgba(230,245,230,0.9));
+  border-left-color: #4a7c4a;
 }
 
-/* 15) Progress summary card - Registry ledger */
+.epi-ledgerRow__icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(210,178,92,0.12), rgba(178,138,46,0.12));
+  border: 1px solid rgba(178,138,46,0.2);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.epi-ledgerRow.is-complete .epi-ledgerRow__icon {
+  background: linear-gradient(135deg, rgba(74,124,74,0.15), rgba(60,100,60,0.15));
+  border-color: rgba(74,124,74,0.3);
+}
+
+.epi-ledgerRow__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.epi-ledgerRow__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--epi-ink);
+}
+
+.epi-ledgerRow__desc {
+  font-size: 12px;
+  color: var(--epi-ink-muted);
+  margin-top: 2px;
+}
+
+.epi-ledgerRow__progress {
+  height: 4px;
+  background: rgba(178,138,46,0.12);
+  border-radius: 2px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.epi-ledgerRow__progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--epi-brass-3), var(--epi-brass-1));
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.epi-ledgerRow.is-complete .epi-ledgerRow__progressFill {
+  background: linear-gradient(90deg, #4a7c4a, #6b8e6b);
+}
+
+.epi-ledgerRow__points {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  background: linear-gradient(135deg, rgba(210,178,92,0.15), rgba(178,138,46,0.15));
+  color: var(--epi-brass-3);
+  border: 1px solid rgba(178,138,46,0.25);
+  flex-shrink: 0;
+}
+
+.epi-ledgerRow.is-complete .epi-ledgerRow__points {
+  background: linear-gradient(135deg, rgba(74,124,74,0.15), rgba(60,100,60,0.15));
+  color: #3d6b3d;
+  border-color: rgba(74,124,74,0.3);
+}
+
+/* 18) Progress Card */
 .epi-progressCard {
   padding: 20px;
-  background: linear-gradient(135deg, var(--epi-wood) 0%, var(--epi-wood-light) 100%);
-  border-radius: 4px;
-  color: var(--epi-parchment);
-  box-shadow:
-    var(--epi-shadow-feature),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, var(--epi-wood-1) 0%, #4a3728 100%);
+  border-radius: var(--epi-radius);
+  color: var(--epi-parchment-1);
+  box-shadow: var(--epi-shadow);
   position: relative;
   overflow: hidden;
-  border: 2px solid var(--epi-brass);
+  border: 2px solid var(--epi-brass-1);
 }
 
-/* Leather texture */
 .epi-progressCard::before {
   content: "";
   position: absolute;
@@ -919,7 +806,7 @@
 
 .epi-progressCard__label {
   font-size: 12px;
-  color: rgba(245, 240, 225, 0.7);
+  color: rgba(243,230,204,0.7);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -928,12 +815,12 @@
   font-size: 28px;
   font-weight: 800;
   font-family: Georgia, 'Times New Roman', serif;
-  color: var(--epi-brass-light);
+  color: var(--epi-brass-1);
 }
 
 .epi-progressCard__bar {
   height: 6px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0,0,0,0.3);
   border-radius: 3px;
   margin-top: 16px;
   overflow: hidden;
@@ -942,12 +829,12 @@
 
 .epi-progressCard__barFill {
   height: 100%;
-  background: linear-gradient(90deg, var(--epi-brass-dark), var(--epi-brass-light));
+  background: linear-gradient(90deg, var(--epi-brass-3), var(--epi-brass-1));
   border-radius: 3px;
   transition: width 0.3s ease;
 }
 
-/* 16) QR code panel */
+/* 19) QR Panel */
 .epi-qrPanel {
   text-align: center;
   padding: 28px;
@@ -958,37 +845,104 @@
   height: 200px;
   margin: 0 auto 16px;
   padding: 16px;
-  background: var(--epi-vellum);
-  border-radius: 4px;
-  border: 2px solid var(--epi-brass);
-  box-shadow:
-    0 8px 24px rgba(61, 43, 31, 0.12),
-    inset 0 0 0 1px rgba(139, 105, 20, 0.1);
+  background: #faf6eb;
+  border-radius: 8px;
+  border: 2px solid var(--epi-brass-1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
 
 .epi-qrPanel__label {
   font-size: 15px;
   font-weight: 600;
-  color: var(--epi-wood);
+  color: var(--epi-ink);
   margin-bottom: 4px;
   font-family: Georgia, 'Times New Roman', serif;
 }
 
 .epi-qrPanel__hint {
   font-size: 13px;
-  color: var(--epi-wood-light);
+  color: var(--epi-ink-muted);
   font-style: italic;
 }
 
-/* 17) Mobile profile card */
+/* 20) Timer Stage */
+.epi-timerStage {
+  position: relative;
+  text-align: center;
+  padding: 32px 24px;
+  background: var(--epi-parchment-1);
+  border-radius: 8px;
+  border: 2px solid var(--epi-brass-1);
+  box-shadow: var(--epi-shadow);
+}
+
+.epi-timerStage::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 20px;
+  right: 20px;
+  height: 6px;
+  background: linear-gradient(90deg, var(--epi-brass-3), var(--epi-brass-1), var(--epi-brass-3));
+  border-radius: 0 0 3px 3px;
+}
+
+.epi-timerStage__label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--epi-brass-2);
+  margin-bottom: 8px;
+}
+
+.epi-timerStage__time {
+  font-size: clamp(56px, 12vw, 80px);
+  font-weight: 800;
+  color: var(--epi-ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  font-family: Georgia, 'Times New Roman', serif;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.epi-timerStage__time--warning { color: var(--epi-brass-2); }
+.epi-timerStage__time--danger {
+  color: #8b1a1a;
+  animation: epi-timer-pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes epi-timer-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.epi-timerStage__rules {
+  font-size: 13px;
+  color: var(--epi-ink-muted);
+  margin-top: 12px;
+  max-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
+  font-style: italic;
+}
+
+.epi-timerStage__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+/* 21) Mobile Profile */
 .epi-mobileProfile {
   padding: 16px;
-  background: linear-gradient(135deg, var(--epi-wood) 0%, var(--epi-wood-light) 100%);
-  border-radius: 4px;
-  color: var(--epi-parchment);
+  background: linear-gradient(135deg, var(--epi-wood-1) 0%, #4a3728 100%);
+  border-radius: var(--epi-radius);
+  color: var(--epi-parchment-1);
   margin-bottom: 16px;
   box-shadow: var(--epi-shadow);
-  border: 1px solid var(--epi-brass);
+  border: 1px solid var(--epi-brass-1);
 }
 
 .epi-mobileProfile__row {
@@ -997,7 +951,6 @@
   gap: 12px;
 }
 
-/* Mini wax seal */
 .epi-mobileProfile__avatar {
   width: 48px;
   height: 48px;
@@ -1012,10 +965,8 @@
   justify-content: center;
   font-size: 16px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.9);
-  box-shadow:
-    0 2px 8px rgba(139, 48, 44, 0.4),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+  color: rgba(255,255,255,0.9);
+  box-shadow: 0 2px 8px rgba(139,48,44,0.4);
 }
 
 .epi-mobileProfile__name {
@@ -1026,28 +977,37 @@
 
 .epi-mobileProfile__stats {
   font-size: 12px;
-  color: rgba(245, 240, 225, 0.7);
+  color: rgba(243,230,204,0.7);
   margin-top: 2px;
 }
 
-/* 18) Responsive */
+/* 22) Profile Card Header (for feed cards) */
+.epi-profileCardHeader {
+  border-radius: 14px 14px 0 0;
+  padding: 12px 14px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.22)),
+    linear-gradient(180deg, #3a2a22, #241912);
+  border-bottom: 1px solid rgba(210,178,92,0.25);
+  color: rgba(255,255,255,0.92);
+}
+
+.epi-profileCardBody {
+  padding: 14px 16px 16px;
+}
+
+/* 23) Responsive Adjustments */
 @media (max-width: 720px) {
-  .epi-hero {
-    margin: -16px -12px 16px;
-    padding: 16px;
-  }
-
   .epi-shell {
-    padding: 0 12px 32px;
+    padding: 12px;
   }
 
-  .epi-card {
-    padding: 14px;
+  .epi-panel {
+    border-radius: 12px;
   }
 
-  .epi-card--feature {
-    padding: 18px;
-  }
+  .epi-panel--tight { padding: 12px; }
+  .epi-panel--pad { padding: 14px; }
 
   .epi-tabs {
     margin: 0 -12px;
@@ -1064,4 +1024,23 @@
   .epi-timerStage__time {
     font-size: 52px;
   }
+}
+
+/* 24) Force legibility - no fuzzy text */
+.eis-bg[data-theme="connect"] * {
+  text-shadow: none !important;
+}
+
+/* Ensure all text uses ink color on parchment */
+.epi-panel,
+.epi-panel * {
+  color: var(--epi-ink);
+}
+
+.epi-panel a {
+  color: var(--epi-brass-2);
+}
+
+.epi-panel a:hover {
+  color: var(--epi-brass-1);
 }

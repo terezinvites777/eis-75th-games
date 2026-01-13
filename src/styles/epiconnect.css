@@ -5,9 +5,9 @@
 
 /* 1) Theme CSS Variables - Override for connect theme */
 [data-theme="connect"] {
-  --epi-wood-1: #6b4a32;
-  --epi-wood-2: #5a3d28;
-  --epi-wood-3: #4a3020;
+  --epi-wood-1: #8B5A3C;
+  --epi-wood-2: #7A4A32;
+  --epi-wood-3: #5C3A28;
 
   --epi-parchment-1: #f3e6cc;
   --epi-parchment-2: #ead7b7;
@@ -34,13 +34,13 @@
 /* Override body background when connect theme is active */
 body:has([data-theme="connect"]),
 html:has([data-theme="connect"]) {
-  background: #5a3d28 !important;
+  background: #7A4A32 !important;
 }
 
-/* CSS fallback - lighter warm wood tones */
+/* CSS fallback - warm reddish-brown mahogany */
 .eis-bg[data-theme="connect"] {
-  background: linear-gradient(180deg, #6b4a32, #5a3d28 40%, #4a3020 100%) !important;
-  background-color: #5a3d28 !important;
+  background: linear-gradient(180deg, #8B5A3C, #7A4A32 50%, #5C3A28 100%) !important;
+  background-color: #7A4A32 !important;
   min-height: 100vh;
 }
 

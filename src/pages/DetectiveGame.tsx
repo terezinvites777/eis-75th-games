@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, XCircle, Eye, Lock } from 'lucide-react';
 import { EvidenceBoardLayout } from '../components/detective/EvidenceBoardLayout';
 import { getCaseById } from '../data/detective';
-import { DETECTIVE_PLATES } from '../data/detectivePlates';
 import { useGameStore } from '../store/gameStore';
 
 type GamePhase = 'briefing' | 'investigation' | 'diagnosis' | 'result';
@@ -221,11 +220,11 @@ export function DetectiveGame() {
             </div>
           </section>
 
-          {/* RIGHT COLUMN: Polaroid + Notes + Status */}
+          {/* RIGHT COLUMN: Case Photo + Notes + Status */}
           <section className="polaroid r-4" style={{ gridColumn: '9 / span 4', gridRow: '1' }}>
             <img
-              src={DETECTIVE_PLATES.evidence.src}
-              alt="Case evidence"
+              src="/images/plates/detective/CaseSelect-Vertical.png"
+              alt="Case files"
             />
             <div className="polaroid__caption">Case #{caseData.id}</div>
           </section>

@@ -173,7 +173,7 @@ export function CurveDrawer({
   }
 
   return (
-    <div className="panel overflow-hidden">
+    <div className="panel overflow-hidden flex flex-col h-full">
       {/* Top accent bar */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--theme-primary)] to-[var(--theme-secondary)]" />
 
@@ -196,12 +196,12 @@ export function CurveDrawer({
       <p className="text-xs text-slate-500 mb-3">Click and drag in the shaded area to forecast the epidemic curve</p>
 
       {/* Main Chart */}
-      <div className="relative rounded-xl overflow-hidden border border-slate-200">
+      <div className="relative rounded-xl overflow-hidden border border-slate-200 flex-1 min-h-[220px]">
         <svg
           ref={svgRef}
           viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
-          className="w-full cursor-crosshair select-none touch-none bg-slate-50"
-          style={{ height: 280 }}
+          className="w-full h-full cursor-crosshair select-none touch-none bg-slate-50"
+          preserveAspectRatio="xMidYMid meet"
           onMouseDown={handleDrawStart}
           onMouseMove={handleDrawMove}
           onMouseUp={handleDrawEnd}

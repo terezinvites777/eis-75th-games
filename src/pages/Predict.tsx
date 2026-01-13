@@ -110,7 +110,7 @@ export function Predict() {
         {/* Confetti celebration */}
         <Confetti active={showConfetti} />
 
-        <div className="eis-predictWrap animate-slide-up">
+        <div className="predict-workspaceWrap animate-slide-up">
           {/* Back button */}
           <button
             onClick={() => setShowLiveChallenge(false)}
@@ -130,110 +130,116 @@ export function Predict() {
             isCompact
           />
 
-          {/* Scenario Info Card */}
-          <OrnatePanel pad="md" className="mt-4">
-            <div className="flex items-start gap-3">
-              <div className="p-2 rounded-lg bg-amber-100">
-                <Sparkles size={20} className="text-amber-700" />
-              </div>
-              <div className="flex-1">
-                <h2 className="text-lg font-bold text-[#3d2b1f]">{MYSTERY_OUTBREAK_2026.title}</h2>
-                <p className="text-[#4a3728] text-sm mt-1">{MYSTERY_OUTBREAK_2026.description}</p>
-                <div className="flex gap-2 mt-3">
-                  <span className="pill" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#dc2626', borderColor: 'rgba(239, 68, 68, 0.2)' }}>
-                    <AlertCircle size={12} />
-                    {MYSTERY_OUTBREAK_2026.pathogen}
-                  </span>
-                  <span className="pill">
-                    <MapPin size={12} />
-                    {MYSTERY_OUTBREAK_2026.location}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </OrnatePanel>
-
-          {/* Epi Stats Bar */}
-          <EpiStatsBar data={visibleLiveData} className="mt-4" variant="dark" />
-
-          {/* MAIN FEATURE: Curve Drawer */}
-          <div className="mt-4">
-            <CurveDrawer
-              historicalData={visibleLiveData}
-              maxWeek={20}
-              maxCases={Math.max(...visibleLiveData.map(d => d.cases)) * 6}
-              onCurveChange={setDrawnCurve}
-            />
-          </div>
-
-          {/* Show actual outcome after results revealed */}
-          {resultsRevealed && (
-            <OrnatePanel pad="md" className="mt-4">
-              <BrassPlaque size="sm" className="mb-3">
-                <Activity size={14} className="mr-2 text-green-700" />
-                Actual Outbreak Data Revealed!
-              </BrassPlaque>
-              <EpiCurveChart
-                historicalData={visibleLiveData}
-                actualData={MYSTERY_OUTBREAK_2026.full_data.slice(visibleLiveData.length)}
-                showActual={true}
-                height={180}
-              />
-            </OrnatePanel>
-          )}
-
-          {/* Prediction Form or Results */}
-          <div className="mt-6">
-            {liveScore && livePrediction ? (
-              <OrnatePanel pad="lg">
-                <div className="text-center mb-6">
-                  <div className="relative inline-block">
-                    <Trophy size={56} className="text-amber-600 drop-shadow-lg animate-score-pop" />
-                    <div className="absolute -inset-3 bg-amber-400/20 rounded-full blur-xl animate-pulse" />
+          {/* Two-column workspace layout */}
+          <div className="predict-workspace mt-4">
+            {/* Left column: Chart area */}
+            <div className="predict-curvePanel">
+              {/* Scenario Info Card */}
+              <OrnatePanel pad="md">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-amber-100">
+                    <Sparkles size={20} className="text-amber-700" />
                   </div>
-                  <h3 className="text-xl font-bold text-[#3d2b1f] mt-3">Prediction Submitted!</h3>
-                  <div className="text-4xl font-bold text-gradient-gold mt-2 animate-score-pop">
-                    {liveScore.totalScore} points
-                  </div>
-                  {liveScore.earlyBonus.multiplier > 1 && (
-                    <div className="mt-2">
-                      <span className="pill pill-gold">
-                        <Zap size={14} />
-                        Includes {liveScore.earlyBonus.multiplier}x early bonus!
+                  <div className="flex-1">
+                    <h2 className="text-lg font-bold text-[#3d2b1f]">{MYSTERY_OUTBREAK_2026.title}</h2>
+                    <p className="text-[#4a3728] text-sm mt-1">{MYSTERY_OUTBREAK_2026.description}</p>
+                    <div className="flex gap-2 mt-3">
+                      <span className="pill" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#dc2626', borderColor: 'rgba(239, 68, 68, 0.2)' }}>
+                        <AlertCircle size={12} />
+                        {MYSTERY_OUTBREAK_2026.pathogen}
+                      </span>
+                      <span className="pill">
+                        <MapPin size={12} />
+                        {MYSTERY_OUTBREAK_2026.location}
                       </span>
                     </div>
-                  )}
+                  </div>
                 </div>
-
-                {/* Score Breakdown */}
-                <div className="space-y-2 mb-6 stagger-children">
-                  <ScoreRow label="Peak Week" points={liveScore.peakWeek.points} max={liveScore.peakWeek.maxPoints} predicted={`Week ${livePrediction.peak_week}`} actual={`Week ${MYSTERY_OUTBREAK_2026.peak_week}`} />
-                  <ScoreRow label="Peak Cases" points={liveScore.peakCases.points} max={liveScore.peakCases.maxPoints} predicted={livePrediction.peak_cases.toLocaleString()} actual={MYSTERY_OUTBREAK_2026.peak_cases.toLocaleString()} />
-                  <ScoreRow label="Total Cases" points={liveScore.totalCases.points} max={liveScore.totalCases.maxPoints} predicted={livePrediction.total_cases.toLocaleString()} actual={MYSTERY_OUTBREAK_2026.total_cases.toLocaleString()} />
-                  <ScoreRow label="Duration" points={liveScore.duration.points} max={liveScore.duration.maxPoints} predicted={`${livePrediction.duration_weeks} weeks`} actual={`${MYSTERY_OUTBREAK_2026.full_data.length} weeks`} />
-                  {livePrediction.r0_estimate && (
-                    <ScoreRow label="R₀ Estimate" points={liveScore.r0Bonus.points} max={liveScore.r0Bonus.maxPoints} predicted={livePrediction.r0_estimate.toFixed(1)} actual={MYSTERY_OUTBREAK_2026.r0_estimate.toFixed(1)} />
-                  )}
-                </div>
-
-                <button
-                  onClick={() => {
-                    setLivePrediction(null);
-                    setLiveScore(null);
-                  }}
-                  className="eis-goldBtn w-full flex items-center justify-center gap-2"
-                >
-                  <RotateCcw size={18} />
-                  Update Prediction
-                </button>
               </OrnatePanel>
-            ) : (
-              <EnhancedPredictionForm
-                visibleData={visibleLiveData}
-                onSubmit={handleLivePrediction}
-                dayNumber={currentDay}
-              />
-            )}
+
+              {/* Epi Stats Bar */}
+              <EpiStatsBar data={visibleLiveData} className="mt-4" variant="dark" />
+
+              {/* MAIN FEATURE: Curve Drawer - bounded height */}
+              <div className="predict-curvePanel__chart mt-4">
+                <CurveDrawer
+                  historicalData={visibleLiveData}
+                  maxWeek={20}
+                  maxCases={Math.max(...visibleLiveData.map(d => d.cases)) * 6}
+                  onCurveChange={setDrawnCurve}
+                />
+              </div>
+
+              {/* Show actual outcome after results revealed */}
+              {resultsRevealed && (
+                <OrnatePanel pad="md" className="mt-4">
+                  <BrassPlaque size="sm" className="mb-3">
+                    <Activity size={14} className="mr-2 text-green-700" />
+                    Actual Outbreak Data Revealed!
+                  </BrassPlaque>
+                  <EpiCurveChart
+                    historicalData={visibleLiveData}
+                    actualData={MYSTERY_OUTBREAK_2026.full_data.slice(visibleLiveData.length)}
+                    showActual={true}
+                    height={180}
+                  />
+                </OrnatePanel>
+              )}
+            </div>
+
+            {/* Right column: Controls panel - sticky on desktop */}
+            <div className="predict-controlsPanel">
+              {liveScore && livePrediction ? (
+                <OrnatePanel pad="lg">
+                  <div className="text-center mb-6">
+                    <div className="relative inline-block">
+                      <Trophy size={56} className="text-amber-600 drop-shadow-lg animate-score-pop" />
+                      <div className="absolute -inset-3 bg-amber-400/20 rounded-full blur-xl animate-pulse" />
+                    </div>
+                    <h3 className="text-xl font-bold text-[#3d2b1f] mt-3">Prediction Submitted!</h3>
+                    <div className="text-4xl font-bold text-gradient-gold mt-2 animate-score-pop">
+                      {liveScore.totalScore} points
+                    </div>
+                    {liveScore.earlyBonus.multiplier > 1 && (
+                      <div className="mt-2">
+                        <span className="pill pill-gold">
+                          <Zap size={14} />
+                          Includes {liveScore.earlyBonus.multiplier}x early bonus!
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Score Breakdown */}
+                  <div className="space-y-2 mb-6 stagger-children">
+                    <ScoreRow label="Peak Week" points={liveScore.peakWeek.points} max={liveScore.peakWeek.maxPoints} predicted={`Week ${livePrediction.peak_week}`} actual={`Week ${MYSTERY_OUTBREAK_2026.peak_week}`} />
+                    <ScoreRow label="Peak Cases" points={liveScore.peakCases.points} max={liveScore.peakCases.maxPoints} predicted={livePrediction.peak_cases.toLocaleString()} actual={MYSTERY_OUTBREAK_2026.peak_cases.toLocaleString()} />
+                    <ScoreRow label="Total Cases" points={liveScore.totalCases.points} max={liveScore.totalCases.maxPoints} predicted={livePrediction.total_cases.toLocaleString()} actual={MYSTERY_OUTBREAK_2026.total_cases.toLocaleString()} />
+                    <ScoreRow label="Duration" points={liveScore.duration.points} max={liveScore.duration.maxPoints} predicted={`${livePrediction.duration_weeks} weeks`} actual={`${MYSTERY_OUTBREAK_2026.full_data.length} weeks`} />
+                    {livePrediction.r0_estimate && (
+                      <ScoreRow label="R₀ Estimate" points={liveScore.r0Bonus.points} max={liveScore.r0Bonus.maxPoints} predicted={livePrediction.r0_estimate.toFixed(1)} actual={MYSTERY_OUTBREAK_2026.r0_estimate.toFixed(1)} />
+                    )}
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setLivePrediction(null);
+                      setLiveScore(null);
+                    }}
+                    className="eis-goldBtn w-full flex items-center justify-center gap-2"
+                  >
+                    <RotateCcw size={18} />
+                    Update Prediction
+                  </button>
+                </OrnatePanel>
+              ) : (
+                <EnhancedPredictionForm
+                  visibleData={visibleLiveData}
+                  onSubmit={handleLivePrediction}
+                  dayNumber={currentDay}
+                />
+              )}
+            </div>
           </div>
         </div>
       </GameShell>
@@ -251,7 +257,7 @@ export function Predict() {
         heroSubtitle={selectedScenario.title}
         showNav={true}
       >
-        <div className="eis-predictWrap animate-slide-up">
+        <div className="predict-workspaceWrap animate-slide-up">
           {/* Back button */}
           <button
             onClick={() => setSelectedScenario(null)}
@@ -261,78 +267,86 @@ export function Predict() {
             Back to Scenarios
           </button>
 
-          {/* Scenario info */}
-          <OrnatePanel pad="md">
-            <h2 className="text-xl font-bold text-[#3d2b1f]">{selectedScenario.title}</h2>
-            <p className="text-[#4a3728] mt-2">{selectedScenario.description}</p>
-            <div className="flex gap-2 mt-4">
-              <span className="pill" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#dc2626', borderColor: 'rgba(239, 68, 68, 0.2)' }}>
-                {selectedScenario.pathogen}
-              </span>
-              <span className="pill">
-                {selectedScenario.location}
-              </span>
-            </div>
-          </OrnatePanel>
-
-          {/* Chart */}
-          <BrassPlaque className="mt-6">
-            <BarChart3 size={16} className="mr-2" />
-            Epidemic Curve
-          </BrassPlaque>
-          <OrnatePanel pad="md" className="mt-2">
-            <EpiCurveChart
-              historicalData={selectedScenario.historical_data}
-              actualData={showResult ? selectedScenario.actual_outcome : undefined}
-              showActual={showResult}
-              height={250}
-            />
-          </OrnatePanel>
-
-          {/* Prediction Form or Results */}
-          <div className="mt-6">
-            {showResult && existingPrediction ? (
-              <OrnatePanel pad="lg">
-                <div className="text-center mb-6">
-                  <Trophy size={48} className="mx-auto text-amber-600 mb-3 animate-score-pop" />
-                  <h3 className="text-xl font-bold text-[#3d2b1f]">Prediction Results</h3>
-                  <div className="text-3xl font-bold text-gradient-gold mt-2 animate-score-pop">
-                    {existingPrediction.score} points
-                  </div>
+          {/* Two-column workspace layout */}
+          <div className="predict-workspace">
+            {/* Left column: Chart area */}
+            <div className="predict-curvePanel">
+              {/* Scenario info */}
+              <OrnatePanel pad="md">
+                <h2 className="text-xl font-bold text-[#3d2b1f]">{selectedScenario.title}</h2>
+                <p className="text-[#4a3728] mt-2">{selectedScenario.description}</p>
+                <div className="flex gap-2 mt-4">
+                  <span className="pill" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#dc2626', borderColor: 'rgba(239, 68, 68, 0.2)' }}>
+                    {selectedScenario.pathogen}
+                  </span>
+                  <span className="pill">
+                    {selectedScenario.location}
+                  </span>
                 </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="stat-card">
-                    <div className="stat-value text-[var(--theme-primary)]">Week {existingPrediction.peak_week}</div>
-                    <div className="stat-label">Your Peak Week</div>
-                    <div className="text-xs text-[#4a3728] mt-1">
-                      Actual: Week {selectedScenario.peak_week}
-                    </div>
-                  </div>
-                  <div className="stat-card">
-                    <div className="stat-value text-amber-700">
-                      {existingPrediction.total_cases.toLocaleString()}
-                    </div>
-                    <div className="stat-label">Your Total Cases</div>
-                    <div className="text-xs text-[#4a3728] mt-1">
-                      Actual: {selectedScenario.total_cases.toLocaleString()}
-                    </div>
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => setSelectedScenario(null)}
-                  className="eis-goldBtn w-full mt-6"
-                >
-                  Try Another Scenario
-                </button>
               </OrnatePanel>
-            ) : (
-              <PredictionForm
-                scenario={selectedScenario}
-                onSubmit={handleSubmitPrediction}
-              />
-            )}
+
+              {/* Chart - bounded height */}
+              <BrassPlaque className="mt-6">
+                <BarChart3 size={16} className="mr-2" />
+                Epidemic Curve
+              </BrassPlaque>
+              <OrnatePanel pad="md" className="mt-2">
+                <div className="predict-curvePanel__chart">
+                  <EpiCurveChart
+                    historicalData={selectedScenario.historical_data}
+                    actualData={showResult ? selectedScenario.actual_outcome : undefined}
+                    showActual={showResult}
+                    height={280}
+                  />
+                </div>
+              </OrnatePanel>
+            </div>
+
+            {/* Right column: Controls panel - sticky on desktop */}
+            <div className="predict-controlsPanel">
+              {showResult && existingPrediction ? (
+                <OrnatePanel pad="lg">
+                  <div className="text-center mb-6">
+                    <Trophy size={48} className="mx-auto text-amber-600 mb-3 animate-score-pop" />
+                    <h3 className="text-xl font-bold text-[#3d2b1f]">Prediction Results</h3>
+                    <div className="text-3xl font-bold text-gradient-gold mt-2 animate-score-pop">
+                      {existingPrediction.score} points
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="stat-card">
+                      <div className="stat-value text-[var(--theme-primary)]">Week {existingPrediction.peak_week}</div>
+                      <div className="stat-label">Your Peak Week</div>
+                      <div className="text-xs text-[#4a3728] mt-1">
+                        Actual: Week {selectedScenario.peak_week}
+                      </div>
+                    </div>
+                    <div className="stat-card">
+                      <div className="stat-value text-amber-700">
+                        {existingPrediction.total_cases.toLocaleString()}
+                      </div>
+                      <div className="stat-label">Your Total Cases</div>
+                      <div className="text-xs text-[#4a3728] mt-1">
+                        Actual: {selectedScenario.total_cases.toLocaleString()}
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setSelectedScenario(null)}
+                    className="eis-goldBtn w-full mt-6"
+                  >
+                    Try Another Scenario
+                  </button>
+                </OrnatePanel>
+              ) : (
+                <PredictionForm
+                  scenario={selectedScenario}
+                  onSubmit={handleSubmitPrediction}
+                />
+              )}
+            </div>
           </div>
         </div>
       </GameShell>

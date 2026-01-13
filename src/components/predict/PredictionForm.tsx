@@ -75,7 +75,7 @@ export function PredictionForm({ scenario, onSubmit }: PredictionFormProps) {
           <input
             type="range"
             min={lastHistoricalCases}
-            max={lastHistoricalCases * 30}
+            max={lastHistoricalCases * 50}
             step={Math.floor(lastHistoricalCases / 10)}
             value={totalCases}
             onChange={e => setTotalCases(parseInt(e.target.value))}
@@ -87,7 +87,7 @@ export function PredictionForm({ scenario, onSubmit }: PredictionFormProps) {
         <div className="bg-[var(--theme-surface)] rounded-lg p-4">
           <span className="text-xs text-slate-500 uppercase tracking-wide">Quick estimates:</span>
           <div className="flex flex-wrap gap-2 mt-2">
-            {[5, 10, 15, 20].map(multiplier => (
+            {[5, 10, 20, 35].map(multiplier => (
               <button
                 key={multiplier}
                 type="button"

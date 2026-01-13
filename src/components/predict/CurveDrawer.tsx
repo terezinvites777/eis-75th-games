@@ -163,8 +163,25 @@ export function CurveDrawer({
     return { peakWeek: maxPoint.week, peakCases: maxPoint.cases, totalCases };
   })() : null;
 
-  // Y-axis tick values
-  const yTicks = [0, 0.25, 0.5, 0.75, 1].map(pct => Math.round(effectiveMaxCases * (1 - pct)));
+  // Calculate nice round Y-axis tick values
+  const getNiceYTicks = (max: number): number[] => {
+    if (max <= 0) return [0];
+    const roughStep = max / 4;
+    const magnitude = Math.pow(10, Math.floor(Math.log10(roughStep)));
+    const residual = roughStep / magnitude;
+    let niceStep: number;
+    if (residual <= 1.5) niceStep = magnitude;
+    else if (residual <= 3) niceStep = 2 * magnitude;
+    else if (residual <= 7) niceStep = 5 * magnitude;
+    else niceStep = 10 * magnitude;
+    const ticks: number[] = [];
+    for (let tick = 0; tick <= max * 1.1; tick += niceStep) {
+      ticks.push(tick);
+      if (ticks.length >= 6) break;
+    }
+    return ticks.reverse(); // Reverse for top-to-bottom display
+  };
+  const yTicks = getNiceYTicks(effectiveMaxCases);
 
   // X-axis week labels
   const weekRange = effectiveMaxWeek - effectiveMinWeek;

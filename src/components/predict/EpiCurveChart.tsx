@@ -44,11 +44,39 @@ export function EpiCurveChart({
     ...(showActual && normalizedActual.length > 0 ? normalizedActual : []),
   ];
 
-  const maxCases = Math.max(...allData.map(d => d.cases), 1);
+  const maxDataCases = Math.max(...allData.map(d => d.cases), 1);
   const allWeeks = allData.map(d => d.week);
   const minWeek = Math.min(...allWeeks);
   const maxWeek = Math.max(...allWeeks);
   const weekSpan = maxWeek - minWeek + 1;
+
+  // Calculate nice round Y-axis tick values
+  const getNiceYTicks = (max: number): number[] => {
+    if (max <= 0) return [0];
+
+    // Find a nice step size (1, 2, 5, 10, 20, 50, 100, etc.)
+    const roughStep = max / 4;
+    const magnitude = Math.pow(10, Math.floor(Math.log10(roughStep)));
+    const residual = roughStep / magnitude;
+
+    let niceStep: number;
+    if (residual <= 1.5) niceStep = magnitude;
+    else if (residual <= 3) niceStep = 2 * magnitude;
+    else if (residual <= 7) niceStep = 5 * magnitude;
+    else niceStep = 10 * magnitude;
+
+    // Generate ticks from 0 up to and beyond max
+    const ticks: number[] = [];
+    for (let tick = 0; tick <= max * 1.1; tick += niceStep) {
+      ticks.push(tick);
+      if (ticks.length >= 6) break; // Max 6 ticks
+    }
+
+    return ticks;
+  };
+
+  const yTicks = getNiceYTicks(maxDataCases);
+  const maxCases = yTicks[yTicks.length - 1] || maxDataCases; // Use max tick for scale
 
   // Fixed viewBox dimensions for consistent aspect ratio
   const viewBoxWidth = 400;
@@ -92,9 +120,6 @@ export function EpiCurveChart({
     const baseY = yScale(0);
     return `${linePath} L ${lastX} ${baseY} L ${firstX} ${baseY} Z`;
   };
-
-  // Y-axis tick values
-  const yTicks = [0, 0.25, 0.5, 0.75, 1].map(pct => Math.round(maxCases * pct));
 
   // Get unique week labels with good spacing
   const getWeekLabels = () => {

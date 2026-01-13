@@ -50,15 +50,16 @@
 }
 
 @layer components {
-  /* ========== Background treatment (museum parchment + subtle pattern) ========== */
+  /* ========== Background treatment (leather museum aesthetic) ========== */
   .eis-bg {
     position: relative;
     min-height: 100vh;
     color: var(--ink);
-    background: #d5d0c3;
-    background-image:
-      radial-gradient(ellipse 120% 80% at 50% 0%, rgba(255,255,255,0.6) 0%, transparent 50%),
-      linear-gradient(180deg, #c8c3b5 0%, #d5d0c3 25%, #e0dcd2 60%, #e8e5dd 100%);
+    background: #4a3528;
+    background-image: url('/images/textures/dark-brown-leather-texture-can-be-use-as-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
   }
 
   .eis-bg::before {
@@ -67,8 +68,7 @@
     position: absolute;
     inset: 0;
     z-index: 0;
-    background-image: radial-gradient(circle, rgba(0,0,0,0.10) 1px, transparent 1px);
-    background-size: 18px 18px;
+    background: radial-gradient(ellipse 120% 80% at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 50%);
   }
 
   .eis-bg > * {

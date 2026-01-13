@@ -26,8 +26,8 @@ export function EpiLedgerRow({
     <div className={`epi-ledgerRow ${isComplete ? 'is-complete' : ''}`}>
       <div className="epi-ledgerRow__icon">{icon}</div>
       <div className="epi-ledgerRow__content">
-        <div className="epi-ledgerRow__title">{title}</div>
-        <div className="epi-ledgerRow__desc">{description}</div>
+        <div className="epi-ledgerRow__title" style={{ color: '#1a1008' }}>{title}</div>
+        <div className="epi-ledgerRow__desc" style={{ color: '#4a3828' }}>{description}</div>
         {target > 1 && (
           <div className="epi-ledgerRow__progress">
             <div

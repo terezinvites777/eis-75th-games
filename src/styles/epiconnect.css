@@ -777,14 +777,31 @@ html:has([data-theme="connect"]) {
 
 .epi-ledgerRow__title {
   font-size: 14px;
-  font-weight: 600;
-  color: #2a2018 !important;
+  font-weight: 700;
+  color: #1a1008 !important;
+  -webkit-text-fill-color: #1a1008 !important;
 }
 
 .epi-ledgerRow__desc {
   font-size: 12px;
-  color: #5a4a3a !important;
+  color: #3a2a1a !important;
+  -webkit-text-fill-color: #3a2a1a !important;
   margin-top: 2px;
+}
+
+/* Force ledger text visibility */
+[data-theme="connect"] .epi-ledgerRow .epi-ledgerRow__title,
+[data-theme="connect"] .epi-ledgerRow .epi-ledgerRow__content .epi-ledgerRow__title {
+  color: #1a1008 !important;
+  -webkit-text-fill-color: #1a1008 !important;
+  opacity: 1 !important;
+}
+
+[data-theme="connect"] .epi-ledgerRow .epi-ledgerRow__desc,
+[data-theme="connect"] .epi-ledgerRow .epi-ledgerRow__content .epi-ledgerRow__desc {
+  color: #3a2a1a !important;
+  -webkit-text-fill-color: #3a2a1a !important;
+  opacity: 1 !important;
 }
 
 .epi-ledgerRow__progress {
@@ -1081,6 +1098,21 @@ html:has([data-theme="connect"]) {
 .epi-card,
 .epi-card * {
   color: var(--epi-ink);
+}
+
+/* Challenge ledger text must be dark - highest specificity */
+.epi-card .epi-ledger .epi-ledgerRow__title,
+.epi-card .epi-ledgerRow .epi-ledgerRow__title,
+.epi-ledger .epi-ledgerRow__title {
+  color: #1a1008 !important;
+  -webkit-text-fill-color: #1a1008 !important;
+}
+
+.epi-card .epi-ledger .epi-ledgerRow__desc,
+.epi-card .epi-ledgerRow .epi-ledgerRow__desc,
+.epi-ledger .epi-ledgerRow__desc {
+  color: #4a3828 !important;
+  -webkit-text-fill-color: #4a3828 !important;
 }
 
 .epi-card a {

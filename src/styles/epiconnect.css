@@ -31,29 +31,28 @@
 }
 
 /* 2) Page Background - Wood desk with subtle vignette */
-/* Use higher specificity to override eis-brand.css leather texture */
-.eis-bg.min-h-screen[data-theme="connect"],
+/* Override eis-brand.css leather texture by setting all properties */
 .eis-bg[data-theme="connect"] {
-  background:
-    /* Subtle vignette */
+  background-color: #2a1a12 !important;
+  background-image:
     radial-gradient(1200px 600px at 50% 12%, rgba(0,0,0,0.05), rgba(0,0,0,0.45)),
-    /* Top to bottom darkening */
     linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.55)),
-    /* Wood grain texture */
     repeating-linear-gradient(90deg,
       rgba(255,255,255,0.03) 0px,
       rgba(255,255,255,0.03) 6px,
       rgba(0,0,0,0.03) 6px,
       rgba(0,0,0,0.03) 12px),
-    /* Base wood gradient */
-    linear-gradient(180deg, var(--epi-wood-1), var(--epi-wood-2) 55%, var(--epi-wood-3)) !important;
-  background-image: none !important;
+    linear-gradient(180deg, #3b261a, #2a1a12 55%, #1b120d) !important;
+  background-size: auto !important;
+  background-position: center !important;
+  background-attachment: scroll !important;
   min-height: 100vh;
 }
 
-/* Override leather texture completely */
+/* Hide the overlay pseudo-element for connect theme */
 .eis-bg[data-theme="connect"]::before {
   display: none !important;
+  content: none !important;
 }
 
 /* 3) Hero header override - Wood/brass nameplate style */
@@ -208,61 +207,60 @@
 
 /* 6) Parchment Card Base - Main content cards */
 .epi-card {
-  border-radius: var(--epi-radius);
+  border-radius: 16px;
   background:
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
-    linear-gradient(180deg, var(--epi-parchment-1), var(--epi-parchment-2) 55%, var(--epi-parchment-3));
+    linear-gradient(180deg, #f3e6cc, #ead7b7 55%, #ddc49d);
   border: 1px solid rgba(178,138,46,0.35);
-  box-shadow: var(--epi-shadow);
+  box-shadow: 0 18px 45px rgba(0,0,0,0.35);
   position: relative;
-  color: var(--epi-ink);
-  overflow: hidden;
-  padding: 16px 18px;
+  color: #2a2018;
+  overflow: visible;
+  padding: 20px 22px;
 }
 
 .epi-card--tight { padding: 14px; }
 
-/* Brass screws in corners */
+/* Brass screws in corners - all four corners */
 .epi-card::before,
 .epi-card::after {
   content: "";
   position: absolute;
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #fff2c2, var(--epi-brass-1) 45%, var(--epi-brass-3) 100%);
+  background: radial-gradient(circle at 30% 30%, #fff2c2, #d2b25c 45%, #7a5b1a 100%);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 2px 6px rgba(0,0,0,0.25);
-  top: 12px;
   z-index: 10;
 }
-.epi-card::before { left: 12px; }
-.epi-card::after { right: 12px; }
+.epi-card::before { top: 10px; left: 10px; }
+.epi-card::after { top: 10px; right: 10px; }
 
-/* Bottom screws (add via spans in JSX) */
+/* Bottom screws - using extra elements in JSX */
 .epi-screwBottomLeft,
 .epi-screwBottomRight {
   position: absolute;
-  bottom: 12px;
-  width: 11px;
-  height: 11px;
+  bottom: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #fff2c2, var(--epi-brass-1) 45%, var(--epi-brass-3) 100%);
+  background: radial-gradient(circle at 30% 30%, #fff2c2, #d2b25c 45%, #7a5b1a 100%);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), 0 2px 6px rgba(0,0,0,0.25);
   z-index: 10;
 }
-.epi-screwBottomLeft { left: 12px; }
-.epi-screwBottomRight { right: 12px; }
+.epi-screwBottomLeft { left: 10px; }
+.epi-screwBottomRight { right: 10px; }
 
 /* Card variants */
 .epi-card--feature {
   background:
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
-    linear-gradient(180deg, #faf6eb, var(--epi-parchment-1) 40%, var(--epi-parchment-2));
+    linear-gradient(180deg, #faf6eb, #f3e6cc 40%, #ead7b7);
   box-shadow: 0 20px 50px rgba(0,0,0,0.4);
 }
 
 .epi-card--muted {
-  background: rgba(243, 230, 204, 0.85);
+  background: rgba(243, 230, 204, 0.92);
   box-shadow: 0 12px 30px rgba(0,0,0,0.25);
 }
 

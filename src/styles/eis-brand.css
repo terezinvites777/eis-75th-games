@@ -55,7 +55,7 @@
     position: relative;
     min-height: 100vh;
     color: var(--ink);
-    background: #4a3528;
+    background: #2a1f18;
     background-image: url('/images/textures/dark-brown-leather-texture-can-be-use-as-background.jpg');
     background-size: cover;
     background-position: center;
@@ -68,7 +68,10 @@
     position: absolute;
     inset: 0;
     z-index: 0;
-    background: radial-gradient(ellipse 120% 80% at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 50%);
+    /* Dark overlay to mute leather texture */
+    background:
+      linear-gradient(180deg, rgba(20,15,10,0.45) 0%, rgba(20,15,10,0.6) 100%),
+      radial-gradient(ellipse 120% 80% at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 50%);
   }
 
   .eis-bg > * {

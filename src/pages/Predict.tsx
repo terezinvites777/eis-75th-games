@@ -284,18 +284,30 @@ export function Predict() {
                 </div>
               </OrnatePanel>
 
-              {/* Chart - bounded height */}
-              <BrassPlaque className="mt-6">
-                <BarChart3 size={16} className="mr-2" />
-                Epidemic Curve
-              </BrassPlaque>
-              <OrnatePanel pad="md" className="mt-2">
-                <EpiCurveChart
+              {/* Interactive Curve Drawer */}
+              <div className="mt-4">
+                <CurveDrawer
                   historicalData={selectedScenario.historical_data}
-                  actualData={showResult ? selectedScenario.actual_outcome : undefined}
-                  showActual={showResult}
+                  maxWeek={Math.max(...selectedScenario.historical_data.map(d => d.week)) + 12}
+                  maxCases={Math.max(...selectedScenario.historical_data.map(d => d.cases)) * 4}
+                  onCurveChange={() => {}}
                 />
-              </OrnatePanel>
+              </div>
+
+              {/* Show actual outcome after prediction submitted */}
+              {showResult && selectedScenario.actual_outcome && (
+                <OrnatePanel pad="md" className="mt-4">
+                  <BrassPlaque size="sm" className="mb-3">
+                    <Activity size={14} className="mr-2 text-green-700" />
+                    Actual Outbreak Revealed!
+                  </BrassPlaque>
+                  <EpiCurveChart
+                    historicalData={selectedScenario.historical_data}
+                    actualData={selectedScenario.actual_outcome}
+                    showActual={true}
+                  />
+                </OrnatePanel>
+              )}
             </div>
 
             {/* Right column: Controls panel - sticky on desktop */}

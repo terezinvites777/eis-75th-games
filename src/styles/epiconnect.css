@@ -1187,6 +1187,13 @@ html:has([data-theme="connect"]) {
   border: 1px solid #6b4a35 !important;
 }
 
+/* Ensure connect button text and icon match */
+[data-theme="connect"] [class*="from-purple-600"][class*="to-pink-600"].text-white,
+[data-theme="connect"] [class*="from-purple-600"][class*="to-pink-600"] * {
+  color: #f5e6c8 !important;
+  -webkit-text-fill-color: #f5e6c8 !important;
+}
+
 [data-theme="connect"] .bg-slate-100,
 [data-theme="connect"] [class*="bg-slate-100"] {
   background: rgba(255,255,255,0.5) !important;

@@ -645,12 +645,22 @@ html:has([data-theme="connect"]) {
   border: 1px solid rgba(178,138,46,0.40);
 }
 
-.epi-pill--purple,
 .epi-pill--gold {
   background: linear-gradient(135deg, #c9a227, #a88520);
   border-color: #8b6914;
   color: #2a1a0a !important;
   text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.epi-pill--purple {
+  background: linear-gradient(180deg, #5a4030 0%, #3a2820 100%);
+  border-color: #6b4a35;
+  color: #f5e6c8 !important;
+  text-shadow: none;
+}
+
+.epi-pill--purple svg {
+  color: #f5e6c8 !important;
 }
 
 .epi-pill--success {

@@ -59,7 +59,7 @@ export function TheoryForm({ existingTheory, onSubmit }: TheoryFormProps) {
       {/* Case File Header */}
       <div className="pz-caseHeader">
         <div className="pz-caseIcon">
-          <Target size={24} className="text-[#1a140d]" />
+          <Target size={24} className="text-[#fff8e6]" />
         </div>
         <div className="flex-1">
           <h3 className="pz-caseTitle">

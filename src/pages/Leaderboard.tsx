@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Trophy, Medal, Award, Users } from 'lucide-react';
 import { GameShell } from '../components/layout/GameShell';
 import { useGameStore } from '../store/gameStore';
+import '../styles/leaderboard.css';
 
 // Mock leaderboard data
 const mockLeaderboard = [
@@ -27,10 +28,10 @@ function getRankIcon(rank: number) {
 }
 
 function getRankStyle(rank: number) {
-  if (rank === 1) return 'bg-gradient-to-r from-yellow-50 to-amber-50 border-yellow-200';
-  if (rank === 2) return 'bg-gradient-to-r from-gray-50 to-slate-50 border-gray-200';
-  if (rank === 3) return 'bg-gradient-to-r from-orange-50 to-amber-50 border-orange-200';
-  return 'bg-white border-gray-100';
+  if (rank === 1) return 'leaderboard-card leaderboard-card--gold';
+  if (rank === 2) return 'leaderboard-card leaderboard-card--silver';
+  if (rank === 3) return 'leaderboard-card leaderboard-card--bronze';
+  return 'leaderboard-card';
 }
 
 export function Leaderboard() {
@@ -40,19 +41,15 @@ export function Leaderboard() {
   const currentPlayerScore = completedCases.length * 100;
 
   return (
-    <GameShell theme="default" heroTitle="Leaderboard" heroSubtitle="Top Disease Detectives">
-      <div className="p-5 space-y-6">
+    <GameShell theme="scores" heroTitle="Leaderboard" heroSubtitle="Top Disease Detectives">
+      <div className="leaderboard-wrap">
         {/* Timeframe Tabs */}
-        <div className="flex gap-2 p-1 bg-gray-100 rounded-xl">
+        <div className="leaderboard-tabs">
           {['all', 'week', 'today'].map((tf) => (
             <button
               key={tf}
               onClick={() => setTimeframe(tf as typeof timeframe)}
-              className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                timeframe === tf
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
+              className={`leaderboard-tab ${timeframe === tf ? 'leaderboard-tab--active' : ''}`}
             >
               {tf === 'all' ? 'All Time' : tf === 'week' ? 'This Week' : 'Today'}
             </button>
@@ -64,33 +61,33 @@ export function Leaderboard() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="panel-themed"
+            className="leaderboard-your-rank"
           >
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-[var(--theme-primary)]/10 flex items-center justify-center">
-                <Users className="w-6 h-6 text-[var(--theme-primary)]" />
+              <div className="leaderboard-your-rank__icon">
+                <Users className="w-6 h-6 text-[#b8860b]" />
               </div>
               <div className="flex-1">
-                <p className="text-sm text-gray-500">Your Ranking</p>
-                <p className="font-bold text-gray-900">#{mockLeaderboard.length + 1} of {mockLeaderboard.length + 50}</p>
+                <p className="leaderboard-your-rank__label">Your Ranking</p>
+                <p className="leaderboard-your-rank__value">#{mockLeaderboard.length + 1} of {mockLeaderboard.length + 50}</p>
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold text-[var(--anniv-gold)]">{currentPlayerScore}</p>
-                <p className="text-xs text-gray-500">points</p>
+                <p className="leaderboard-your-rank__score">{currentPlayerScore}</p>
+                <p className="leaderboard-your-rank__pts">points</p>
               </div>
             </div>
           </motion.div>
         )}
 
         {/* Leaderboard List */}
-        <div className="space-y-3">
+        <div className="leaderboard-list">
           {mockLeaderboard.map((entry, index) => (
             <motion.div
               key={entry.id}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.05 }}
-              className={`surface p-4 border ${getRankStyle(index + 1)}`}
+              className={getRankStyle(index + 1)}
             >
               <div className="flex items-center gap-3">
                 {/* Rank */}
@@ -99,28 +96,28 @@ export function Leaderboard() {
                 </div>
 
                 {/* Avatar */}
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                  <span className="text-lg font-bold text-gray-500">
+                <div className="leaderboard-avatar">
+                  <span className="leaderboard-avatar__initials">
                     {entry.name.split(' ').map(n => n[0]).join('')}
                   </span>
                 </div>
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-gray-900 truncate">
+                  <h3 className="leaderboard-name">
                     {entry.name}
                   </h3>
-                  <p className="text-xs text-gray-500">
+                  <p className="leaderboard-meta">
                     {entry.gamesCompleted} cases • {entry.streak > 0 ? `${entry.streak}🔥` : ''}
                   </p>
                 </div>
 
                 {/* Score */}
                 <div className="text-right">
-                  <p className="font-bold text-gray-900">
+                  <p className="leaderboard-score">
                     {entry.score.toLocaleString()}
                   </p>
-                  <p className="text-xs text-gray-500">pts</p>
+                  <p className="leaderboard-pts">pts</p>
                 </div>
               </div>
             </motion.div>
@@ -128,7 +125,7 @@ export function Leaderboard() {
         </div>
 
         {/* Note */}
-        <p className="text-center text-xs text-gray-400 pt-4">
+        <p className="leaderboard-note">
           Rankings update in real-time during the 75th Anniversary Summit
         </p>
       </div>

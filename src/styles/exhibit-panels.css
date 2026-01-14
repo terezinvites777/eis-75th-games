@@ -1509,8 +1509,8 @@
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 18px;
   font-weight: 700;
-  color: #f4e4c1;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  color: #fff8e6;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.6), 0 0 12px rgba(0,0,0,0.3);
   margin: 0;
 }
 
@@ -1650,8 +1650,8 @@
 [data-theme="patient-zero"] .section-title,
 .eis-bg[data-theme="patient-zero"] .section-title {
   font-family: Georgia, 'Times New Roman', serif;
-  color: #3d2b1f !important;
-  text-shadow: none;
+  color: #f4e4c1 !important;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.5), 0 0 12px rgba(0,0,0,0.3);
 }
 
 [data-theme="patient-zero"] .section-header-line,

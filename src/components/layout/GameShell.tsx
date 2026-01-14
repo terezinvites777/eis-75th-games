@@ -6,7 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Home, Search, Target, Users, Trophy, Activity, TrendingUp } from 'lucide-react';
 import { AnniversaryLockup } from '../brand/BrandMarks';
 
-type Theme = 'detective' | 'command' | 'connect' | 'patient-zero' | 'predict' | 'default';
+type Theme = 'detective' | 'command' | 'connect' | 'patient-zero' | 'predict' | 'scores' | 'default';
 
 interface GameShellProps {
   children: ReactNode;

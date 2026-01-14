@@ -1342,3 +1342,73 @@ html:has([data-theme="connect"]) {
 [data-theme="connect"] .eis-heroSub {
   color: #d4c4a4 !important;
 }
+
+/* 34) CRITICAL: Ensure ALL text is legible on parchment backgrounds */
+/* Modal/dialog text - must be dark on parchment */
+[data-theme="connect"] .bg-white h3,
+[data-theme="connect"] .bg-white p,
+[data-theme="connect"] .bg-white span,
+[data-theme="connect"] .bg-white div,
+[data-theme="connect"] .bg-white li,
+[data-theme="connect"] .bg-white label,
+[data-theme="connect"] [class*="bg-white"] h3,
+[data-theme="connect"] [class*="bg-white"] p,
+[data-theme="connect"] [class*="bg-white"] span,
+[data-theme="connect"] [class*="bg-white"] div,
+[data-theme="connect"] [class*="bg-white"] li {
+  color: #2a1810 !important;
+  -webkit-text-fill-color: #2a1810 !important;
+}
+
+/* Specific slate color overrides for connect theme */
+[data-theme="connect"] .text-slate-800,
+[data-theme="connect"] .text-slate-700,
+[data-theme="connect"] [class*="text-slate-8"],
+[data-theme="connect"] [class*="text-slate-7"] {
+  color: #1a1008 !important;
+  -webkit-text-fill-color: #1a1008 !important;
+}
+
+[data-theme="connect"] .text-slate-600,
+[data-theme="connect"] .text-slate-500,
+[data-theme="connect"] [class*="text-slate-6"],
+[data-theme="connect"] [class*="text-slate-5"] {
+  color: #3a2818 !important;
+  -webkit-text-fill-color: #3a2818 !important;
+}
+
+[data-theme="connect"] .text-slate-400,
+[data-theme="connect"] [class*="text-slate-4"] {
+  color: #5a4030 !important;
+  -webkit-text-fill-color: #5a4030 !important;
+}
+
+/* Purple accent text on purple backgrounds */
+[data-theme="connect"] .bg-purple-50,
+[data-theme="connect"] .bg-purple-100,
+[data-theme="connect"] [class*="bg-purple-50"],
+[data-theme="connect"] [class*="bg-purple-100"] {
+  background: rgba(178,138,46,0.15) !important;
+}
+
+[data-theme="connect"] .text-purple-700,
+[data-theme="connect"] .text-purple-800,
+[data-theme="connect"] [class*="text-purple-7"],
+[data-theme="connect"] [class*="text-purple-8"] {
+  color: #5c3a18 !important;
+  -webkit-text-fill-color: #5c3a18 !important;
+}
+
+/* Button text - ensure legibility */
+[data-theme="connect"] button.text-slate-700,
+[data-theme="connect"] button.text-slate-600,
+[data-theme="connect"] button[class*="text-slate"] {
+  color: #2a1810 !important;
+  -webkit-text-fill-color: #2a1810 !important;
+}
+
+/* Border colors to match theme */
+[data-theme="connect"] .border-slate-300,
+[data-theme="connect"] [class*="border-slate-3"] {
+  border-color: rgba(139,90,60,0.4) !important;
+}

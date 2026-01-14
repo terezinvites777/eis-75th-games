@@ -162,9 +162,9 @@
   margin-top: 16px;
   border-radius: var(--panel-radius);
   background:
-    radial-gradient(900px 400px at 20% 10%, rgba(255,255,255,.45), transparent 55%),
-    radial-gradient(900px 400px at 80% 90%, rgba(0,0,0,.08), transparent 55%),
-    linear-gradient(180deg, var(--paper-0), var(--paper-1) 55%, var(--paper-2));
+    radial-gradient(900px 400px at 20% 10%, rgba(255,248,230,.25), transparent 55%),
+    radial-gradient(900px 400px at 80% 90%, rgba(0,0,0,.06), transparent 55%),
+    linear-gradient(180deg, var(--paper-1), var(--paper-2) 70%, #d4bb8a);
   border: 2px solid rgba(139,115,85,.4);
   box-shadow: var(--soft-shadow);
   position: relative;

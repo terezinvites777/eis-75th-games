@@ -391,17 +391,19 @@ export function Connect() {
               </div>
             </div>
 
-            {/* Search Bar */}
-            <div className="epi-search mb-4">
-              <Search className="epi-search__icon" size={18} />
-              <input
-                type="text"
-                placeholder="Search attendees by name, location, or topic..."
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                className="epi-search__input"
-              />
-            </div>
+            {/* Search Bar - only show in discover and network views */}
+            {(view === 'discover' || view === 'network') && (
+              <div className="epi-search mb-4">
+                <Search className="epi-search__icon" size={18} />
+                <input
+                  type="text"
+                  placeholder="Search attendees by name, location, or topic..."
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  className="epi-search__input"
+                />
+              </div>
+            )}
 
             {/* Mode Tabs */}
             <div className="mb-4">

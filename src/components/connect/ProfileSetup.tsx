@@ -100,7 +100,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
 
         {/* Step 1: Basic Info */}
         {step === 1 && (
-          <div className="bg-white rounded-2xl p-6 shadow-xl animate-fade-in">
+          <div className="bg-[#faf5eb] rounded-2xl p-6 shadow-xl animate-fade-in">
             <h2 className="text-2xl font-bold text-slate-800 mb-6">
               Let's set up your profile
             </h2>
@@ -174,7 +174,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
 
         {/* Step 2: Location */}
         {step === 2 && (
-          <div className="bg-white rounded-2xl p-6 shadow-xl animate-fade-in">
+          <div className="bg-[#faf5eb] rounded-2xl p-6 shadow-xl animate-fade-in">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 bg-[#f3e6cc] rounded-lg">
                 <MapPin size={24} className="text-[#8b6914]" />
@@ -235,7 +235,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
 
         {/* Step 3: Interests */}
         {step === 3 && (
-          <div className="bg-white rounded-2xl p-6 shadow-xl animate-fade-in">
+          <div className="bg-[#faf5eb] rounded-2xl p-6 shadow-xl animate-fade-in">
             <h2 className="text-2xl font-bold text-slate-800 mb-2">
               What are your interests?
             </h2>
@@ -285,7 +285,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
 
         {/* Step 4: Networking Preferences */}
         {step === 4 && (
-          <div className="bg-white rounded-2xl p-6 shadow-xl animate-fade-in">
+          <div className="bg-[#faf5eb] rounded-2xl p-6 shadow-xl animate-fade-in">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 bg-[#f3e6cc] rounded-lg">
                 <Heart size={24} className="text-[#8b6914]" />
@@ -333,7 +333,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
                       className={`px-4 py-2 rounded-full transition-all ${
                         isSelected
                           ? 'bg-[#b8860b] text-white'
-                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                          : 'bg-[#f3e6cc] text-[#5c4030] hover:bg-[#e8d9b8]'
                       }`}
                     >
                       {label}
@@ -344,7 +344,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
             </div>
 
             {/* Open to coffee chats */}
-            <label className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl cursor-pointer hover:bg-slate-100 transition-colors">
+            <label className="flex items-center gap-3 p-4 bg-[#f3e6cc] rounded-xl cursor-pointer hover:bg-[#e8d9b8] transition-colors">
               <input
                 type="checkbox"
                 checked={profile.open_to_coffee ?? true}
@@ -364,7 +364,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
           {step > 1 && (
             <button
               onClick={() => setStep(step - 1)}
-              className="flex-1 py-4 bg-white/20 text-white rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-white/30 transition-colors"
+              className="flex-1 py-4 bg-[#d4c4a4]/70 text-[#5c4030] rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-[#d4c4a4] transition-colors"
             >
               <ArrowLeft size={18} />
               Back
@@ -375,8 +375,8 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
             disabled={!canProceed()}
             className={`flex-1 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all ${
               canProceed()
-                ? 'bg-white text-[#705812] hover:bg-[#faf5eb]'
-                : 'bg-white/30 text-white/60 cursor-not-allowed'
+                ? 'bg-[#faf5eb] text-[#705812] hover:bg-[#f3e6cc]'
+                : 'bg-[#d4c4a4]/50 text-[#5c4030]/60 cursor-not-allowed'
             }`}
           >
             {step < 4 ? (

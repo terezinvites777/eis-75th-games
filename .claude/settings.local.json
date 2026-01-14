@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C \"D:\\\\eis-75th-games\" show 571f6d3 --stat)",
+      "Bash(git -C \"D:\\\\eis-75th-games\" show 571f6d3 --no-stat -p -- \"*.css\")",
+      "Bash(git -C \"D:\\\\eis-75th-games\" diff 571f6d3^..571f6d3 -- \"*.css\")",
+      "Bash(dir:*)",
+      "Bash(git -C \"D:\\\\eis-75th-games\" status)",
+      "Bash(git -C \"D:\\\\eis-75th-games\" diff src/styles/evidence-board.css)",
+      "Bash(git -C \"D:\\\\eis-75th-games\" log --oneline -3)",
+      "Bash(git -C \"D:\\\\eis-75th-games\" add src/styles/evidence-board.css)",
+      "Bash(git -C \"D:\\\\eis-75th-games\" commit -m \"$\\(cat <<''EOF''\nfix: Use parchment-light.png for post-it notes texture\n\n- Switch from parchment.jpg to parchment-light.png which loads reliably\n- Reduce gradient overlay opacity to make texture more visible\n- Fix background-position for multiple background layers\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C \"D:\\\\eis-75th-games\" push)",
+      "Bash(git -C \"D:\\\\eis-75th-games\" diff --stat)",
+      "Bash(git -C \"D:\\\\eis-75th-games\" add src/components/patient-zero/WorldMap.tsx src/components/ui/OrnateCornersWrapper.tsx src/styles/exhibit-panels.css)",
+      "Bash(git -C \"D:\\\\eis-75th-games\" commit -m \"$\\(cat <<''EOF''\nfix: Patient Zero & Command page issues\n\n- Fix WorldMap tooltip overflow by adding overflow:visible to containers\n- Fix OrnateCornersWrapper clipping tooltips\n- Fix Command page hero title - add dark background and light text\n- Improve hero title visibility with brighter colors and text-shadow\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C \"D:\\\\eis-75th-games\" add src/styles/epiconnect.css)",
+      "Bash(git -C \"D:\\\\eis-75th-games\" commit -m \"$\\(cat <<''EOF''\nfix: Make Connect page text legible on parchment backgrounds\n\n- Add comprehensive text color overrides for all slate colors\n- Ensure modal/dialog text is dark \\(#2a1810\\) on parchment\n- Fix button text visibility\n- Add -webkit-text-fill-color for better cross-browser support\n- Override purple accent backgrounds and text colors\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C \"D:\\\\eis-75th-games\" add src/components/connect/ProfileSetup.tsx src/pages/PatientZero.tsx src/styles/exhibit-panels.css)",
+      "Bash(git -C \"D:\\\\eis-75th-games\" commit -m \"$\\(cat <<''EOF''\nstyle: Visual polish updates across multiple pages\n\nCommand page:\n- Make hero title cream colored \\(#f5e6c8\\) for better contrast\n\nPatient Zero:\n- Replace emojis with Lucide icons \\(Search, Lightbulb, Clock, Target\\)\n- Add parchment texture to game-cards for consistent theming\n\nEpiConnect Profile:\n- Replace purple background with vintage paper texture\n- Update all accent colors from purple to brass/brown theme\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C \"D:\\\\eis-75th-games\" add src/pages/Connect.tsx)",
+      "Bash(git -C \"D:\\\\eis-75th-games\" commit -m \"$\\(cat <<''EOF''\nfix: Only show search bar in views where it works\n\nThe search bar only filters results in discover/network views,\nso hide it in speed and QR views to avoid confusion.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(cd:*)",
+      "Bash(npm run build:*)",
+      "Bash(git -C \"D:\\\\eis-75th-games\" commit -m \"fix: Use correct view type ''connections'' instead of ''network''\")",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

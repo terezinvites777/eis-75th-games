@@ -71,7 +71,15 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-900 via-purple-800 to-indigo-900 py-8 px-4">
+    <div
+      className="min-h-screen py-8 px-4"
+      style={{
+        backgroundImage: "url('/images/textures/old-antique-vintage-paper-pattern-texture-background.jpg')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed',
+      }}
+    >
       <div className="max-w-lg mx-auto">
         {/* Progress indicator */}
         <div className="flex gap-2 mb-8">
@@ -79,7 +87,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
             <div
               key={s}
               className={`h-2 flex-1 rounded-full transition-all ${
-                s <= step ? 'bg-purple-400' : 'bg-purple-800'
+                s <= step ? 'bg-[#b8860b]' : 'bg-[#d4c4a4]'
               }`}
             />
           ))}
@@ -87,7 +95,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
 
         {/* Step indicator */}
         <div className="text-center mb-6">
-          <span className="text-purple-300 text-sm">Step {step} of 4</span>
+          <span className="text-[#5c4030] text-sm font-medium">Step {step} of 4</span>
         </div>
 
         {/* Step 1: Basic Info */}
@@ -99,11 +107,11 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
 
             {/* Photo placeholder */}
             <div className="text-center mb-6">
-              <div className="w-24 h-24 mx-auto rounded-full bg-purple-100 flex items-center justify-center overflow-hidden border-4 border-purple-200">
+              <div className="w-24 h-24 mx-auto rounded-full bg-[#f3e6cc] flex items-center justify-center overflow-hidden border-4 border-[#d4c4a4]">
                 {profile.photo_url ? (
                   <img src={profile.photo_url} alt="" className="w-full h-full object-cover" />
                 ) : (
-                  <Camera size={32} className="text-purple-400" />
+                  <Camera size={32} className="text-[#b8860b]" />
                 )}
               </div>
               <p className="text-sm text-slate-500 mt-2">Photo (optional)</p>
@@ -118,7 +126,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
                 type="text"
                 value={profile.name || ''}
                 onChange={e => updateProfile({ name: e.target.value })}
-                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#b8860b] focus:border-[#b8860b]"
                 placeholder="Dr. Jane Smith"
               />
             </div>
@@ -132,7 +140,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
                 type="email"
                 value={profile.email || ''}
                 onChange={e => updateProfile({ email: e.target.value })}
-                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#b8860b] focus:border-[#b8860b]"
                 placeholder="jane.smith@cdc.gov"
               />
             </div>
@@ -150,8 +158,8 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
                     onClick={() => updateProfile({ role: role.value })}
                     className={`p-4 rounded-xl border-2 text-left transition-all ${
                       profile.role === role.value
-                        ? 'border-purple-600 bg-purple-50'
-                        : 'border-slate-200 hover:border-purple-300'
+                        ? 'border-[#b8860b] bg-[#faf5eb]'
+                        : 'border-slate-200 hover:border-[#d4af37]'
                     }`}
                   >
                     <span className="text-2xl">{role.icon}</span>
@@ -168,8 +176,8 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
         {step === 2 && (
           <div className="bg-white rounded-2xl p-6 shadow-xl animate-fade-in">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <MapPin size={24} className="text-purple-600" />
+              <div className="p-2 bg-[#f3e6cc] rounded-lg">
+                <MapPin size={24} className="text-[#8b6914]" />
               </div>
               <h2 className="text-2xl font-bold text-slate-800">Where are you from?</h2>
             </div>
@@ -182,7 +190,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
               <select
                 value={profile.home_state || ''}
                 onChange={e => updateProfile({ home_state: e.target.value })}
-                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#b8860b] focus:border-[#b8860b]"
               >
                 <option value="">Select state...</option>
                 {US_STATES.map(state => (
@@ -200,7 +208,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
                 type="text"
                 value={profile.assignment_location || ''}
                 onChange={e => updateProfile({ assignment_location: e.target.value })}
-                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#b8860b] focus:border-[#b8860b]"
                 placeholder="CDC Atlanta, Texas DSHS, etc."
               />
             </div>
@@ -215,7 +223,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
                   type="number"
                   value={profile.eis_class_year || ''}
                   onChange={e => updateProfile({ eis_class_year: parseInt(e.target.value) || undefined })}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#b8860b] focus:border-[#b8860b]"
                   placeholder="2025"
                   min={1951}
                   max={2026}
@@ -254,15 +262,15 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
                     disabled={!canSelect}
                     className={`p-3 rounded-xl border-2 text-left transition-all ${
                       isSelected
-                        ? 'border-purple-600 bg-purple-50'
+                        ? 'border-[#b8860b] bg-[#faf5eb]'
                         : canSelect
-                        ? 'border-slate-200 hover:border-purple-300'
+                        ? 'border-slate-200 hover:border-[#d4af37]'
                         : 'border-slate-100 bg-slate-50 text-slate-400 cursor-not-allowed'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium">{label}</span>
-                      {isSelected && <Check size={16} className="text-purple-600" />}
+                      {isSelected && <Check size={16} className="text-[#8b6914]" />}
                     </div>
                   </button>
                 );
@@ -279,8 +287,8 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
         {step === 4 && (
           <div className="bg-white rounded-2xl p-6 shadow-xl animate-fade-in">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-purple-100 rounded-lg">
-                <Heart size={24} className="text-purple-600" />
+              <div className="p-2 bg-[#f3e6cc] rounded-lg">
+                <Heart size={24} className="text-[#8b6914]" />
               </div>
               <h2 className="text-2xl font-bold text-slate-800">Almost done!</h2>
             </div>
@@ -293,7 +301,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
               <textarea
                 value={profile.bio || ''}
                 onChange={e => updateProfile({ bio: e.target.value })}
-                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 h-24 resize-none"
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#b8860b] focus:border-[#b8860b] h-24 resize-none"
                 placeholder="Tell others about yourself..."
                 maxLength={200}
               />
@@ -324,7 +332,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
                       }}
                       className={`px-4 py-2 rounded-full transition-all ${
                         isSelected
-                          ? 'bg-purple-600 text-white'
+                          ? 'bg-[#b8860b] text-white'
                           : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                       }`}
                     >
@@ -341,7 +349,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
                 type="checkbox"
                 checked={profile.open_to_coffee ?? true}
                 onChange={e => updateProfile({ open_to_coffee: e.target.checked })}
-                className="w-5 h-5 rounded border-slate-300 text-purple-600 focus:ring-purple-500"
+                className="w-5 h-5 rounded border-slate-300 text-[#8b6914] focus:ring-[#b8860b]"
               />
               <div>
                 <div className="font-medium">☕ Open to coffee chats</div>
@@ -367,7 +375,7 @@ export function ProfileSetup({ onComplete, initialProfile }: ProfileSetupProps) 
             disabled={!canProceed()}
             className={`flex-1 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all ${
               canProceed()
-                ? 'bg-white text-purple-700 hover:bg-purple-50'
+                ? 'bg-white text-[#705812] hover:bg-[#faf5eb]'
                 : 'bg-white/30 text-white/60 cursor-not-allowed'
             }`}
           >

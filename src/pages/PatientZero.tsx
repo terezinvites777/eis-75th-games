@@ -15,7 +15,7 @@ import { mysteries, featuredMystery, calculateTheoryScoreDetailed } from '../dat
 import type { ScoreBreakdown } from '../data/patient-zero-data';
 import { getCurrentDay, getNextClueRelease, DEV_MODE } from '../data/patient-zero-schedule';
 import type { MysteryDefinition, PlayerTheory } from '../types/patient-zero';
-import { ArrowLeft, Trophy, Target, Star, Users, Skull, MapPin, Calendar, Sparkles, TrendingUp, Zap, Search } from 'lucide-react';
+import { ArrowLeft, Trophy, Target, Star, Users, Skull, MapPin, Calendar, Sparkles, TrendingUp, Zap, Search, Clock, Lightbulb } from 'lucide-react';
 
 // Simulated social proof - would come from backend in production
 function getSimulatedSolvers(mysteryId: string): number {
@@ -467,22 +467,22 @@ export function PatientZero() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="stat-card !text-left !p-4">
-              <div className="text-2xl mb-1">🔍</div>
+              <Search size={24} className="text-[#8b6914] mb-1" />
               <div className="font-semibold text-slate-800 text-sm">Investigate</div>
               <div className="text-xs text-slate-500 mt-1">New clues revealed twice daily</div>
             </div>
             <div className="stat-card !text-left !p-4">
-              <div className="text-2xl mb-1">🧠</div>
+              <Lightbulb size={24} className="text-[#8b6914] mb-1" />
               <div className="font-semibold text-slate-800 text-sm">Theorize</div>
               <div className="text-xs text-slate-500 mt-1">Form your theory about the outbreak</div>
             </div>
             <div className="stat-card !text-left !p-4">
-              <div className="text-2xl mb-1">⏰</div>
+              <Clock size={24} className="text-[#8b6914] mb-1" />
               <div className="font-semibold text-slate-800 text-sm">Score Big</div>
               <div className="text-xs text-slate-500 mt-1">Day 1 = 2x, Day 2 = 1.5x bonus</div>
             </div>
             <div className="stat-card !text-left !p-4">
-              <div className="text-2xl mb-1">🎯</div>
+              <Target size={24} className="text-[#8b6914] mb-1" />
               <div className="font-semibold text-slate-800 text-sm">Solve</div>
               <div className="text-xs text-slate-500 mt-1">Unlock solution and see your score</div>
             </div>

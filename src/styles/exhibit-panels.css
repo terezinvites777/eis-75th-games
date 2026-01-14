@@ -994,9 +994,9 @@
 .eis-bg[data-theme="command"] .eis-heroTitle,
 [data-theme="command"] .eis-heroTitle {
   font-family: Georgia, 'Times New Roman', serif;
-  color: #fff8e6 !important;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.3) !important;
-  -webkit-text-fill-color: #fff8e6 !important;
+  color: #f5e6c8 !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.4) !important;
+  -webkit-text-fill-color: #f5e6c8 !important;
 }
 
 .eis-bg[data-theme="command"] .eis-heroSub,
@@ -1580,6 +1580,33 @@
     0 4px 12px rgba(0,0,0,0.3),
     inset 0 1px 0 rgba(255,255,255,0.4),
     inset 0 0 20px rgba(139,115,85,0.15) !important;
+}
+
+/* --- Patient Zero Game Cards: Parchment style --- */
+[data-theme="patient-zero"] .game-card,
+.eis-bg[data-theme="patient-zero"] .game-card {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.12), rgba(0,0,0,0.08)),
+    url('/images/textures/parchment-light.png') !important;
+  background-size: 100% 100%, cover !important;
+  border: 2px solid #8b7355 !important;
+  box-shadow:
+    0 8px 30px rgba(0,0,0,0.35),
+    0 4px 10px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.4) !important;
+}
+
+[data-theme="patient-zero"] .game-card:hover,
+.eis-bg[data-theme="patient-zero"] .game-card:hover {
+  border-color: #d4af37 !important;
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.45),
+    0 6px 16px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.5) !important;
+}
+
+[data-theme="patient-zero"] .game-card::before {
+  background: linear-gradient(135deg, rgba(212,175,55,0.1), transparent) !important;
 }
 
 [data-theme="patient-zero"] .panel-themed,

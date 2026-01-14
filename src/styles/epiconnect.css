@@ -1212,8 +1212,7 @@ html:has([data-theme="connect"]) {
 
 /* 27) Challenge Progress Card - Dark wood background */
 [data-theme="connect"] .epi-progressCard,
-[data-theme="connect"] [class*="from-purple-600"][class*="to-indigo-700"],
-[data-theme="connect"] .bg-gradient-to-br[class*="purple"] {
+[data-theme="connect"] [class*="from-purple-600"][class*="to-indigo-700"] {
   background: linear-gradient(135deg, #4a3528 0%, #3a2820 100%) !important;
   border: 2px solid #6b4a35 !important;
 }
@@ -1245,12 +1244,12 @@ html:has([data-theme="connect"]) {
   background: linear-gradient(90deg, transparent, #8b6914 20%, #8b6914 80%, transparent);
 }
 
-/* 29) Make connection cards slightly warmer/darker parchment */
+/* 29) Make connection cards parchment color - NOT darker */
 [data-theme="connect"] .bg-white.rounded-xl,
 [data-theme="connect"] div.bg-white[class*="rounded"] {
-  background: linear-gradient(180deg, #f0e4cc, #e8d8b8) !important;
-  border: 1px solid rgba(139, 105, 20, 0.3) !important;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25) !important;
+  background: linear-gradient(180deg, #f8f0dc, #f3e6cc) !important;
+  border: 1px solid rgba(139, 105, 20, 0.25) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2) !important;
 }
 
 /* 30) Challenge ledger rows */
@@ -1259,24 +1258,33 @@ html:has([data-theme="connect"]) {
   border-left: 3px solid #b8860b !important;
 }
 
-/* 31) EIS 75th Anniversary card - light text on dark background */
-[data-theme="connect"] .epi-card:last-child,
-[data-theme="connect"] .epi-grid__right .epi-card:last-of-type {
-  background: linear-gradient(135deg, #4a3528 0%, #3a2820 100%) !important;
-  border: 2px solid #6b4a35 !important;
+/* 31) EIS 75th Anniversary panel - keep light parchment with dark text */
+[data-theme="connect"] .panel.bg-gradient-to-br[class*="from-purple-50"] {
+  background: linear-gradient(180deg, #f8f0dc, #f0e4cc) !important;
+  border: 1px solid rgba(139, 105, 20, 0.3) !important;
 }
 
-[data-theme="connect"] .epi-card:last-child *,
-[data-theme="connect"] .epi-card:last-child h3,
-[data-theme="connect"] .epi-card:last-child p,
-[data-theme="connect"] .epi-card:last-child a,
-[data-theme="connect"] .epi-card:last-child span,
-[data-theme="connect"] .epi-grid__right .epi-card:last-of-type * {
-  color: #f5deb3 !important;
+[data-theme="connect"] .panel.bg-gradient-to-br[class*="from-purple-50"] span,
+[data-theme="connect"] .panel.bg-gradient-to-br[class*="from-purple-50"] p,
+[data-theme="connect"] .panel.bg-gradient-to-br[class*="from-purple-50"] a {
+  color: #3a2818 !important;
+  -webkit-text-fill-color: #3a2818 !important;
 }
 
-[data-theme="connect"] .epi-card:last-child a:hover {
+[data-theme="connect"] .panel.bg-gradient-to-br[class*="from-purple-50"] .text-purple-800,
+[data-theme="connect"] .panel.bg-gradient-to-br[class*="from-purple-50"] .font-bold {
+  color: #2a1810 !important;
+  -webkit-text-fill-color: #2a1810 !important;
+}
+
+[data-theme="connect"] .panel.bg-gradient-to-br[class*="from-purple-50"] a {
+  color: #8b6914 !important;
+  -webkit-text-fill-color: #8b6914 !important;
+}
+
+[data-theme="connect"] .panel.bg-gradient-to-br[class*="from-purple-50"] a:hover {
   color: #d4af37 !important;
+  -webkit-text-fill-color: #d4af37 !important;
 }
 
 /* 32) Right sidebar overrides - amber/purple to brass theme */

@@ -243,10 +243,24 @@ export function Connect() {
     setShowProfileSetup(false);
   };
 
-  // Get connected attendee profiles
-  const connectedAttendees = connections.map(c =>
-    getAttendeeById(c.connected_player_id)
-  ).filter(Boolean) as AttendeeProfile[];
+  // Get connected attendee profiles - also filter by search
+  const connectedAttendees = useMemo(() => {
+    let attendees = connections.map(c =>
+      getAttendeeById(c.connected_player_id)
+    ).filter(Boolean) as AttendeeProfile[];
+
+    // Apply search filter to connections too
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      attendees = attendees.filter(a =>
+        a.name.toLowerCase().includes(query) ||
+        a.home_state?.toLowerCase().includes(query) ||
+        a.topics.some(t => topicLabels[t].toLowerCase().includes(query))
+      );
+    }
+
+    return attendees;
+  }, [connections, searchQuery]);
 
   const completedChallenges = Object.values(challengeProgress).filter(p => p.complete).length;
 

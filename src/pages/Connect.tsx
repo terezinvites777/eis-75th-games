@@ -391,8 +391,8 @@ export function Connect() {
               </div>
             </div>
 
-            {/* Search Bar - only show in discover and network views */}
-            {(view === 'discover' || view === 'network') && (
+            {/* Search Bar - only show in discover and connections views */}
+            {(view === 'discover' || view === 'connections') && (
               <div className="epi-search mb-4">
                 <Search className="epi-search__icon" size={18} />
                 <input

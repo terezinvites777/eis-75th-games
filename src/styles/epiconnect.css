@@ -1179,11 +1179,12 @@ html:has([data-theme="connect"]) {
   color: var(--epi-brass-2) !important;
 }
 
-/* Button overrides */
+/* Button overrides - brown wood color */
 [data-theme="connect"] .bg-gradient-to-r.from-purple-600,
 [data-theme="connect"] [class*="from-purple-600"][class*="to-pink-600"] {
-  background: linear-gradient(180deg, var(--epi-brass-1), var(--epi-brass-2)) !important;
-  color: var(--epi-ink) !important;
+  background: linear-gradient(180deg, #5a4030 0%, #3a2820 100%) !important;
+  color: #f5e6c8 !important;
+  border: 1px solid #6b4a35 !important;
 }
 
 [data-theme="connect"] .bg-slate-100,
@@ -1197,17 +1198,23 @@ html:has([data-theme="connect"]) {
   border-radius: var(--epi-radius) !important;
 }
 
-/* 26) Attendee Card Headers - Darker wood color */
+/* 26) Attendee Card Headers - Gold brass color */
 [data-theme="connect"] .bg-gradient-to-r.from-slate-800.to-slate-700,
 [data-theme="connect"] [class*="from-slate-800"][class*="to-slate-700"] {
-  background: linear-gradient(180deg, #4a3528 0%, #3a2820 100%) !important;
-  border-bottom: 2px solid #5c4030 !important;
+  background: linear-gradient(180deg, #d4af37 0%, #b8860b 100%) !important;
+  border-bottom: 2px solid #8b6914 !important;
 }
 
-/* White text in card headers */
+/* Dark text in card headers for gold background */
 [data-theme="connect"] [class*="from-slate-800"] .text-white,
 [data-theme="connect"] [class*="from-slate-800"] h3 {
-  color: #f5e6c8 !important;
+  color: #1a1408 !important;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.3) !important;
+}
+
+[data-theme="connect"] [class*="from-slate-800"] .text-slate-300,
+[data-theme="connect"] [class*="from-slate-800"] .text-amber-300 {
+  color: #3a2818 !important;
 }
 
 /* 27) Challenge Progress Card - Dark wood background */

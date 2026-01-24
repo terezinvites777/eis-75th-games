@@ -35,24 +35,25 @@ export function VideoModal({ story, onClose }: VideoModalProps) {
 
         {/* Video */}
         <div className="aspect-video bg-black">
-          {/* Placeholder since we don't have real videos */}
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900">
-            <div className="text-center text-white">
-              <div className="text-6xl mb-4">🎬</div>
-              <p className="text-lg opacity-80">Video Coming Soon</p>
-              <p className="text-sm opacity-60 mt-2">
-                In production, this would embed the actual video content
-              </p>
+          {story.video_url ? (
+            <iframe
+              src={story.video_url}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title={story.title}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900">
+              <div className="text-center text-white">
+                <div className="text-6xl mb-4">🎬</div>
+                <p className="text-lg opacity-80">Video Coming Soon</p>
+                <p className="text-sm opacity-60 mt-2">
+                  Check back later for this story's video
+                </p>
+              </div>
             </div>
-          </div>
-          {/* Real video would be:
-          <iframe
-            src={story.video_url}
-            className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-          */}
+          )}
         </div>
 
         {/* Description */}

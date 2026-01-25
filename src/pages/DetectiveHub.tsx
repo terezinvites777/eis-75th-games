@@ -78,8 +78,8 @@ export function DetectiveHub() {
           <div className="detective-split-left">
             <div className="detective-showcase">
               <img
-                src="/images/plates/detective/CaseSelect-Vertical.png"
-                alt="Case files"
+                src="/images/plates/detective/DiseaseDetective.png"
+                alt="Disease Detective"
                 className="detective-showcase__img"
               />
               <div className="detective-showcase__overlay">

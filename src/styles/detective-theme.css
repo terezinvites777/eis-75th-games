@@ -495,7 +495,7 @@
 }
 
 .detective-split-header {
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   flex-shrink: 0;
 }
 
@@ -531,12 +531,12 @@
 
 .detective-stats-bar {
   display: flex;
-  gap: 14px;
-  padding: 10px 14px;
+  gap: 12px;
+  padding: 8px 12px;
   background: rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid rgba(212, 175, 55, 0.15);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   flex-shrink: 0;
 }
 
@@ -569,11 +569,11 @@
 .detective-case-list__header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
+  gap: 8px;
+  padding: 8px 12px;
   background: linear-gradient(180deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
   border-bottom: 1px dashed rgba(80, 55, 30, 0.2);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -586,42 +586,50 @@
 }
 
 .detective-case-list__items {
-  padding: 16px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  padding-bottom: 20px;
+  padding-bottom: 12px;
 }
 
-/* Case cards within detective case list */
+/* Compact case cards within detective case list */
 .detective-case-list .case-card {
-  padding: 16px;
-  padding-bottom: 18px;
-  border-radius: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
   overflow: visible;
 }
 
 .detective-case-list .case-card h3 {
-  font-size: 15px;
-  margin-bottom: 4px;
+  font-size: 14px;
+  margin-bottom: 2px;
 }
 
 .detective-case-list .case-card p {
-  font-size: 13px;
-  margin-bottom: 8px;
-  line-height: 1.5;
+  font-size: 11px;
+  margin-bottom: 4px;
+  line-height: 1.4;
   overflow: visible;
-  text-overflow: unset;
-  white-space: normal;
-  display: block;
 }
 
 .detective-case-list .case-card .pt-3 {
-  padding-top: 12px;
+  padding-top: 6px;
   margin-bottom: 0;
+}
+
+.detective-case-list .case-card .mb-2 {
+  margin-bottom: 4px;
+}
+
+.detective-case-list .case-card .mb-3 {
+  margin-bottom: 6px;
+}
+
+.detective-case-list .case-card .mb-4 {
+  margin-bottom: 6px;
 }
 
 /* Mobile: Stack layout */

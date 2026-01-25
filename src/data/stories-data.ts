@@ -17,7 +17,10 @@ const CDC_VIDEOS = {
   'diacetyl': 'XpqmHDxE4yg',
   'ebola': 'iZ3KWjBVW2k',
   'zaki-tribute': 'z9q-6QlI8EE',
-  'us-china': 'B805VPfQ1r0'
+  'us-china': 'B805VPfQ1r0',
+  // Additional CDC videos
+  'langmuir-lecture': 'LLALYPUY6Lw',  // 2017 Alexander D. Langmuir Lecture
+  'eis-scientist': 'btDlG7oAW8I',      // EIS Career Paths - The Scientist
 };
 
 // Helper to create embed URL
@@ -46,8 +49,7 @@ export const decadeInfo: DecadeInfo[] = [
       'EIS officers deploy internationally',
       '1968 Influenza pandemic response',
     ],
-    featured_story_ids: [],
-    // Note: No CDC "We Were There" video exists for 1960s
+    featured_story_ids: ['story-1966-smallpox'],
   },
   {
     decade: '1970s',
@@ -129,9 +131,11 @@ export const featuredStories: FeaturedStory[] = [
     title: 'The Birth of EIS',
     officer_name: 'Alexander Langmuir',
     eis_class_year: 1951,
-    video_url: null, // Founder story - no dedicated video
+    video_url: embedUrl(CDC_VIDEOS['langmuir-lecture']),
+    video_duration: '1:08:40',
     thumbnail_url: '/images/stories/1950s-founding.jpg',
-    description: 'Alexander Langmuir founded the Epidemic Intelligence Service in 1951, creating a new model for disease surveillance and outbreak response that would train generations of disease detectives.',
+    description: 'Alexander Langmuir founded the Epidemic Intelligence Service in 1951, creating a new model for disease surveillance and outbreak response that would train generations of disease detectives. This annual lecture honors his legacy.',
+    source: 'CDC - 2017 Alexander D. Langmuir Lecture',
   },
   {
     id: 'story-1955-polio',
@@ -146,6 +150,22 @@ export const featuredStories: FeaturedStory[] = [
     outbreak_name: 'Cutter Incident / Polio',
     location: 'United States',
     source: 'CDC Museum "We Were There" Lecture Series',
+  },
+
+  // ========== 1960s ==========
+  {
+    id: 'story-1966-smallpox',
+    decade: '1960s',
+    title: 'The War on Smallpox',
+    officer_name: 'D.A. Henderson',
+    eis_class_year: 1955,
+    video_url: embedUrl(CDC_VIDEOS['eis-scientist']),
+    video_duration: '5:47',
+    thumbnail_url: '/images/stories/1966-smallpox.jpg',
+    description: 'In 1966, CDC launched the global Smallpox Eradication Program. EIS officers deployed worldwide, using innovative surveillance and containment strategies that would ultimately eliminate one of humanity\'s deadliest diseases by 1980.',
+    outbreak_name: 'Smallpox Eradication',
+    location: 'Worldwide',
+    source: 'CDC - Public Health Career Paths: EIS',
   },
 
   // ========== 1970s ==========

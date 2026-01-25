@@ -28,8 +28,8 @@ export function CaseCard({ caseData, status, score, onClick, index = 0 }: CaseCa
       whileHover={status === 'available' ? { scale: 1.02, y: -2 } : undefined}
       whileTap={status === 'available' ? { scale: 0.98 } : undefined}
       onClick={status === 'available' ? onClick : undefined}
-      className={`case-card relative overflow-hidden ${
-        status === 'locked' ? 'opacity-60 cursor-not-allowed' : 
+      className={`case-card relative ${
+        status === 'locked' ? 'opacity-60 cursor-not-allowed' :
         status === 'available' ? 'cursor-pointer' : ''
       }`}
       data-era={caseData.era}

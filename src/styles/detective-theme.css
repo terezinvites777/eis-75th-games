@@ -563,7 +563,7 @@
   border-radius: 16px;
   border: 1px solid rgba(80, 55, 30, 0.25);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .detective-case-list__header {
@@ -586,19 +586,22 @@
 }
 
 .detective-case-list__items {
-  padding: 12px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  padding-bottom: 20px;
 }
 
 /* Case cards within detective case list */
 .detective-case-list .case-card {
-  padding: 14px 16px 16px 16px;
+  padding: 16px;
+  padding-bottom: 18px;
   border-radius: 12px;
+  overflow: visible;
 }
 
 .detective-case-list .case-card h3 {
@@ -610,7 +613,6 @@
   font-size: 13px;
   margin-bottom: 8px;
   line-height: 1.5;
-  /* Ensure descriptions are not truncated */
   overflow: visible;
   text-overflow: unset;
   white-space: normal;
@@ -618,7 +620,8 @@
 }
 
 .detective-case-list .case-card .pt-3 {
-  padding-top: 10px;
+  padding-top: 12px;
+  margin-bottom: 0;
 }
 
 /* Mobile: Stack layout */

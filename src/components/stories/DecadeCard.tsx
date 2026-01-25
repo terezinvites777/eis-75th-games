@@ -9,15 +9,15 @@ interface DecadeCardProps {
   onClick: () => void;
 }
 
-const decadeColors: Record<string, { bg: string; border: string; text: string }> = {
-  '1950s': { bg: 'bg-amber-100', border: 'border-amber-300', text: 'text-amber-800' },
-  '1960s': { bg: 'bg-orange-100', border: 'border-orange-300', text: 'text-orange-800' },
-  '1970s': { bg: 'bg-yellow-100', border: 'border-yellow-300', text: 'text-yellow-800' },
-  '1980s': { bg: 'bg-pink-100', border: 'border-pink-300', text: 'text-pink-800' },
-  '1990s': { bg: 'bg-purple-100', border: 'border-purple-300', text: 'text-purple-800' },
-  '2000s': { bg: 'bg-blue-100', border: 'border-blue-300', text: 'text-blue-800' },
-  '2010s': { bg: 'bg-teal-100', border: 'border-teal-300', text: 'text-teal-800' },
-  '2020s': { bg: 'bg-green-100', border: 'border-green-300', text: 'text-green-800' },
+const decadeColors: Record<string, { accent: string; text: string }> = {
+  '1950s': { accent: 'border-l-amber-500', text: 'text-amber-700' },
+  '1960s': { accent: 'border-l-orange-500', text: 'text-orange-700' },
+  '1970s': { accent: 'border-l-yellow-500', text: 'text-yellow-700' },
+  '1980s': { accent: 'border-l-pink-500', text: 'text-pink-700' },
+  '1990s': { accent: 'border-l-purple-500', text: 'text-purple-700' },
+  '2000s': { accent: 'border-l-blue-500', text: 'text-blue-700' },
+  '2010s': { accent: 'border-l-teal-500', text: 'text-teal-700' },
+  '2020s': { accent: 'border-l-green-500', text: 'text-green-700' },
 };
 
 export function DecadeCard({ decade, isActive, storiesCount, onClick }: DecadeCardProps) {
@@ -27,23 +27,30 @@ export function DecadeCard({ decade, isActive, storiesCount, onClick }: DecadeCa
     <button
       onClick={onClick}
       className={`
-        w-full text-left rounded-xl p-4 border-2 transition-all
+        w-full text-left rounded-lg p-4 transition-all border-l-4
+        ${colors.accent}
         ${isActive
-          ? `${colors.bg} ${colors.border} shadow-lg`
-          : 'bg-white border-slate-200 hover:border-slate-300'
+          ? 'shadow-lg ring-2 ring-amber-400/50'
+          : 'hover:shadow-md'
         }
       `}
+      style={{
+        background: `linear-gradient(135deg, #f5e6c8 0%, #e8d4a8 100%)`,
+        boxShadow: isActive
+          ? '0 4px 15px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3)'
+          : '0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.2)',
+      }}
     >
       <div className="flex items-center justify-between">
         <div>
-          <div className={`text-2xl font-bold ${isActive ? colors.text : 'text-slate-800'}`}>
+          <div className={`text-2xl font-bold ${isActive ? colors.text : 'text-stone-800'}`}>
             {decade.decade}
           </div>
-          <div className="text-sm text-slate-600 mt-1">{decade.title}</div>
+          <div className="text-sm text-stone-600 mt-1">{decade.title}</div>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-sm text-slate-500">{storiesCount} stories</span>
-          <ChevronRight size={20} className={isActive ? colors.text : 'text-slate-400'} />
+          <span className="text-sm text-stone-500">{storiesCount} stories</span>
+          <ChevronRight size={20} className={isActive ? colors.text : 'text-stone-400'} />
         </div>
       </div>
     </button>

@@ -51,14 +51,18 @@ export function Stories() {
 
       <div className="px-4 py-6 max-w-6xl mx-auto">
         {/* View Toggle */}
-        <div className="flex gap-2 mb-6">
+        <div className="flex gap-3 mb-6">
           <button
             onClick={() => setView('browse')}
             className={`flex-1 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
               view === 'browse'
-                ? 'bg-blue-600 text-white shadow-lg'
-                : 'bg-white text-slate-700 border border-slate-200'
+                ? 'bg-amber-600 text-white shadow-lg'
+                : 'text-stone-700 border border-amber-200/50'
             }`}
+            style={view !== 'browse' ? {
+              background: 'linear-gradient(180deg, #f5e6c8 0%, #ead4a8 100%)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.2)',
+            } : undefined}
           >
             <Film size={18} />
             Watch Stories
@@ -67,9 +71,13 @@ export function Stories() {
             onClick={() => setView('share')}
             className={`flex-1 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
               view === 'share'
-                ? 'bg-blue-600 text-white shadow-lg'
-                : 'bg-white text-slate-700 border border-slate-200'
+                ? 'bg-amber-600 text-white shadow-lg'
+                : 'text-stone-700 border border-amber-200/50'
             }`}
+            style={view !== 'share' ? {
+              background: 'linear-gradient(180deg, #f5e6c8 0%, #ead4a8 100%)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.2)',
+            } : undefined}
           >
             <Sparkles size={18} />
             Share Memory

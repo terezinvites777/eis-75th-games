@@ -24,10 +24,16 @@ export function StoryCard({ story, onPlay }: StoryCardProps) {
   const thumbnailUrl = getYouTubeThumbnail(story.video_url);
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-200">
+    <div
+      className="rounded-xl overflow-hidden border border-amber-200/50"
+      style={{
+        background: 'linear-gradient(180deg, #f5e6c8 0%, #ead4a8 100%)',
+        boxShadow: '0 4px 15px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3)',
+      }}
+    >
       {/* Thumbnail */}
       <div
-        className="relative h-48 bg-slate-800 cursor-pointer group"
+        className="relative h-48 bg-stone-800 cursor-pointer group"
         onClick={() => onPlay(story)}
       >
         {/* YouTube thumbnail or placeholder */}
@@ -38,18 +44,18 @@ export function StoryCard({ story, onPlay }: StoryCardProps) {
             className="absolute inset-0 w-full h-full object-cover"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-700 to-slate-900" />
+          <div className="absolute inset-0 bg-gradient-to-br from-stone-700 to-stone-900" />
         )}
 
         {/* Play button overlay */}
         <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition-colors">
           <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
-            <Play size={28} className="text-slate-800 ml-1" fill="currentColor" />
+            <Play size={28} className="text-stone-800 ml-1" fill="currentColor" />
           </div>
         </div>
 
         {/* Decade badge */}
-        <div className="absolute top-3 left-3 px-3 py-1 bg-amber-500 text-white text-sm font-bold rounded-full shadow">
+        <div className="absolute top-3 left-3 px-3 py-1 bg-amber-600 text-white text-sm font-bold rounded-full shadow">
           {story.decade}
         </div>
 
@@ -63,9 +69,9 @@ export function StoryCard({ story, onPlay }: StoryCardProps) {
 
       {/* Content */}
       <div className="p-4">
-        <h3 className="font-bold text-lg text-slate-800">{story.title}</h3>
+        <h3 className="font-bold text-lg text-stone-800">{story.title}</h3>
 
-        <div className="flex flex-wrap gap-3 mt-2 text-sm text-slate-500">
+        <div className="flex flex-wrap gap-3 mt-2 text-sm text-stone-600">
           <span className="flex items-center gap-1">
             <User size={14} />
             {story.officer_name}
@@ -84,13 +90,13 @@ export function StoryCard({ story, onPlay }: StoryCardProps) {
           )}
         </div>
 
-        <p className="mt-3 text-sm text-slate-600 line-clamp-2">
+        <p className="mt-3 text-sm text-stone-700 line-clamp-2">
           {story.description}
         </p>
 
         <button
           onClick={() => onPlay(story)}
-          className="mt-4 w-full py-2 bg-slate-800 text-white rounded-lg font-semibold hover:bg-slate-900 transition-colors flex items-center justify-center gap-2"
+          className="mt-4 w-full py-2 bg-stone-800 text-amber-50 rounded-lg font-semibold hover:bg-stone-900 transition-colors flex items-center justify-center gap-2 shadow-md"
         >
           <Play size={16} />
           Watch Story

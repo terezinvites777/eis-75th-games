@@ -412,14 +412,11 @@
 /* ===== Split Layout for Era Selection ===== */
 .detective-split-layout {
   display: grid;
-  grid-template-columns: minmax(300px, 400px) minmax(450px, 600px);
-  justify-content: center;
+  grid-template-columns: 1fr 1fr;
   gap: 24px;
   flex: 1;
   min-height: 0;
   padding: 0 24px;
-  max-width: 1100px;
-  margin: 0 auto;
 }
 
 .detective-split-left {
@@ -627,32 +624,71 @@
 }
 
 /* Compact case cards for 4+ cases - use data attribute for conditional styling */
+.detective-case-list__items[data-case-count="4"],
+.detective-case-list__items[data-case-count="5"],
+.detective-case-list__items[data-case-count="6"] {
+  gap: 4px;
+  padding: 6px;
+}
+
 .detective-case-list__items[data-case-count="4"] .case-card,
 .detective-case-list__items[data-case-count="5"] .case-card,
 .detective-case-list__items[data-case-count="6"] .case-card {
-  padding: 10px 12px;
-  border-radius: 10px;
+  padding: 6px 10px;
+  border-radius: 8px;
 }
 
 .detective-case-list__items[data-case-count="4"] .case-card h3,
 .detective-case-list__items[data-case-count="5"] .case-card h3,
 .detective-case-list__items[data-case-count="6"] .case-card h3 {
-  font-size: 13px;
-  margin-bottom: 1px;
+  font-size: 12px;
+  margin-bottom: 0;
 }
 
 .detective-case-list__items[data-case-count="4"] .case-card p,
 .detective-case-list__items[data-case-count="5"] .case-card p,
 .detective-case-list__items[data-case-count="6"] .case-card p {
-  font-size: 11px;
-  margin-bottom: 4px;
-  line-height: 1.35;
+  font-size: 10px;
+  margin-bottom: 2px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .detective-case-list__items[data-case-count="4"] .case-card .pt-3,
 .detective-case-list__items[data-case-count="5"] .case-card .pt-3,
 .detective-case-list__items[data-case-count="6"] .case-card .pt-3 {
-  padding-top: 5px;
+  padding-top: 3px;
+}
+
+/* Hide subtitle for compact cards to save space */
+.detective-case-list__items[data-case-count="4"] .case-card p:first-of-type,
+.detective-case-list__items[data-case-count="5"] .case-card p:first-of-type,
+.detective-case-list__items[data-case-count="6"] .case-card p:first-of-type {
+  display: none;
+}
+
+/* Smaller year badge and status indicator for compact */
+.detective-case-list__items[data-case-count="4"] .case-card .mb-2,
+.detective-case-list__items[data-case-count="5"] .case-card .mb-2,
+.detective-case-list__items[data-case-count="6"] .case-card .mb-2 {
+  margin-bottom: 2px;
+}
+
+.detective-case-list__items[data-case-count="4"] .case-card .absolute,
+.detective-case-list__items[data-case-count="5"] .case-card .absolute,
+.detective-case-list__items[data-case-count="6"] .case-card .absolute {
+  top: 6px;
+  right: 6px;
+}
+
+.detective-case-list__items[data-case-count="4"] .case-card .absolute > div,
+.detective-case-list__items[data-case-count="5"] .case-card .absolute > div,
+.detective-case-list__items[data-case-count="6"] .case-card .absolute > div {
+  width: 24px;
+  height: 24px;
 }
 
 /* Mobile: Stack layout */

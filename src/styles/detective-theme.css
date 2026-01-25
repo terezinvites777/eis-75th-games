@@ -595,30 +595,30 @@
   overflow-y: auto;
 }
 
-/* Compact case cards within detective case list */
+/* Case cards within detective case list */
 .detective-case-list .case-card {
-  padding: 12px 14px 14px 14px;
+  padding: 14px 16px 16px 16px;
   border-radius: 12px;
 }
 
 .detective-case-list .case-card h3 {
   font-size: 15px;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .detective-case-list .case-card p {
-  font-size: 12px;
-  margin-bottom: 6px;
-  line-height: 1.4;
-}
-
-.detective-case-list .case-card .flex.items-center.gap-3 {
-  gap: 8px;
-  margin-bottom: 6px;
+  font-size: 13px;
+  margin-bottom: 8px;
+  line-height: 1.5;
+  /* Ensure descriptions are not truncated */
+  overflow: visible;
+  text-overflow: unset;
+  white-space: normal;
+  display: block;
 }
 
 .detective-case-list .case-card .pt-3 {
-  padding-top: 8px;
+  padding-top: 10px;
 }
 
 /* Mobile: Stack layout */

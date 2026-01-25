@@ -3,7 +3,7 @@
 
 import { motion } from 'framer-motion';
 import { Lock, CheckCircle, Clock, ChevronRight } from 'lucide-react';
-import { EraBadge, DifficultyStars } from '../brand/BrandMarks';
+import { DifficultyStars } from '../brand/BrandMarks';
 import type { DetectiveCase } from '../../types/detective';
 
 interface CaseCardProps {
@@ -54,9 +54,13 @@ export function CaseCard({ caseData, status, score, onClick, index = 0 }: CaseCa
       </div>
 
       {/* Header Row */}
-      <div className="flex items-center gap-3 mb-3">
-        <EraBadge era={caseData.era} />
-        <span className="text-sm text-gray-500 font-medium">{caseData.year}</span>
+      <div className="flex items-center justify-between mb-2">
+        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-amber-100 text-amber-800 border border-amber-200">
+          {caseData.year}
+        </span>
+        <span className="text-xs font-bold text-[var(--theme-primary)]">
+          {caseData.basePoints} pts
+        </span>
       </div>
 
       {/* Title & Subtitle */}
@@ -75,20 +79,11 @@ export function CaseCard({ caseData, status, score, onClick, index = 0 }: CaseCa
       {/* Footer Row */}
       <div className="flex items-center justify-between pt-3 border-t border-gray-100">
         <DifficultyStars level={caseData.difficulty} />
-        
-        <div className="flex items-center gap-4">
-          {/* Time Limit */}
-          <div className="flex items-center gap-1.5 text-gray-500">
-            <Clock size={14} />
-            <span className="text-xs font-medium">{formatTime(caseData.timeLimit)}</span>
-          </div>
-          
-          {/* Points */}
-          <div className="flex items-center gap-1">
-            <span className="text-xs font-bold text-[var(--theme-primary)]">
-              {caseData.basePoints} pts
-            </span>
-          </div>
+
+        {/* Time Limit */}
+        <div className="flex items-center gap-1.5 text-gray-500">
+          <Clock size={14} />
+          <span className="text-xs font-medium">{formatTime(caseData.timeLimit)}</span>
         </div>
       </div>
 

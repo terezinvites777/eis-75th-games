@@ -128,7 +128,7 @@ export function DetectiveHub() {
                 <FolderOpen size={16} />
                 <span>{cases.length} Cases Available</span>
               </div>
-              <div className="detective-case-list__items">
+              <div className="detective-case-list__items" data-case-count={cases.length}>
                 {cases.map((caseData, index) => {
                   const isCompleted = completedCases.includes(caseData.id);
                   const status = isCompleted ? 'completed' : 'available';

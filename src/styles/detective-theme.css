@@ -420,18 +420,20 @@
 .detective-split-left {
   position: relative;
   display: flex;
-  align-items: stretch;
+  align-items: flex-start;
   justify-content: center;
   padding: 20px;
   background: rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  max-height: calc(100vh - 80px);
 }
 
 .detective-showcase {
   position: relative;
   width: 100%;
-  max-width: 600px;
+  max-width: 550px;
   border-radius: 16px;
-  overflow: hidden;
+  overflow: visible;
   box-shadow:
     0 30px 60px rgba(0, 0, 0, 0.5),
     0 0 0 4px rgba(212, 175, 55, 0.3);
@@ -439,10 +441,9 @@
 
 .detective-showcase__img {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
-  min-height: 500px;
-  background: #2a1a10;
+  height: auto;
+  display: block;
+  border-radius: 16px;
 }
 
 .detective-showcase__overlay {

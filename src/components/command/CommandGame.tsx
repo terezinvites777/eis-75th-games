@@ -472,6 +472,26 @@ export function CommandGame({ scenario, onComplete, onBack }: CommandGameProps) 
         <EventDialog event={currentEvent} onChoice={handleEventChoice} />
       )}
 
+      {/* Pause Reminder — shown when paused and no event dialog is open */}
+      {gameStatus === 'paused' && !currentEvent && !showTutorial && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div
+            className="bg-slate-800 border border-green-500/40 rounded-2xl px-8 py-6 text-center shadow-2xl max-w-sm cursor-pointer"
+            onClick={resumeGame}
+          >
+            <div className="flex items-center justify-center gap-3 mb-3">
+              <div className="p-3 bg-green-500 rounded-full text-white">
+                <Play size={28} />
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-1">Game Paused</h3>
+            <p className="text-white/70 text-sm">
+              Press the <span className="text-green-400 font-semibold">&#9654; Play</span> button to resume the clock
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Header Bar - Prominent title and controls */}
       <div className="bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 rounded-xl shadow-lg mb-4 overflow-hidden">
         {/* Title Row */}

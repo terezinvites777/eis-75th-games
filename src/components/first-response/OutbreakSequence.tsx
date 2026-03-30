@@ -201,7 +201,7 @@ export function OutbreakSequence({ onComplete }: OutbreakSequenceProps) {
       {/* Hint */}
       {hintText && (
         <div className="bg-amber-50 border border-amber-300 rounded-xl p-3 mb-4 animate-slideUp">
-          <p className="text-sm text-amber-800 font-medium">💡 {hintText}</p>
+          <p className="text-sm text-amber-950 font-semibold">💡 {hintText}</p>
         </div>
       )}
 

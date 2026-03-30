@@ -292,6 +292,9 @@ export function EpiJeopardy() {
             <>
               <div className="text-2xl font-bold text-white mb-2">TAP THIS SIDE</div>
               <div className="text-lg text-blue-300">to play as Player 1</div>
+              <div className="text-xs text-white/40 mt-4 px-6 leading-relaxed">
+                Solo play available — tap here and the game will start for one player after 5 seconds
+              </div>
             </>
           )}
         </button>

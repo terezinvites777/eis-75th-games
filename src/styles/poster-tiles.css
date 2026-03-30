@@ -36,11 +36,10 @@
   transform: translateY(-1px);
 }
 
-/* Full-bleed plate background */
+/* Full-bleed plate background — backgroundImage set via inline style */
 .posterTile__bg {
   position: absolute;
   inset: 0;
-  background-image: var(--poster-bg);
   background-size: cover;
   background-position: center;
   filter: saturate(1.08) contrast(1.04);

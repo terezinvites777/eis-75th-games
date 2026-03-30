@@ -31,8 +31,8 @@ export function PosterPanel(props: PosterPanelProps) {
     children,
   } = props;
 
-  const tileStyle: CSSProperties = {
-    ['--poster-bg' as string]: `url("${bgImageUrl}")`,
+  const bgStyle: CSSProperties = {
+    backgroundImage: `url("${bgImageUrl}")`,
   };
 
   return (
@@ -41,10 +41,9 @@ export function PosterPanel(props: PosterPanelProps) {
       className={`posterTile ${className}`}
       data-theme={dataTheme}
       aria-label={`${number}. ${title}`}
-      style={tileStyle}
     >
       {/* Full-bleed exhibit plate background */}
-      <div className="posterTile__bg" />
+      <div className="posterTile__bg" style={bgStyle} />
 
       {/* Vignette for depth and text readability */}
       <div className="posterTile__vignette" />

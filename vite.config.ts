@@ -1,13 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// VITE_DEPLOY_TARGET=web → Vercel/web build (base: '/')
-// default → Electron kiosk build (base: './' for file:// loading)
-const isWeb = process.env.VITE_DEPLOY_TARGET === 'web';
-
+// base: './' works for both Electron (file://) and Vercel (HashRouter always at /)
 export default defineConfig({
   plugins: [react()],
-  base: isWeb ? '/' : './',
+  base: './',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

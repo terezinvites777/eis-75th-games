@@ -4,17 +4,12 @@
 import { PosterPanel } from '../components/exhibit/PosterPanel';
 import { GameShell } from '../components/layout/GameShell';
 import { AttractMode } from '../components/kiosk/AttractMode';
-import { ATTRACT_TIMEOUT } from '../utils/environment';
+import { isElectron, ATTRACT_TIMEOUT } from '../utils/environment';
 
 export function Home() {
-  return (
-    <AttractMode
-      title="EIS 75th Anniversary"
-      subtitle="Disease Detective Games"
-      timeout={ATTRACT_TIMEOUT}
-    >
-      <GameShell theme="default" showHero={true}>
-        <div className="eis-exhibitGrid">
+  const content = (
+    <GameShell theme="default" showHero={true}>
+      <div className="eis-exhibitGrid">
           <PosterPanel
             number={1}
             title="Disease Detective"
@@ -81,7 +76,19 @@ export function Home() {
             dataTheme="detective"
           />
         </div>
-      </GameShell>
+    </GameShell>
+  );
+
+  // Kiosk: show attract/splash screen; Web: go straight to games
+  if (!isElectron) return content;
+
+  return (
+    <AttractMode
+      title="EIS 75th Anniversary"
+      subtitle="Disease Detective Games"
+      timeout={ATTRACT_TIMEOUT}
+    >
+      {content}
     </AttractMode>
   );
 }

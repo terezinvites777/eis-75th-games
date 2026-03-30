@@ -4,7 +4,6 @@ import { IDLE_RESET_TIMEOUT } from './utils/environment';
 import {
   Home,
   DetectiveHub,
-  DetectiveGame,
   KioskDetectiveGame,
   OutbreakNetwork,
   FirstResponse,

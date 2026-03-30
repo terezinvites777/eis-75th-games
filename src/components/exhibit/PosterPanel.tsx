@@ -24,7 +24,6 @@ export function PosterPanel(props: PosterPanelProps) {
     title,
     subtitle,
     description,
-    cta,
     href,
     bgImageUrl,
     dataTheme = 'default',

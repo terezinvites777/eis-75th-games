@@ -29,7 +29,6 @@ import {
   BarChart3,
   Sparkles,
   Activity,
-  RotateCcw,
   Zap,
   AlertCircle,
   MapPin,

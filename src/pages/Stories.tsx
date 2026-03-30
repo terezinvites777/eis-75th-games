@@ -8,7 +8,7 @@ import { StoryCard } from '../components/stories/StoryCard';
 import { VideoModal } from '../components/stories/VideoModal';
 import { decadeInfo, featuredStories, getStoriesByDecade } from '../data/stories-data';
 import type { FeaturedStory, Decade } from '../types/stories';
-import { Film, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 
 export function Stories() {
   const [selectedDecade, setSelectedDecade] = useState<Decade | null>(null);

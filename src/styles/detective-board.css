@@ -1,0 +1,631 @@
+/* src/styles/detective-board.css */
+/* Disease Detective - Corkboard Evidence Board Design */
+
+/* ===== Page Background ===== */
+.dd-boardPage {
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 50% 0%, rgba(0,0,0,0.3), transparent 55%),
+    linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.5) 100%),
+    url('./images/plates/detective/Evidence.png');
+  background-size: auto, auto, cover;
+  background-position: center, center, center;
+  background-attachment: scroll, scroll, fixed;
+  color: rgba(20, 16, 12, 0.92);
+  padding-bottom: 80px;
+}
+
+/* ===== Top Bar (wood frame) ===== */
+.dd-boardTop {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background:
+    radial-gradient(900px 240px at 50% 0%, rgba(255,255,255,0.08), transparent 60%),
+    linear-gradient(180deg, rgba(92,64,38,0.95), rgba(58,38,22,0.95));
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.dd-boardTop__left,
+.dd-boardTop__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dd-boardTop__right {
+  justify-content: flex-end;
+}
+
+.dd-boardTop__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Back button */
+.dd-topBtn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(212,175,55,0.25);
+  background: rgba(0,0,0,0.22);
+  color: rgba(245, 232, 200, 0.92);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.dd-topBtn:hover {
+  background: rgba(212,175,55,0.15);
+  border-color: rgba(212,175,55,0.4);
+}
+
+/* Title plaque - brass/gold style */
+.dd-titlePlaque {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.25), transparent 55%),
+    linear-gradient(145deg, rgba(232, 210, 140, 0.98), rgba(179, 132, 40, 0.98));
+  box-shadow:
+    0 14px 28px rgba(0,0,0,0.28),
+    inset 0 2px 0 rgba(255,255,255,0.4),
+    inset 0 -2px 4px rgba(0,0,0,0.15);
+  border: 2px solid rgba(139,100,40,0.5);
+}
+
+.dd-titlePlaque__title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  color: rgba(25, 18, 10, 0.95);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.dd-titlePlaque__year {
+  margin-left: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* Progress row */
+.dd-progressRow {
+  width: min(700px, 100%);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+  align-items: center;
+  color: rgba(245, 232, 200, 0.92);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.dd-progressLabel,
+.dd-progressPoints {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dd-progressTrack {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.12);
+  overflow: hidden;
+}
+
+.dd-progressFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(180, 140, 60, 0.95), rgba(232, 210, 140, 0.95));
+  transition: width 0.3s;
+}
+
+/* Stat pills */
+.dd-statPill {
+  min-width: 80px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(212,175,55,0.2);
+  color: rgba(245, 232, 200, 0.92);
+  text-align: center;
+}
+
+.dd-statPill__k {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.8;
+  font-weight: 600;
+}
+
+.dd-statPill__v {
+  font-size: 18px;
+  font-weight: 900;
+  margin-top: 2px;
+  font-family: 'Courier New', monospace;
+}
+
+/* ===== Corkboard Stage ===== */
+.dd-boardWrap {
+  padding: 20px 16px 40px;
+}
+
+.dd-board {
+  margin: 0 auto;
+  width: min(1400px, 100%);
+  border-radius: 20px;
+  padding: 20px;
+  /* Cork texture image */
+  background:
+    radial-gradient(ellipse at 15% 20%, rgba(255,255,255,0.08) 0%, transparent 40%),
+    radial-gradient(ellipse at 85% 75%, rgba(0,0,0,0.08) 0%, transparent 45%),
+    url('./images/textures/corkboard.jpg');
+  background-size: auto, auto, cover;
+  background-position: center;
+  box-shadow:
+    0 40px 80px rgba(0,0,0,0.45),
+    inset 0 2px 0 rgba(255,255,255,0.2),
+    inset 0 -2px 8px rgba(0,0,0,0.15);
+  border: 8px solid #4a3422;
+  position: relative;
+}
+
+/* Wood frame effect */
+.dd-board::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg,
+      #6a4a30 0%,
+      #4a3220 15%,
+      #5a4028 50%,
+      #4a3220 85%,
+      #6a4a30 100%
+    );
+  z-index: -1;
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,0.15),
+    inset 0 -2px 0 rgba(0,0,0,0.3);
+}
+
+/* ===== Board Grid Layout ===== */
+.dd-boardGrid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 16px;
+  grid-template-areas:
+    "brief    clinical  chart     notes"
+    "timeline menu      evidence  status"
+    "objectives menu    evidence  polaroid";
+}
+
+/* Zone positioning */
+.dd-zone {
+  position: relative;
+  min-height: 0;
+}
+
+.dd-brief { grid-area: brief; }
+.dd-timeline { grid-area: timeline; }
+.dd-objectives { grid-area: objectives; }
+.dd-clinical { grid-area: clinical; }
+.dd-chart { grid-area: chart; }
+.dd-menu { grid-area: menu; }
+.dd-evidence { grid-area: evidence; }
+.dd-notes { grid-area: notes; }
+.dd-status { grid-area: status; }
+.dd-polaroid {
+  grid-area: polaroid;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ===== Pinned Paper Card Base ===== */
+.dd-paper {
+  position: relative;
+  border-radius: 6px;
+  padding: 18px;
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(255,255,255,0.3), transparent 50%),
+    radial-gradient(ellipse at 85% 90%, rgba(0,0,0,0.05), transparent 50%),
+    linear-gradient(180deg, #f8f3e8 0%, #e8dcc8 50%, #d8ccb4 100%);
+  border: 1px solid rgba(120, 90, 50, 0.35);
+  box-shadow:
+    4px 6px 16px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+  color: #2a1e14;
+}
+
+/* Thumbtack decoration */
+.dd-paper::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 20px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255,255,255,0.5), transparent 50%),
+    radial-gradient(circle at 50% 55%, #d54040, #8a1a1a);
+  box-shadow:
+    0 4px 8px rgba(0,0,0,0.3),
+    inset 0 1px 2px rgba(255,255,255,0.3);
+}
+
+/* Clip variant */
+.dd-paper--clip::before {
+  width: 20px;
+  height: 28px;
+  border-radius: 3px 3px 0 0;
+  background: linear-gradient(180deg, #555 0%, #888 50%, #555 100%);
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Tape variant */
+.dd-paper--tape::before {
+  width: 50px;
+  height: 18px;
+  border-radius: 2px;
+  background: rgba(255,235,180,0.65);
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* Paper titles */
+.dd-paper__title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1008;
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(40,30,20,0.15);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dd-paper__content {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #3a2a1a;
+}
+
+.dd-paper__content p {
+  margin: 0 0 8px 0;
+}
+
+.dd-paper__content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== Evidence Board Form ===== */
+.dd-evidenceForm {
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(255,255,255,0.25), transparent 50%),
+    linear-gradient(180deg, #f0e8d8 0%, #e0d4c0 100%);
+  border: 3px solid rgba(139,100,50,0.4);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.2),
+    inset 0 2px 0 rgba(255,255,255,0.5);
+}
+
+.dd-evidenceForm__title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #1a1008;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(40,30,20,0.15);
+}
+
+.dd-evidenceForm__field {
+  margin-bottom: 14px;
+}
+
+.dd-evidenceForm__label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3a2a1a;
+  margin-bottom: 6px;
+}
+
+.dd-evidenceForm__select {
+  width: 100%;
+  padding: 12px 14px;
+  background: #fff;
+  border: 2px solid rgba(120,90,50,0.35);
+  border-radius: 8px;
+  font-size: 14px;
+  color: #2a1e14;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.dd-evidenceForm__select:focus {
+  outline: none;
+  border-color: #b8891a;
+}
+
+.dd-evidenceForm__submit {
+  width: 100%;
+  padding: 14px;
+  margin-top: 8px;
+  background: linear-gradient(145deg, #d4af37, #b8891a);
+  border: 2px solid #8a6a14;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #1a0f08;
+  cursor: pointer;
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.25),
+    inset 0 2px 0 rgba(255,255,255,0.35);
+  transition: all 0.15s;
+}
+
+.dd-evidenceForm__submit:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.3),
+    inset 0 2px 0 rgba(255,255,255,0.4);
+}
+
+.dd-evidenceForm__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== Notes (lined paper) ===== */
+.dd-notes-paper {
+  background:
+    repeating-linear-gradient(
+      transparent,
+      transparent 23px,
+      rgba(180,160,140,0.35) 24px
+    ),
+    linear-gradient(180deg, #fffef8 0%, #f4ead4 100%);
+  border-radius: 6px;
+  padding: 18px;
+  border: 1px solid rgba(120,90,50,0.3);
+  box-shadow: 3px 5px 14px rgba(0,0,0,0.2);
+  min-height: 140px;
+}
+
+.dd-notes-paper__title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  color: #2a1a10;
+  margin-bottom: 14px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.dd-notes-paper__content {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 24px;
+  color: #3a2a1a;
+}
+
+/* ===== Polaroid ===== */
+.dd-polaroid {
+  background: #fff;
+  padding: 10px 10px 36px 10px;
+  box-shadow: 4px 6px 16px rgba(0,0,0,0.3);
+  transform: rotate(3deg);
+}
+
+.dd-polaroid__img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  background: rgba(0,0,0,0.08);
+  border-radius: 2px;
+}
+
+.dd-polaroid__caption {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: #555;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* ===== Result Modal ===== */
+.dd-resultOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+.dd-resultCard {
+  background:
+    radial-gradient(ellipse at 20% 15%, rgba(255,255,255,0.3), transparent 50%),
+    linear-gradient(180deg, #f8f0dc 0%, #e8d8c0 100%);
+  border: 4px solid #d4af37;
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow:
+    0 24px 60px rgba(0,0,0,0.5),
+    inset 0 2px 0 rgba(255,255,255,0.5);
+}
+
+.dd-resultCard__icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dd-resultCard__icon--success {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.dd-resultCard__icon--fail {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.dd-resultCard__title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.dd-resultCard__score {
+  font-size: 40px;
+  font-weight: 800;
+  color: #d4af37;
+  margin: 16px 0;
+}
+
+.dd-resultCard__explanation {
+  text-align: left;
+  margin-top: 20px;
+  padding: 16px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #3a2a1a;
+}
+
+.dd-resultCard__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.dd-resultCard__btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.dd-resultCard__btn--primary {
+  background: linear-gradient(145deg, #d4af37, #b8891a);
+  border: 2px solid #8a6a14;
+  color: #1a0f08;
+}
+
+.dd-resultCard__btn--primary:hover {
+  filter: brightness(1.08);
+}
+
+.dd-resultCard__btn--secondary {
+  background: #fff;
+  border: 2px solid #ccc;
+  color: #3a2a1a;
+}
+
+.dd-resultCard__btn--secondary:hover {
+  background: #f5f5f5;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1200px) {
+  .dd-boardGrid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "brief    clinical"
+      "timeline chart"
+      "objectives menu"
+      "evidence evidence"
+      "notes    status"
+      "polaroid polaroid";
+  }
+}
+
+@media (max-width: 800px) {
+  .dd-boardTop {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 12px;
+  }
+
+  .dd-boardTop__left,
+  .dd-boardTop__right {
+    justify-content: center;
+  }
+
+  .dd-titlePlaque {
+    padding: 10px 16px;
+  }
+
+  .dd-titlePlaque__title {
+    font-size: 16px;
+  }
+
+  .dd-boardGrid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "brief"
+      "clinical"
+      "chart"
+      "menu"
+      "evidence"
+      "notes"
+      "status"
+      "timeline"
+      "objectives"
+      "polaroid";
+  }
+
+  .dd-board {
+    padding: 14px;
+    border-width: 5px;
+  }
+}

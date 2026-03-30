@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Files — EIS Timeline Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --gold: #c8a96e;
+  --gold-dim: #7a6040;
+  --bg: #0e0b06;
+  --bg2: #1a1408;
+  --bg3: #221a0e;
+  --bg4: #2a2010;
+  --border: rgba(200,169,110,0.2);
+  --text: #e8dcc8;
+  --text-dim: #a09070;
+  --correct: #5a8a4a;
+  --wrong: #8a3a2a;
+}
+html,body { height:100%; }
+body {
+  background: var(--bg);
+  font-family: 'Libre Baskerville', serif;
+  color: var(--text);
+  min-height:100vh;
+  display:flex; flex-direction:column; align-items:center;
+  padding: 0 16px 60px;
+}
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:0;
+}
+.container { position:relative; z-index:1; width:100%; max-width:700px; }
+
+.header { text-align:center; padding:40px 0 28px; border-bottom:1px solid var(--border); margin-bottom:28px; }
+.hbadge { display:flex; align-items:center; gap:12px; justify-content:center; margin-bottom:14px; }
+.hbl { flex:1; max-width:80px; height:1px; background:linear-gradient(90deg,transparent,var(--gold-dim)); }
+.hbl.r { background:linear-gradient(90deg,var(--gold-dim),transparent); }
+.hbt { font-size:.55rem; color:var(--gold); letter-spacing:.2em; text-transform:uppercase; }
+.game-title { font-family:'Playfair Display',serif; font-size:2rem; font-weight:900; color:var(--gold); margin-bottom:6px; }
+.game-sub { font-size:.65rem; color:var(--text-dim); letter-spacing:.1em; font-style:italic; }
+
+/* SCORE ROW */
+.score-row { display:flex; justify-content:space-between; margin-bottom:20px; padding:10px 16px; background:var(--bg2); border:1px solid var(--border); }
+.sc-item { text-align:center; }
+.sc-val { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; color:var(--gold); line-height:1; }
+.sc-lbl { font-size:.44rem; color:var(--gold-dim); letter-spacing:.15em; text-transform:uppercase; margin-top:3px; }
+
+/* TIMER */
+.timer-bar { width:100%; height:3px; background:var(--bg3); margin-bottom:20px; }
+.timer-fill { height:100%; background:linear-gradient(90deg,var(--gold-dim),var(--gold)); transition:width .1s linear; }
+
+/* INSTRUCTIONS */
+.instructions {
+  padding:16px 20px; background:var(--bg2); border:1px solid var(--border);
+  margin-bottom:20px; border-left:3px solid var(--gold);
+}
+.inst-txt { font-size:.62rem; color:var(--text-dim); line-height:1.7; font-style:italic; }
+
+/* ROUND LABEL */
+.round-label {
+  font-size:.55rem; color:var(--gold); letter-spacing:.18em; text-transform:uppercase;
+  text-align:center; margin-bottom:12px;
+}
+
+/* CASE FILE CARD */
+.case-card {
+  background:var(--bg2); border:1px solid var(--border);
+  padding:20px 22px; margin-bottom:16px; position:relative; overflow:hidden;
+}
+.case-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.case-tag { font-size:.52rem; color:var(--gold); letter-spacing:.18em; text-transform:uppercase; margin-bottom:10px; }
+.case-headline {
+  font-family:'Playfair Display',serif; font-size:1.05rem; font-style:italic;
+  color:var(--text); line-height:1.4; margin-bottom:12px;
+}
+.case-clues { display:flex; flex-direction:column; gap:6px; }
+.clue {
+  font-size:.6rem; color:var(--text-dim); line-height:1.5;
+  padding-left:16px; position:relative;
+}
+.clue::before { content:'·'; position:absolute; left:0; color:var(--gold-dim); }
+
+/* YEAR OPTIONS */
+.year-options { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px; }
+.year-btn {
+  flex:1; min-width:100px;
+  padding:14px 10px; background:var(--bg3); border:1px solid var(--border);
+  font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700;
+  color:var(--text-dim); cursor:pointer; text-align:center;
+  transition:all .2s; font-style:italic;
+}
+.year-btn:hover:not(:disabled) { background:var(--bg4); border-color:var(--gold-dim); color:var(--text); }
+.year-btn:disabled { cursor:default; }
+.year-btn.correct { background:rgba(90,138,74,.15); border-color:var(--correct); color:#8adc6a; }
+.year-btn.wrong { background:rgba(138,58,42,.15); border-color:var(--wrong); color:#dc7a6a; }
+.year-btn.revealed { background:rgba(90,138,74,.15); border-color:var(--correct); color:#8adc6a; }
+
+/* FEEDBACK */
+.feedback { padding:14px 18px; margin-bottom:16px; border-left:3px solid var(--gold); background:rgba(200,169,110,.06); display:none; }
+.feedback.show { display:block; }
+.fb-title { font-family:'Playfair Display',serif; font-size:.85rem; font-style:italic; margin-bottom:5px; }
+.fb-title.good { color:#8adc6a; }
+.fb-title.bad { color:#dc7a6a; }
+.fb-body { font-size:.6rem; color:var(--text-dim); line-height:1.65; }
+
+/* CLUE REVEAL BTN */
+.clue-btn {
+  width:100%; padding:10px; background:transparent; border:1px solid rgba(200,169,110,.2);
+  color:var(--gold-dim); font-family:'Libre Baskerville',serif; font-size:.6rem;
+  font-style:italic; cursor:pointer; margin-bottom:12px; transition:all .2s;
+  letter-spacing:.08em;
+}
+.clue-btn:hover { border-color:var(--gold-dim); color:var(--gold); }
+.clue-btn:disabled { opacity:.4; cursor:default; }
+
+/* NEXT BTN */
+.next-btn {
+  width:100%; padding:14px; background:transparent; border:1px solid var(--gold-dim);
+  color:var(--gold); font-family:'Playfair Display',serif; font-size:.8rem;
+  font-style:italic; cursor:pointer; letter-spacing:.12em; transition:all .2s;
+  display:none; text-transform:uppercase;
+}
+.next-btn.show { display:block; }
+.next-btn:hover { background:rgba(200,169,110,.1); border-color:var(--gold); }
+
+/* RESULTS */
+.results-screen { display:none; text-align:center; padding:48px 28px; background:var(--bg2); border:1px solid var(--border); position:relative; overflow:hidden; }
+.results-screen::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+.res-score { font-family:'Playfair Display',serif; font-size:3.5rem; font-weight:900; color:var(--gold); line-height:1; }
+.res-frac { font-size:.55rem; color:var(--gold-dim); letter-spacing:.2em; text-transform:uppercase; margin-bottom:20px; }
+.res-title { font-family:'Playfair Display',serif; font-size:1.4rem; font-style:italic; margin-bottom:10px; }
+.res-desc { font-size:.62rem; color:var(--text-dim); line-height:1.7; max-width:380px; margin:0 auto 28px; }
+.play-btn {
+  padding:14px 32px; background:transparent; border:1px solid var(--gold);
+  color:var(--gold); font-family:'Playfair Display',serif; font-size:.85rem;
+  font-style:italic; cursor:pointer; letter-spacing:.1em; transition:all .2s;
+}
+.play-btn:hover { background:rgba(200,169,110,.1); }
+
+.eis-footer { text-align:center; margin-top:40px; padding-top:20px; border-top:1px solid var(--border); }
+.ef-main { font-family:'Playfair Display',serif; font-size:.75rem; font-weight:900; color:var(--gold); letter-spacing:.15em; text-transform:uppercase; }
+.ef-sub { font-size:.5rem; color:var(--gold-dim); letter-spacing:.12em; text-transform:uppercase; font-style:italic; margin-top:3px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="hbadge">
+      <div class="hbl"></div>
+      <span class="hbt">EIS · 75th Anniversary</span>
+      <div class="hbl r"></div>
+    </div>
+    <div class="game-title">Case Files</div>
+    <div class="game-sub">Read the clues. Name the year. Race the clock.</div>
+  </div>
+
+  <div id="game-area">
+    <div class="score-row">
+      <div class="sc-item"><div class="sc-val" id="sc-pts">0</div><div class="sc-lbl">Points</div></div>
+      <div class="sc-item"><div class="sc-val" id="sc-case">1</div><div class="sc-lbl">Case</div></div>
+      <div class="sc-item"><div class="sc-val" id="sc-streak">0</div><div class="sc-lbl">Streak</div></div>
+      <div class="sc-item"><div class="sc-val" id="sc-timer">30</div><div class="sc-lbl">Seconds</div></div>
+    </div>
+    <div class="timer-bar"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
+
+    <div class="instructions">
+      <p class="inst-txt">A classified EIS case file will appear below. Read the clues and select the year the investigation took place. Faster answers earn more points. Use a clue reveal if you're stuck — but it costs you time.</p>
+    </div>
+
+    <div class="round-label" id="round-label">Case 1 of 10</div>
+
+    <div class="case-card" id="case-card">
+      <div class="case-tag" id="case-tag"></div>
+      <div class="case-headline" id="case-headline"></div>
+      <div class="case-clues" id="case-clues"></div>
+    </div>
+
+    <button class="clue-btn" id="clue-btn" onclick="revealNextClue()">🔍 Reveal next clue (−5 sec)</button>
+
+    <div class="year-options" id="year-opts"></div>
+
+    <div class="feedback" id="feedback">
+      <div class="fb-title" id="fb-title"></div>
+      <div class="fb-body" id="fb-body"></div>
+    </div>
+
+    <button class="next-btn" id="next-btn" onclick="nextCase()">Open Next Case File →</button>
+  </div>
+
+  <div class="results-screen" id="results">
+    <div class="res-score" id="res-score"></div>
+    <div class="res-frac">Points · 10 Cases</div>
+    <div class="res-title" id="res-title"></div>
+    <div class="res-desc" id="res-desc"></div>
+    <button class="play-btn" onclick="startGame()">Re-open the Case Files</button>
+  </div>
+
+  <div class="eis-footer">
+    <div class="ef-main">EIS · 75</div>
+    <div class="ef-sub">Epidemic Intelligence Service · 1951–2026</div>
+  </div>
+</div>
+
+<script>
+const cases = [
+  {
+    tag:"Field Investigation · Respiratory",
+    headline:"A former U.S. Army officer attending a convention in a large American city collapses. Within days, dozens of others from the same event are hospitalized.",
+    clues:[
+      "221 attendees across Pennsylvania have fallen ill with a severe respiratory illness.",
+      "The venue: a large hotel in Philadelphia, Pennsylvania.",
+      "34 people die. Media coverage calls it the 'Killer Fever.' The cause is completely unknown.",
+      "CDC microbiologist Dr. Joseph McDade isolates a previously unknown bacterium from guinea pig cultures months after the initial investigation."
+    ],
+    year: 1976,
+    options: [1971, 1976, 1982, 1969],
+    feedback:"The Legionnaires' Disease outbreak occurred in July–August 1976 at the Bellevue-Stratford Hotel in Philadelphia. Legionella pneumophila was the first new pathogen isolated by CDC."
+  },
+  {
+    tag:"Laboratory & Field · Vaccine Safety",
+    headline:"Children across the United States who recently received a vaccination begin developing the very disease the shot was meant to prevent.",
+    clues:[
+      "EIS officers note a geographic clustering of cases linked to a specific manufacturer in California.",
+      "40,000 children are affected; 260 are paralyzed.",
+      "Ten children die. The investigation is completed in weeks.",
+      "The responsible batches came from Cutter Laboratories — the poliovirus was not properly inactivated."
+    ],
+    year: 1955,
+    options: [1955, 1962, 1948, 1959],
+    feedback:"The Cutter Incident occurred in April 1955, just weeks after the Salk polio vaccine was licensed. EIS officers traced the outbreak and led to the establishment of rigid federal vaccine production controls."
+  },
+  {
+    tag:"Outbreak Investigation · Unknown Etiology",
+    headline:"Young men in previously good health in Los Angeles and New York are dying of pneumonia caused by organisms that don't usually harm healthy people.",
+    clues:[
+      "Cases all involve profound immune system failure.",
+      "MMWR publishes the first cluster report on June 5th — the first government recognition of the syndrome.",
+      "EIS officers begin piecing together a picture through painstaking case interviews.",
+      "The epidemic would go on to reshape global public health policy for decades."
+    ],
+    year: 1981,
+    options: [1978, 1984, 1981, 1975],
+    feedback:"The first CDC MMWR report on what would become known as AIDS was published on June 5, 1981. EIS officers were among the first to characterize the syndrome before any diagnostic test existed."
+  },
+  {
+    tag:"Bioterrorism Response · Novel",
+    headline:"Letters containing white powder are mailed to media offices and congressional staff. People are dying from a disease not seen in the United States in decades.",
+    clues:[
+      "The attack follows a massive terrorist incident on the same day the month before.",
+      "Postal workers at processing facilities are among the hardest-hit victims.",
+      "The disease: inhalation anthrax. Five people die, 17 are infected.",
+      "CDC conducts its first-ever investigation classified as bioterrorism."
+    ],
+    year: 2001,
+    options: [2001, 1998, 2003, 2005],
+    feedback:"The anthrax letter attacks of October 2001 came weeks after September 11. EIS officers developed the first bioterrorism investigation protocols, which remain the national standard."
+  },
+  {
+    tag:"Zoonotic Disease · Novel Pathogen",
+    headline:"Healthy young adults in a rural American region are dying of a mysterious and aggressive respiratory syndrome that progresses to death within days.",
+    clues:[
+      "The cases are geographically concentrated in the Four Corners region of the Southwest.",
+      "Patients develop severe pulmonary edema despite appearing healthy days before.",
+      "Field investigation points to rodent exposure — specifically deer mice.",
+      "A previously unknown virus is identified: later named Sin Nombre."
+    ],
+    year: 1993,
+    options: [1993, 1987, 1999, 1990],
+    feedback:"The 1993 Four Corners hantavirus outbreak led to the discovery of Sin Nombre virus. The investigation established surveillance frameworks now used globally for emerging rodent-borne pathogens."
+  },
+  {
+    tag:"Global Response · Hemorrhagic Fever",
+    headline:"An outbreak of a hemorrhagic fever is spreading rapidly through healthcare facilities and communities in multiple West African countries simultaneously.",
+    clues:[
+      "The outbreak is declared a Public Health Emergency of International Concern.",
+      "CDC deploys hundreds of personnel — the largest deployment in agency history.",
+      "EIS officers spend months in Sierra Leone, Liberia, and Guinea conducting contact tracing.",
+      "More than 11,000 people die. The epidemic lasts nearly two years."
+    ],
+    year: 2014,
+    options: [2009, 2014, 2007, 2017],
+    feedback:"The West African Ebola epidemic began in late 2013 and exploded in 2014. CDC's response was the largest in its history. EIS officers were among the first responders deployed to all three affected countries."
+  },
+  {
+    tag:"Foodborne Illness · Multi-State",
+    headline:"Hundreds of people in the Pacific Northwest fall seriously ill after eating at a fast food restaurant. Children are dying from acute kidney failure.",
+    clues:[
+      "The restaurant chain is Jack in the Box.",
+      "The culprit: undercooked hamburgers contaminated with a dangerous bacteria.",
+      "Four children die; hundreds develop hemolytic uremic syndrome.",
+      "The investigation triggers a complete overhaul of the U.S. meat safety regulatory system."
+    ],
+    year: 1993,
+    options: [1993, 1985, 1998, 2001],
+    feedback:"The 1993 Jack in the Box E. coli O157:H7 outbreak killed four children and sickened hundreds. EIS officers' investigation led directly to new USDA regulations and established 160°F as the safe cooking temperature for ground beef."
+  },
+  {
+    tag:"Environmental Exposure · Lead",
+    headline:"Children in a mid-sized Midwestern city have been exposed to dangerous levels of a heavy metal through their tap water for nearly two years before federal authorities act.",
+    clues:[
+      "The city switched its water source in 2014 to cut costs.",
+      "The new water supply was more corrosive, leaching lead from aging pipes.",
+      "An EIS officer's investigation confirms elevated blood lead levels in children.",
+      "A federal emergency is declared — one of the only such declarations for a water contamination event."
+    ],
+    year: 2016,
+    options: [2013, 2016, 2018, 2011],
+    feedback:"EIS officer Dr. Alice Wang's investigation of the Flint, Michigan water crisis confirmed lead exposure in thousands of children. Her work provided the scientific basis for the federal emergency declaration and transformed national water safety standards."
+  },
+  {
+    tag:"Pandemic Response · Novel Influenza",
+    headline:"A new influenza strain with pandemic potential is identified in Mexico and rapidly spreads to the United States. Healthy young adults are among the most severely affected.",
+    clues:[
+      "The virus contains genetic material from human, avian, and swine influenza strains.",
+      "EIS officers are deployed within 24 hours of the initial U.S. cluster report.",
+      "The WHO declares a pandemic for the first time since 1968.",
+      "A vaccine is developed and deployed in record time — available within six months."
+    ],
+    year: 2009,
+    options: [2003, 2009, 2012, 2006],
+    feedback:"The H1N1 'swine flu' pandemic began in April 2009. EIS officers' rapid epidemiologic characterization of early cases enabled the fastest influenza vaccine development in history, protecting millions before the severe second wave."
+  },
+  {
+    tag:"Global Eradication · Milestone",
+    headline:"The last naturally occurring case of a once-feared disease is confirmed in a country in East Africa. Two years later, the world declares total eradication.",
+    clues:[
+      "The individual — Ali Maow Maalin — was a hospital cook in Somalia.",
+      "The disease had killed hundreds of millions throughout human history.",
+      "CDC and EIS officers played a central role in the final containment campaigns.",
+      "It remains the only human infectious disease ever to be fully eradicated."
+    ],
+    year: 1977,
+    options: [1972, 1977, 1981, 1968],
+    feedback:"Ali Maow Maalin contracted the last naturally occurring case of smallpox on October 26, 1977, in Merca, Somalia. WHO declared smallpox eradicated in 1979 — a triumph of surveillance-containment strategy championed by CDC and EIS."
+  }
+];
+
+let current = 0;
+let totalScore = 0;
+let streak = 0;
+let revealedClues = 0;
+let maxClues = 0;
+let timer = 30;
+let timerInterval = null;
+let answered = false;
+let shuffled = [];
+
+function shuffle(arr) {
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function startGame() {
+  shuffled = shuffle(cases);
+  current=0; totalScore=0; streak=0;
+  document.getElementById('game-area').style.display='block';
+  document.getElementById('results').style.display='none';
+  loadCase();
+}
+
+function loadCase() {
+  answered = false;
+  revealedClues = 1;
+  const c = shuffled[current];
+  maxClues = c.clues.length;
+
+  document.getElementById('case-tag').textContent = c.tag;
+  document.getElementById('case-headline').textContent = c.headline;
+  document.getElementById('sc-case').textContent = current+1;
+  document.getElementById('sc-pts').textContent = totalScore;
+  document.getElementById('sc-streak').textContent = streak;
+  document.getElementById('round-label').textContent = `Case ${current+1} of ${shuffled.length}`;
+
+  // Show first clue only
+  renderClues(c, revealedClues);
+
+  // Year buttons
+  const yopts = document.getElementById('year-opts');
+  yopts.innerHTML='';
+  const shuffOpts = shuffle(c.options);
+  shuffOpts.forEach(yr => {
+    const btn = document.createElement('button');
+    btn.className='year-btn';
+    btn.textContent = yr;
+    btn.onclick = () => selectYear(yr, c.year, c.feedback);
+    yopts.appendChild(btn);
+  });
+
+  // Clue btn
+  const cb = document.getElementById('clue-btn');
+  cb.disabled = false;
+  cb.textContent = `🔍 Reveal next clue (−5 sec)`;
+
+  document.getElementById('feedback').classList.remove('show');
+  document.getElementById('next-btn').classList.remove('show');
+
+  // Timer
+  clearInterval(timerInterval);
+  timer = 30;
+  updateTimer();
+  timerInterval = setInterval(() => {
+    timer--;
+    updateTimer();
+    if(timer <= 0) {
+      clearInterval(timerInterval);
+      if(!answered) timeOut(c.year, c.feedback);
+    }
+  }, 1000);
+}
+
+function renderClues(c, count) {
+  const cl = document.getElementById('case-clues');
+  cl.innerHTML='';
+  for(let i=0;i<Math.min(count,c.clues.length);i++) {
+    const d = document.createElement('div');
+    d.className='clue';
+    d.textContent = c.clues[i];
+    cl.appendChild(d);
+  }
+}
+
+function updateTimer() {
+  document.getElementById('sc-timer').textContent = timer;
+  document.getElementById('timer-fill').style.width = (timer/30*100)+'%';
+  document.getElementById('timer-fill').style.background =
+    timer > 15 ? 'linear-gradient(90deg,#7a6040,#c8a96e)' :
+    timer > 7  ? 'linear-gradient(90deg,#8a6020,#e8a030)' :
+                 'linear-gradient(90deg,#8a3a1a,#e85a30)';
+}
+
+function revealNextClue() {
+  const c = shuffled[current];
+  if(revealedClues >= c.clues.length) return;
+  revealedClues++;
+  timer = Math.max(0, timer - 5);
+  updateTimer();
+  renderClues(c, revealedClues);
+  if(revealedClues >= c.clues.length) {
+    document.getElementById('clue-btn').disabled=true;
+    document.getElementById('clue-btn').textContent='All clues revealed';
+  }
+}
+
+function selectYear(chosen, correct, feedback) {
+  if(answered) return;
+  answered = true;
+  clearInterval(timerInterval);
+
+  const btns = document.querySelectorAll('.year-btn');
+  btns.forEach(b => {
+    b.disabled = true;
+    if(parseInt(b.textContent)===correct && chosen!==correct) b.classList.add('revealed');
+    if(parseInt(b.textContent)===chosen) {
+      b.classList.add(chosen===correct?'correct':'wrong');
+    }
+  });
+
+  if(chosen===correct) {
+    const pts = Math.max(50, timer * 10 * (streak>=2?1.5:1));
+    totalScore += Math.round(pts);
+    streak++;
+    showFeedback(true, `+${Math.round(pts)} points`, feedback);
+  } else {
+    streak=0;
+    showFeedback(false, `The correct year was ${correct}.`, feedback);
+  }
+  document.getElementById('sc-pts').textContent = totalScore;
+  document.getElementById('sc-streak').textContent = streak;
+  document.getElementById('next-btn').classList.add('show');
+}
+
+function timeOut(correct, feedback) {
+  answered=true;
+  const btns = document.querySelectorAll('.year-btn');
+  btns.forEach(b => {
+    b.disabled=true;
+    if(parseInt(b.textContent)===correct) b.classList.add('revealed');
+  });
+  streak=0;
+  showFeedback(false, `Time's up. The year was ${correct}.`, feedback);
+  document.getElementById('sc-streak').textContent=0;
+  document.getElementById('next-btn').classList.add('show');
+}
+
+function showFeedback(correct, headline, detail) {
+  const fb = document.getElementById('feedback');
+  const t = document.getElementById('fb-title');
+  const b = document.getElementById('fb-body');
+  t.textContent = correct ? `✓ Correct! ${headline}` : `✗ ${headline}`;
+  t.className = 'fb-title ' + (correct?'good':'bad');
+  b.textContent = detail;
+  fb.classList.add('show');
+}
+
+function nextCase() {
+  current++;
+  if(current>=shuffled.length) showResults();
+  else loadCase();
+}
+
+function showResults() {
+  clearInterval(timerInterval);
+  document.getElementById('game-area').style.display='none';
+  const r = document.getElementById('results');
+  r.style.display='block';
+  document.getElementById('res-score').textContent = totalScore;
+
+  let title, desc;
+  if(totalScore>=2500){title="Chief Field Officer";desc="Exceptional recall and decisive instincts under pressure. Dr. Langmuir would have sent you out first.";}
+  else if(totalScore>=1500){title="Senior Disease Detective";desc="Strong historical command and good timing. A few more case files and you're running the investigation.";}
+  else if(totalScore>=750){title="Field Epidemiologist";desc="Solid foundation. You know the cases — just need to trust your instincts a little faster.";}
+  else{title="EIS Candidate";desc="The archives are open. Study the case files and come back — every great detective started somewhere.";}
+
+  document.getElementById('res-title').textContent=title;
+  document.getElementById('res-desc').textContent=desc;
+}
+
+startGame();
+</script>
+</body>
+</html>

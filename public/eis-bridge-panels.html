@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EIS 75th Anniversary — Bridge Panels</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  background-color: #1a0f06;
+  background-image: url('images/textures/dark-brown-leather-texture-can-be-use-as-background.jpg');
+  background-size: cover; background-attachment: fixed; background-position: center;
+  padding: 48px 16px 80px; min-height: 100vh; position: relative;
+}
+body::before { content:''; position:fixed; inset:0; background:rgba(6,3,1,0.60); z-index:0; pointer-events:none; }
+.container { position:relative; z-index:1; max-width:1080px; margin:0 auto; }
+.page-title { font-family:'Playfair Display',serif; font-size:1.35rem; font-weight:900; color:#d4aa5a; letter-spacing:0.22em; text-transform:uppercase; text-align:center; margin-bottom:6px; text-shadow:0 2px 12px rgba(0,0,0,0.9); }
+.page-sub { font-size:0.58rem; color:#b09050; letter-spacing:0.18em; text-transform:uppercase; text-align:center; margin-bottom:52px; font-style:italic; }
+.bay-section { margin-bottom:64px; }
+.bay-label { font-family:'Playfair Display',serif; font-size:0.68rem; color:#b09050; letter-spacing:0.25em; text-transform:uppercase; text-align:center; margin-bottom:22px; display:flex; align-items:center; gap:16px; }
+.bay-label::before, .bay-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(200,160,50,0.55),transparent); }
+.bay-pair { display:flex; gap:32px; justify-content:center; flex-wrap:wrap; }
+.panel-wrap { display:flex; flex-direction:column; align-items:center; }
+.wall-tag { font-size:0.5rem; color:#b09050; letter-spacing:0.15em; text-transform:uppercase; text-align:center; margin-bottom:9px; font-style:italic; }
+.panel { width:264px; height:556px; position:relative; flex-shrink:0; }
+.panel-parchment { position:absolute; inset:0; background-image:url('images/textures/parchment.jpg'); background-size:cover; background-position:center; overflow:hidden; border:2px solid #8a6018; box-shadow:0 12px 50px rgba(0,0,0,0.85),0 4px 16px rgba(0,0,0,0.65),0 0 0 1px rgba(160,120,30,0.4); }
+.panel-parchment::before { content:''; position:absolute; inset:0; z-index:1; pointer-events:none; box-shadow:inset 0 0 24px rgba(40,18,2,0.22); }
+.panel-parchment::after { content:''; position:absolute; inset:5px; z-index:2; pointer-events:none; border:1px solid rgba(140,95,15,0.5); }
+.panel-inner { position:relative; z-index:3; height:100%; display:flex; flex-direction:column; padding:5px; }
+.rule { height:4px; background:linear-gradient(90deg,transparent 0%,#5a3a08 6%,#b88010 22%,#e8c030 50%,#b88010 78%,#5a3a08 94%,transparent 100%); flex-shrink:0; box-shadow:0 0 8px rgba(220,185,55,0.65); }
+.ph { padding:12px 15px 9px; border-bottom:1px solid rgba(80,48,8,0.4); flex-shrink:0; background:rgba(200,170,100,0.06); }
+.badge-row { display:flex; align-items:center; gap:5px; margin-bottom:6px; }
+.bl { flex:1; height:1px; }
+.bl.l { background:linear-gradient(90deg,transparent,rgba(80,48,8,0.6)); }
+.bl.r { background:linear-gradient(90deg,rgba(80,48,8,0.6),transparent); }
+.btxt { font-size:0.42rem; color:#2a1400; letter-spacing:0.17em; text-transform:uppercase; white-space:nowrap; font-weight:700; }
+.decade { font-family:'Playfair Display',serif; font-size:0.6rem; color:#2a1400; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:4px; font-weight:700; }
+.inv-title { font-family:'Playfair Display',serif; font-size:1.0rem; font-weight:900; color:#0e0600; line-height:1.22; font-style:italic; }
+
+/* Standard image area */
+.pi { flex:1; position:relative; overflow:hidden; min-height:0; border-top:1px solid rgba(80,48,8,0.3); border-bottom:1px solid rgba(80,48,8,0.3); background:#2a1a08; }
+.pi img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; filter:sepia(0.65) contrast(1.08) brightness(0.82) saturate(0.7); }
+.pi-ph { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; background:linear-gradient(160deg,rgba(60,36,6,0.45) 0%,rgba(30,14,2,0.62) 100%); }
+.pi-ph svg { opacity:0.5; }
+.pi-ref { font-size:0.44rem; color:#e8c060; letter-spacing:0.09em; text-transform:uppercase; text-align:center; line-height:1.65; font-style:italic; max-width:130px; font-weight:700; }
+.pi-credit { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(0deg,rgba(10,4,1,0.92) 0%,rgba(10,4,1,0.4) 60%,transparent 100%); padding:22px 12px 6px; font-size:0.44rem; color:#e8c060; letter-spacing:0.05em; font-style:italic; text-align:center; font-weight:600; }
+
+/* ── PANEL 18 TRIBUTE image area — no dark bg ── */
+.pi:has(.pi-tribute) { background:#c8a848; }
+
+.pi-tribute {
+  width:100%; height:100%;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:flex-start;
+  padding:14px 14px 12px;
+  background:linear-gradient(170deg,#ede0b0 0%,#d8c07a 50%,#c8a848 100%);
+  position:relative;
+}
+.pi-tribute::before { content:''; position:absolute; inset:6px; border:1px solid rgba(100,65,10,0.4); pointer-events:none; }
+
+.tribute-seventy-five { font-family:'Playfair Display',serif; font-size:5.0rem; font-weight:900; color:#2a1200; line-height:1; text-align:center; letter-spacing:-0.02em; display:block; margin-bottom:6px; text-shadow:0 2px 0 rgba(255,220,120,0.4),0 -1px 0 rgba(60,25,5,0.3); }
+.tribute-years-label { font-family:'Libre Baskerville',serif; font-size:0.55rem; font-weight:700; color:#3a1e05; letter-spacing:0.42em; text-transform:uppercase; text-align:center; display:block; margin-bottom:8px; }
+.tribute-rule { width:70px; height:1px; background:linear-gradient(90deg,transparent,#7a5010,transparent); margin:0 auto 6px; }
+.tribute-founded { font-family:'Playfair Display',serif; font-size:0.52rem; font-style:italic; color:#2a1200; text-align:center; margin-bottom:8px; letter-spacing:0.04em; display:block; }
+
+.tribute-stats { display:flex; flex-direction:column; gap:4px; width:100%; }
+.tribute-stat { display:grid; grid-template-columns:56px 1fr; align-items:center; padding:5px 8px; border:1px solid rgba(80,45,8,0.5); background:rgba(200,155,40,0.2); min-height:28px; }
+.tribute-stat-num { font-family:'Playfair Display',serif; font-size:0.95rem; font-weight:900; color:#1e0e00; line-height:1.4; text-align:right; padding-right:7px; border-right:1px solid rgba(80,45,8,0.35); }
+.tribute-stat-label { font-family:'Libre Baskerville',serif; font-size:0.40rem; font-weight:700; color:#2a1400; letter-spacing:0.06em; text-transform:uppercase; padding-left:7px; line-height:1.2; white-space:nowrap; }
+
+/* Motto lives in .pd for panel 18 — below the image area, on parchment */
+.tribute-motto-pd {
+  padding: 8px 14px 6px;
+  border-bottom: 1px solid rgba(80,48,8,0.3);
+  flex-shrink: 0;
+}
+.tribute-motto {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.5rem;
+  font-style: italic;
+  color: #1e0e00;
+  text-align: center;
+  line-height: 1.5;
+  display: block;
+}
+
+.pd { padding:10px 14px 8px; flex-shrink:0; }
+.desc { font-size:0.56rem; color:#0a0400; line-height:1.7; }
+.pf { padding:7px 14px 8px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(80,48,8,0.4); flex-shrink:0; background:rgba(200,170,100,0.06); }
+.eis-main { font-family:'Playfair Display',serif; font-size:0.65rem; font-weight:900; color:#1a0800; letter-spacing:0.14em; text-transform:uppercase; }
+.eis-sub { font-size:0.38rem; color:#2a1400; letter-spacing:0.1em; text-transform:uppercase; font-style:italic; font-weight:700; }
+.ann-wrap { display:flex; flex-direction:column; align-items:center; gap:2px; }
+.ann-n { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:900; color:#6a4808; line-height:1; text-align:center; display:block; }
+.ann-t { font-size:0.33rem; color:#6a4808; letter-spacing:0.2em; text-transform:uppercase; text-align:center; font-weight:700; display:block; border-top:1px solid rgba(106,72,8,0.35); padding-top:2px; }
+.panel-lbl { font-size:0.5rem; color:#b09050; text-align:center; margin-top:11px; font-style:italic; letter-spacing:0.07em; }
+.divider { width:100%; max-width:800px; margin:0 auto 64px; height:1px; background:linear-gradient(90deg,transparent,rgba(200,155,50,0.45),transparent); }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="page-title">EIS 75th Anniversary — Bridge Timeline Installation</div>
+  <div class="page-sub">Archival Edition · All 18 Panels · 38" × 80"</div>
+  <div id="root"></div>
+</div>
+<script>
+const panels = [
+  {bay:1,wall:"Left",num:1,decade:"1951 — 1960",title:"The Founding of the Disease Detectives",img:"panel_01_founding.jpg",credit:"Dr. Alexander Langmuir with EIS officers, CDC Atlanta, c. 1955",desc:"In 1951, Dr. Alexander Langmuir established the Epidemic Intelligence Service as a sentinel program against biological warfare threats. Within two years, EIS officers were deploying nationwide, bringing epidemiologic rigor to outbreaks that had long gone unexplained. The 'shoe-leather' era of American public health had begun."},
+  {bay:1,wall:"Right",num:2,decade:"1955",title:"The Cutter Incident",img:"panel_02_cutter.jpg",credit:"Vaccination program in the era of the Cutter Incident, United States, c. 1955",desc:"When 40,000 children developed paralytic polio after vaccination, EIS officers traced the outbreak to improperly inactivated vaccine batches from Cutter Laboratories. Their investigation, completed in weeks, established the federal vaccine safety standards still in use today — and put CDC's Disease Detectives on the national stage."},
+  {bay:2,wall:"Left",num:3,decade:"1961 — 1966",title:"Joining the Fight Against Smallpox",img:"panel_03_smallpox_field.jpg",credit:"EIS officers conducting smallpox surveillance, West Africa, c. 1967",desc:"EIS officers joined the global campaign to eradicate smallpox, pioneering the surveillance-containment strategy that replaced mass vaccination campaigns. Working through remote villages in Africa and Asia, they proved that targeted response was the key to stopping the disease for good."},
+  {bay:2,wall:"Right",num:4,decade:"1969",title:"Rubella Vaccine Field Trials",img:"panel_04_rubella.jpg",credit:"Rubella vaccination program, United States, c. 1969",desc:"EIS officers conducted the field trials that validated the newly licensed rubella vaccine, coordinating one of the largest preventive health campaigns in American history. Their work protected millions of pregnancies from the devastation of congenital rubella syndrome."},
+  {bay:3,wall:"Left",num:5,decade:"1976",title:"Legionnaires' Disease",img:"panel_05_legionnaires.jpg",credit:"Lab work at CDC, c. 1976 — CDC PHIL",desc:"In summer 1976, 221 American Legion convention attendees fell ill in Philadelphia — 34 died. EIS officers launched a landmark investigation, and months later CDC microbiologist Dr. Joseph McDade isolated an entirely new bacterium: Legionella pneumophila. The first new pathogen ever identified by CDC."},
+  {bay:3,wall:"Right",num:6,decade:"1979",title:"Smallpox Eradicated",img:"panel_06_smallpox_eradicated.jpg",credit:"Last naturally occurring smallpox case confirmed, Somalia, 1977",desc:"On October 26, 1977, Ali Maow Maalin became the last person to contract naturally occurring smallpox. Two years later, WHO declared the disease eradicated — the only human disease ever eliminated from the earth. EIS officers played a central role in the final containment campaigns."},
+  {bay:4,wall:"Left",num:7,decade:"1981 — 1987",title:"AIDS — The Early Days",img:"panel_07_aids.jpg",credit:"CDC epidemiologists reviewing AIDS case reports, Atlanta, c. 1983",desc:"When a mysterious immune deficiency began killing young men in 1981, EIS officers were among the first to characterize the syndrome. Their epidemiologic work — painstaking case interviews, cluster analysis, and risk factor studies — laid the foundation for understanding HIV transmission and shaped the global AIDS response."},
+  {bay:4,wall:"Right",num:8,decade:"1988",title:"Folic Acid & Neural Tube Defects",img:"panel_08_folic_acid.jpg",credit:"CDC researchers, Atlanta, c. 1988",desc:"CDC investigators discovered that folic acid could reduce the risk of neural tube defects — including spina bifida — by up to 70%. One of the most consequential preventive health findings of the century, it led directly to the fortification of grain products across the United States."},
+  {bay:5,wall:"Left",num:9,decade:"1993",title:"Hantavirus — Four Corners",img:"panel_09_hantavirus.jpg",credit:"Field investigation, Four Corners region, New Mexico, 1993",desc:"A cluster of mysterious respiratory deaths in the Southwest United States led EIS officers to discover Sin Nombre virus — a previously unknown hantavirus carried by deer mice. Their investigation established the surveillance framework now used globally for emerging rodent-borne diseases."},
+  {bay:5,wall:"Right",num:10,decade:"1993",title:"E. coli O157:H7",img:"panel_10_ecoli.jpg",credit:"CDC field investigation, Pacific Northwest, 1993",desc:"EIS officers traced a deadly outbreak of E. coli O157:H7 to undercooked hamburgers from a fast food chain, sickening hundreds and killing four children. Their investigation fundamentally transformed food safety regulations in the United States."},
+  {bay:6,wall:"Left",num:11,decade:"2001",title:"Anthrax Letters",img:"panel_11_anthrax.jpg",credit:"CDC response team, Washington D.C., October 2001",desc:"In the weeks following the September 11 attacks, letters containing anthrax spores were mailed to news organizations and congressional offices. EIS officers conducted the first-ever bioterrorism investigation in CDC history, developing protocols that remain the national standard."},
+  {bay:6,wall:"Right",num:12,decade:"2003",title:"SARS",img:"panel_12_sars.jpg",credit:"CDC SARS response team, 2003",desc:"When Severe Acute Respiratory Syndrome emerged from China in 2003, EIS officers deployed globally within days. Their contact tracing and quarantine protocols helped contain the outbreak before it became a true pandemic — and directly informed global preparedness frameworks built in the years that followed."},
+  {bay:7,wall:"Left",num:13,decade:"2009",title:"H1N1 Influenza Pandemic",img:"panel_13_h1n1.jpg",credit:"H1N1 vaccination program, United States, 2009",desc:"When a novel H1N1 influenza virus emerged in Mexico in April 2009, EIS officers deployed within 24 hours. Their early epidemiologic data enabled the fastest influenza vaccine development in history, protecting millions before the second wave arrived."},
+  {bay:7,wall:"Right",num:14,decade:"2014 — 2016",title:"Ebola — West Africa",img:"panel_14_ebola.jpg",credit:"CDC Ebola response team, Sierra Leone, 2014",desc:"The largest Ebola outbreak in history killed more than 11,000 people across West Africa. EIS officers were among the first responders, spending months in Sierra Leone, Liberia, and Guinea conducting contact tracing, training local health workers, and building the surveillance systems that ended the epidemic."},
+  {bay:8,wall:"Left",num:15,decade:"2016",title:"Flint Water Crisis",img:"panel_15_flint.jpg",credit:"Flint, Michigan — lead water investigation, 2016",desc:"EIS officer Dr. Alice Wang deployed to Flint, Michigan, conducting the investigation that confirmed dangerous levels of lead exposure in thousands of children. Her work provided the scientific foundation for a federal emergency declaration and reshaped national water safety standards."},
+  {bay:8,wall:"Right",num:16,decade:"2016 — 2018",title:"Zika — A New Threat",img:"panel_16_zika.jpg",credit:"CDC Zika response, Puerto Rico and Caribbean, 2016",desc:"As Zika virus spread through the Americas, EIS officers led the investigation that confirmed the link between maternal infection and microcephaly. Their work in Puerto Rico, Brazil, and the continental U.S. defined the global response to an emerging neurological threat."},
+  {bay:9,wall:"Left",num:17,decade:"2020 — 2022",title:"COVID-19 Pandemic",img:"panel_17_covid.jpg",credit:"CDC Emergency Operations Center, Atlanta, 2020",desc:"When SARS-CoV-2 emerged, EIS officers joined the largest emergency response in CDC's history — deploying to hospitals, nursing homes, and communities across the country. From the first cluster investigations in Washington State to vaccine effectiveness studies, Disease Detectives shaped every phase of the pandemic response."},
+  {bay:9,wall:"Right",num:18,decade:"1951 — 2026",title:"75 Years of Disease Detectives",img:"TRIBUTE",credit:"Epidemic Intelligence Service — 75th Anniversary, 2026",desc:"From a wartime sentinel program to a global force for health equity — 75 years of EIS officers have investigated over 4,000 outbreaks across 165 countries. They are the Disease Detectives: driven by evidence, deployed by need, and defined by the belief that no epidemic should go unexamined."},
+];
+
+function buildPanelInner(p) {
+  if (p.img === "TRIBUTE") {
+    // Panel 18: tribute layout — motto sits BELOW image area on parchment
+    return `
+      <div class="rule"></div>
+      <div class="ph">
+        <div class="badge-row"><div class="bl l"></div><span class="btxt">Epidemic Intelligence Service</span><div class="bl r"></div></div>
+        <div class="decade">${p.decade}</div>
+        <div class="inv-title">${p.title}</div>
+      </div>
+      <div class="pi">
+        <div class="pi-tribute">
+          <div class="tribute-seventy-five">75</div>
+          <div class="tribute-years-label">Years</div>
+          <div class="tribute-rule"></div>
+          <div class="tribute-founded">Founded 1951 · Atlanta, Georgia</div>
+          <div class="tribute-stats">
+            <div class="tribute-stat">
+              <span class="tribute-stat-num">4,000+</span>
+              <span class="tribute-stat-label">Outbreak Investigations</span>
+            </div>
+            <div class="tribute-stat">
+              <span class="tribute-stat-num">165</span>
+              <span class="tribute-stat-label">Countries Served</span>
+            </div>
+            <div class="tribute-stat">
+              <span class="tribute-stat-num">3,500+</span>
+              <span class="tribute-stat-label">Officers Trained</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tribute-motto-pd">
+        <div class="tribute-motto">Driven by evidence. Deployed by need. Defined by service.</div>
+      </div>
+      <div class="pd"><p class="desc">${p.desc}</p></div>
+      <div class="pf">
+        <div><div class="eis-main">EIS</div><div class="eis-sub">Epidemic Intelligence Service</div><div class="eis-sub">Centers for Disease Control</div></div>
+        <div class="ann-wrap"><div class="ann-n">75</div><div class="ann-t">Years</div></div>
+      </div>
+      <div class="rule"></div>`;
+  }
+
+  // Standard panel
+  return `
+    <div class="rule"></div>
+    <div class="ph">
+      <div class="badge-row"><div class="bl l"></div><span class="btxt">Epidemic Intelligence Service</span><div class="bl r"></div></div>
+      <div class="decade">${p.decade}</div>
+      <div class="inv-title">${p.title}</div>
+    </div>
+    <div class="pi">
+      <img src="images/panels/${p.img}" alt="${p.title}"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="pi-ph" style="display:none">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#d4a840" stroke-width="0.9"><rect x="3" y="3" width="18" height="18" rx="1.5"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <div class="pi-ref">Image loading…</div>
+      </div>
+      <div class="pi-credit">${p.credit}</div>
+    </div>
+    <div class="pd"><p class="desc">${p.desc}</p></div>
+    <div class="pf">
+      <div><div class="eis-main">EIS</div><div class="eis-sub">Epidemic Intelligence Service</div><div class="eis-sub">Centers for Disease Control</div></div>
+      <div class="ann-wrap"><div class="ann-n">75</div><div class="ann-t">Years</div></div>
+    </div>
+    <div class="rule"></div>`;
+}
+
+const root = document.getElementById('root');
+let bay = 0, bayPair = null;
+panels.forEach((p,i) => {
+  if(p.bay!==bay){
+    if(i>0){const d=document.createElement('div');d.className='divider';root.appendChild(d);}
+    bay=p.bay;
+    const sec=document.createElement('div');sec.className='bay-section';
+    const lbl=document.createElement('div');lbl.className='bay-label';lbl.textContent=`Bay ${p.bay} · Alternating Bay`;
+    sec.appendChild(lbl);
+    bayPair=document.createElement('div');bayPair.className='bay-pair';sec.appendChild(bayPair);root.appendChild(sec);
+  }
+  const w=document.createElement('div');w.className='panel-wrap';
+  w.innerHTML=`
+    <div class="wall-tag">${p.wall} Wall</div>
+    <div class="panel">
+      <div class="panel-parchment">
+        <div class="panel-inner">${buildPanelInner(p)}</div>
+      </div>
+    </div>
+    <div class="panel-lbl">Panel ${p.num} of 18 · Bay ${p.bay} (${p.wall} Wall)</div>`;
+  bayPair.appendChild(w);
+});
+</script>
+</body>
+</html>

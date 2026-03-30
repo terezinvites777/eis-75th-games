@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disease Detective — EIS 75th Anniversary Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --gold: #c8a96e;
+  --gold-dim: #7a6040;
+  --bg: #0e0b06;
+  --bg2: #1a1408;
+  --bg3: #221a0e;
+  --border: rgba(200,169,110,0.2);
+  --text: #e8dcc8;
+  --text-dim: #a09070;
+  --correct: #5a8a4a;
+  --wrong: #8a3a2a;
+  --correct-bg: rgba(90,138,74,0.15);
+  --wrong-bg: rgba(138,58,42,0.15);
+}
+
+html, body { height:100%; }
+body {
+  background: var(--bg);
+  font-family: 'Libre Baskerville', Georgia, serif;
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 16px 48px;
+}
+
+/* NOISE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 680px;
+}
+
+/* HEADER */
+.header {
+  text-align: center;
+  padding: 40px 0 32px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+
+.header-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.hb-line { flex:1; max-width:80px; height:1px; background: linear-gradient(90deg, transparent, var(--gold-dim)); }
+.hb-line.r { background: linear-gradient(90deg, var(--gold-dim), transparent); }
+.hb-txt {
+  font-size: 0.55rem;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.game-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+.game-sub {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  font-style: italic;
+}
+
+/* PROGRESS */
+.progress-bar {
+  width: 100%;
+  height: 2px;
+  background: var(--bg3);
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+  transition: width 0.5s ease;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.52rem;
+  color: var(--gold-dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* SCORE STREAK */
+.score-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding: 10px 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+}
+.score-item { text-align: center; }
+.score-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+.score-lbl {
+  font-size: 0.45rem;
+  color: var(--gold-dim);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+/* QUESTION CARD */
+.question-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 28px 28px 24px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.question-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.q-era {
+  font-size: 0.55rem;
+  color: var(--gold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.q-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.45;
+  margin-bottom: 8px;
+}
+
+.q-context {
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-style: italic;
+  border-left: 2px solid var(--border);
+  padding-left: 12px;
+  margin-top: 12px;
+}
+
+/* OPTIONS */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.option-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 14px 20px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-family: 'Libre Baskerville', serif;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+.option-btn:hover:not(:disabled) {
+  border-color: var(--gold-dim);
+  color: var(--text);
+  background: #2a2010;
+}
+.option-btn:disabled { cursor: default; }
+.option-btn.correct {
+  background: var(--correct-bg);
+  border-color: var(--correct);
+  color: #8adc6a;
+}
+.option-btn.wrong {
+  background: var(--wrong-bg);
+  border-color: var(--wrong);
+  color: #dc7a6a;
+}
+.option-btn.revealed {
+  border-color: var(--correct);
+  background: var(--correct-bg);
+  color: #8adc6a;
+}
+
+.opt-letter {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--gold-dim);
+  flex-shrink: 0;
+  margin-top: 1px;
+  min-width: 18px;
+}
+.option-btn.correct .opt-letter,
+.option-btn.revealed .opt-letter { color: #8adc6a; }
+.option-btn.wrong .opt-letter { color: #dc7a6a; }
+
+/* FEEDBACK */
+.feedback {
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  border-left: 3px solid var(--gold);
+  background: rgba(200,169,110,0.06);
+  display: none;
+}
+.feedback.show { display: block; }
+.feedback-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-style: italic;
+}
+.feedback-title.good { color: #8adc6a; }
+.feedback-title.bad { color: #dc7a6a; }
+.feedback-text {
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  line-height: 1.65;
+}
+
+/* NEXT BTN */
+.next-btn {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-size: 0.8rem;
+  font-style: italic;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: none;
+  text-transform: uppercase;
+}
+.next-btn.show { display: block; }
+.next-btn:hover {
+  background: rgba(200,169,110,0.1);
+  border-color: var(--gold);
+}
+
+/* RESULTS SCREEN */
+.results-screen {
+  display: none;
+  text-align: center;
+  padding: 48px 28px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.results-screen::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.results-rank {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.results-rank-lbl {
+  font-size: 0.55rem;
+  color: var(--gold-dim);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.results-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.results-desc {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  max-width: 400px;
+  margin: 0 auto 28px;
+}
+.play-again {
+  padding: 14px 32px;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: all 0.2s;
+}
+.play-again:hover { background: rgba(200,169,110,0.1); }
+
+.eis-footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.eis-footer-main {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.eis-footer-sub {
+  font-size: 0.5rem;
+  color: var(--gold-dim);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-style: italic;
+  margin-top: 3px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="header-badge">
+      <div class="hb-line"></div>
+      <span class="hb-txt">EIS · 75th Anniversary</span>
+      <div class="hb-line r"></div>
+    </div>
+    <div class="game-title">Disease Detective</div>
+    <div class="game-sub">Test your knowledge of 75 years of outbreak investigation</div>
+  </div>
+
+  <div id="game-area">
+    <div class="score-row">
+      <div class="score-item">
+        <div class="score-val" id="score-val">0</div>
+        <div class="score-lbl">Score</div>
+      </div>
+      <div class="score-item">
+        <div class="score-val" id="q-num">1</div>
+        <div class="score-lbl">Question</div>
+      </div>
+      <div class="score-item">
+        <div class="score-val" id="streak-val">0</div>
+        <div class="score-lbl">Streak</div>
+      </div>
+    </div>
+
+    <div class="progress-label">
+      <span id="prog-lbl">Question 1 of 12</span>
+      <span id="prog-pct">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+
+    <div class="question-card">
+      <div class="q-era" id="q-era"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-context" id="q-context"></div>
+    </div>
+
+    <div class="options" id="options"></div>
+
+    <div class="feedback" id="feedback">
+      <div class="feedback-title" id="fb-title"></div>
+      <div class="feedback-text" id="fb-text"></div>
+    </div>
+
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Continue the Investigation →</button>
+  </div>
+
+  <div class="results-screen" id="results-screen">
+    <div class="results-rank" id="res-score"></div>
+    <div class="results-rank-lbl" id="res-fraction"></div>
+    <div class="results-title" id="res-title"></div>
+    <div class="results-desc" id="res-desc"></div>
+    <button class="play-again" onclick="restartGame()">Investigate Again</button>
+  </div>
+
+  <div class="eis-footer">
+    <div class="eis-footer-main">EIS · 75</div>
+    <div class="eis-footer-sub">Epidemic Intelligence Service · 1951–2026</div>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    era: "1951 — The Founding",
+    q: "Dr. Alexander Langmuir founded the EIS in 1951 with a specific threat in mind. What was the original purpose of the Epidemic Intelligence Service?",
+    context: "The Cold War era shaped the early priorities of American public health infrastructure.",
+    options: [
+      "To respond to natural outbreaks of infectious disease",
+      "To serve as a sentinel against biological warfare threats",
+      "To train international disease investigators",
+      "To monitor the safety of vaccines and medications"
+    ],
+    correct: 1,
+    feedback: "The EIS was founded at the height of Cold War anxiety as a sentinel program against potential biological warfare attacks. Dr. Langmuir believed the U.S. needed trained epidemiologists ready to deploy rapidly — a vision that quickly expanded to cover all outbreak threats."
+  },
+  {
+    era: "1955 — The Cutter Incident",
+    q: "In 1955, EIS officers investigated one of the most consequential vaccine safety events in American history. What did they discover about the Cutter Laboratories polio vaccine?",
+    context: "40,000 children developed paralytic polio after receiving what was supposed to be a life-saving vaccine.",
+    options: [
+      "The vaccine had been contaminated with a bacterial agent during production",
+      "The vaccine was ineffective but not harmful to most recipients",
+      "The poliovirus in certain batches had not been properly inactivated",
+      "The vaccine had been stored at incorrect temperatures"
+    ],
+    correct: 2,
+    feedback: "EIS officers traced the outbreak to vaccine batches from Cutter Laboratories where the poliovirus had not been properly killed. The investigation, completed in weeks, led to strict federal production controls that govern vaccines to this day — and established CDC's Disease Detectives as a nationally trusted institution."
+  },
+  {
+    era: "1976 — A Mystery in Philadelphia",
+    q: "221 attendees of an American Legion convention in Philadelphia fell ill with a mysterious respiratory illness. How long did it take before the causative organism was finally identified?",
+    context: "34 people died. Months of intensive investigation yielded no results — until a CDC microbiologist revisited the lab cultures.",
+    options: [
+      "Three days after the outbreak was reported",
+      "About two weeks of intensive field work",
+      "Several months after the initial investigation",
+      "Over a year — the pathogen was never confirmed in the field"
+    ],
+    correct: 2,
+    feedback: "Despite one of the largest outbreak investigations in CDC history, months passed before Dr. Joseph McDade — a microbiologist who had been working on the case — revisited his guinea pig cultures and finally isolated a previously unknown bacterium: Legionella pneumophila. It was the first new pathogen identified by CDC."
+  },
+  {
+    era: "1979 — Global Milestone",
+    q: "The smallpox eradication campaign — in which EIS officers played a significant role — achieved its goal through a strategy that replaced blanket mass vaccination. What was this approach called?",
+    context: "The strategy was pioneered in part by CDC, and proved that you don't need 100% vaccination coverage to stop a disease.",
+    options: [
+      "Ring immunization",
+      "Herd threshold protocol",
+      "Surveillance-containment strategy",
+      "Cascade vaccination"
+    ],
+    correct: 2,
+    feedback: "The surveillance-containment strategy — sometimes called ring vaccination — focused on rapidly identifying cases and vaccinating only those in close contact, rather than attempting to vaccinate entire populations. It was far more efficient and ultimately led to the eradication of smallpox, confirmed by WHO in 1979."
+  },
+  {
+    era: "1981 — A New Epidemic",
+    q: "EIS officers were among the first to characterize the AIDS epidemic in 1981. What epidemiologic method proved most critical in their early investigation?",
+    context: "Before any blood test existed, investigators had to use classical epidemiology to understand who was affected and how transmission was occurring.",
+    options: [
+      "Mass serological screening of the general population",
+      "Animal model studies in CDC laboratories",
+      "Painstaking case interviews and cluster analysis",
+      "International travel record examination"
+    ],
+    correct: 2,
+    feedback: "Without a diagnostic test, EIS officers relied on intensive case interviews and cluster analysis — identifying who was sick, who they knew, and what they had in common. This shoe-leather epidemiology revealed transmission patterns and risk factors that shaped global HIV/AIDS policy for decades."
+  },
+  {
+    era: "1988 — Preventive Medicine",
+    q: "CDC investigators discovered that a common vitamin could dramatically reduce a devastating birth defect. Which vitamin, and which condition?",
+    context: "The finding led directly to one of the most widespread public health interventions in food history.",
+    options: [
+      "Vitamin D — rickets in premature infants",
+      "Vitamin A — childhood blindness in developing countries",
+      "Folic acid — neural tube defects including spina bifida",
+      "Iron — anemia in pregnant women"
+    ],
+    correct: 2,
+    feedback: "CDC investigators found that folic acid in a daily multivitamin could reduce the risk of neural tube defects — including spina bifida and anencephaly — by up to 70%. This landmark discovery led the United States to mandate folic acid fortification of grain products, preventing thousands of birth defects annually."
+  },
+  {
+    era: "1993 — The Southwest",
+    q: "A cluster of mysterious respiratory deaths in the Four Corners region of the U.S. led EIS officers to discover a previously unknown virus. What type of virus was it?",
+    context: "The outbreak affected healthy young adults — an unusual pattern that heightened the urgency of the investigation.",
+    options: [
+      "A novel influenza A strain from migratory bird populations",
+      "A hantavirus transmitted by deer mice",
+      "A coronavirus related to the common cold",
+      "A filovirus similar to Ebola"
+    ],
+    correct: 1,
+    feedback: "EIS officers identified Sin Nombre virus — a previously unknown hantavirus carried by deer mice — as the cause of a new and deadly pulmonary syndrome. The investigation was completed with remarkable speed and established the surveillance framework now used globally for detecting rodent-borne emerging viruses."
+  },
+  {
+    era: "2001 — Bioterrorism",
+    q: "In October 2001, CDC conducted its first-ever bioterrorism investigation. What was the exposure route that caused the most deaths and proved hardest to protect against?",
+    context: "The anthrax letter attacks killed five people and infected 17 others in the weeks following September 11.",
+    options: [
+      "Direct contact with contaminated mail by postal workers",
+      "Inhalation anthrax — particularly among postal facility workers",
+      "Cutaneous anthrax from skin contact with spores",
+      "Foodborne contamination of water supplies"
+    ],
+    correct: 1,
+    feedback: "Inhalation anthrax — contracted when spores became aerosolized during mail sorting — proved the most lethal form and was responsible for the deaths of postal workers at processing facilities. EIS officers developed the first bioterrorism investigation protocols, which remain the national standard today."
+  },
+  {
+    era: "2003 — Emerging Threats",
+    q: "When SARS emerged from China in 2003, EIS officers were deployed globally. What made the SARS response in 2003 a model for future pandemic preparedness?",
+    context: "SARS was contained before becoming a true global pandemic — a remarkable achievement given its characteristics.",
+    options: [
+      "A vaccine was developed and deployed within weeks of the outbreak",
+      "Contact tracing and quarantine protocols stopped chains of transmission",
+      "The virus mutated rapidly to a less deadly form",
+      "International travel bans were implemented before significant spread"
+    ],
+    correct: 1,
+    feedback: "Without a vaccine or treatment, EIS officers and their international partners relied on aggressive contact tracing, quarantine, and infection control — classical public health tools applied at modern scale. The success established these methods as the cornerstone of global pandemic preparedness and directly informed frameworks used in subsequent outbreaks."
+  },
+  {
+    era: "2014 — West Africa",
+    q: "The 2014-2016 West African Ebola epidemic was the largest in history. Which country had the most cases and received the most CDC personnel?",
+    context: "More than 11,000 people died across three countries. CDC deployed hundreds of personnel over two years.",
+    options: [
+      "Guinea, where the initial outbreak originated",
+      "Sierra Leone, which ultimately had the highest case count",
+      "Liberia, which experienced the sharpest initial peak",
+      "Nigeria, which had the largest population at risk"
+    ],
+    correct: 1,
+    feedback: "Sierra Leone ultimately recorded the highest number of confirmed Ebola cases during the epidemic. EIS officers worked alongside local health workers and international partners to conduct contact tracing, build surveillance systems, and train clinical staff in infection control — efforts that eventually contained the epidemic by 2016."
+  },
+  {
+    era: "2016 — Flint, Michigan",
+    q: "EIS officer Dr. Alice Wang's investigation of the Flint water crisis confirmed what public health emergency?",
+    context: "The crisis had been ongoing for nearly two years before federal authorities declared an emergency.",
+    options: [
+      "Bacterial contamination of the municipal water supply from aging infrastructure",
+      "Dangerous levels of lead exposure in thousands of children",
+      "A chemical spill upstream affecting chlorination systems",
+      "Pharmaceutical compounds in drinking water affecting neurological development"
+    ],
+    correct: 1,
+    feedback: "Dr. Wang's epidemiologic investigation confirmed that thousands of Flint children had been exposed to dangerous levels of lead after the city switched water sources without proper corrosion control treatment. Her work provided the scientific foundation for a federal emergency declaration and triggered major reforms in national water system oversight."
+  },
+  {
+    era: "2026 — 75 Years",
+    q: "Since its founding in 1951, approximately how many outbreak investigations have EIS officers conducted, and across how many countries?",
+    context: "The scope of EIS activity over 75 years reflects both the growing complexity of global health and the enduring value of the Disease Detective model.",
+    options: [
+      "Approximately 500 investigations in 40 countries",
+      "Over 1,000 investigations in 80 countries",
+      "Over 4,000 investigations across more than 165 countries",
+      "Approximately 2,500 investigations in 120 countries"
+    ],
+    correct: 2,
+    feedback: "Over 75 years, EIS officers have conducted more than 4,000 outbreak investigations across over 165 countries. From the original sentinel program designed to guard against biological warfare to a global force for health equity, the Disease Detective model has proven to be one of the most effective public health innovations of the 20th century."
+  }
+];
+
+let current = 0;
+let score = 0;
+let streak = 0;
+let answered = false;
+let shuffled = [];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function startGame() {
+  shuffled = shuffle(questions);
+  current = 0; score = 0; streak = 0;
+  document.getElementById('game-area').style.display = 'block';
+  document.getElementById('results-screen').style.display = 'none';
+  loadQuestion();
+}
+
+function loadQuestion() {
+  answered = false;
+  const q = shuffled[current];
+  const total = shuffled.length;
+
+  document.getElementById('q-era').textContent = q.era;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-context').textContent = q.context;
+  document.getElementById('q-num').textContent = current + 1;
+  document.getElementById('score-val').textContent = score;
+  document.getElementById('streak-val').textContent = streak;
+
+  const pct = Math.round((current / total) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-lbl').textContent = `Question ${current+1} of ${total}`;
+  document.getElementById('prog-pct').textContent = pct + '%';
+
+  // Build options
+  const letters = ['A','B','C','D'];
+  const opts = document.getElementById('options');
+  opts.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}.</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(i, q.correct, q.feedback);
+    opts.appendChild(btn);
+  });
+
+  document.getElementById('feedback').classList.remove('show');
+  document.getElementById('next-btn').classList.remove('show');
+}
+
+function selectAnswer(chosen, correct, feedbackText) {
+  if (answered) return;
+  answered = true;
+
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  if (chosen === correct) {
+    btns[chosen].classList.add('correct');
+    score += (streak >= 2) ? 150 : 100;
+    streak++;
+    showFeedback(true, feedbackText);
+  } else {
+    btns[chosen].classList.add('wrong');
+    btns[correct].classList.add('revealed');
+    streak = 0;
+    showFeedback(false, feedbackText);
+  }
+
+  document.getElementById('score-val').textContent = score;
+  document.getElementById('streak-val').textContent = streak;
+  document.getElementById('next-btn').classList.add('show');
+}
+
+function showFeedback(correct, text) {
+  const fb = document.getElementById('feedback');
+  const title = document.getElementById('fb-title');
+  const body = document.getElementById('fb-text');
+
+  if (correct) {
+    title.textContent = streak >= 3 ? `Outstanding — ${streak} in a row!` : 'Correct!';
+    title.className = 'feedback-title good';
+  } else {
+    title.textContent = 'Not quite — here\'s the history:';
+    title.className = 'feedback-title bad';
+  }
+  body.textContent = text;
+  fb.classList.add('show');
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= shuffled.length) {
+    showResults();
+  } else {
+    loadQuestion();
+  }
+}
+
+function showResults() {
+  document.getElementById('game-area').style.display = 'none';
+  const rs = document.getElementById('results-screen');
+  rs.style.display = 'block';
+
+  const total = shuffled.length;
+  const maxScore = total * 100;
+  const pct = Math.round((score / maxScore) * 100);
+
+  document.getElementById('res-score').textContent = score;
+  document.getElementById('res-fraction').textContent = `Points · ${total} Questions`;
+
+  let title, desc;
+  if (pct >= 90) {
+    title = "Senior EIS Officer";
+    desc = "Exceptional field judgment and historical knowledge. You're ready to lead the next investigation.";
+  } else if (pct >= 70) {
+    title = "EIS Officer — Field Ready";
+    desc = "Strong command of EIS history and epidemiologic reasoning. A few more case files and you'll be Senior Officer material.";
+  } else if (pct >= 50) {
+    title = "EIS Trainee";
+    desc = "Good instincts, but the field has more to teach. Keep studying the casebook — Disease Detectives never stop learning.";
+  } else {
+    title = "First Day at Langmuir's Desk";
+    desc = "Everyone starts somewhere. Dr. Langmuir himself had to learn the trade. Hit the archives and come back for another round.";
+  }
+
+  document.getElementById('res-title').textContent = title;
+  document.getElementById('res-desc').textContent = desc;
+}
+
+function restartGame() {
+  startGame();
+}
+
+startGame();
+</script>
+</body>
+</html>

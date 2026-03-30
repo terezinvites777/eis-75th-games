@@ -3,7 +3,7 @@
 
 import type { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ArrowLeft, Home, Search, Target, Users, Activity, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Home, Search, Target, Users, TrendingUp, Zap, Trophy } from 'lucide-react';
 import '../../styles/detective-theme.css';
 
 interface DetectiveGameShellProps {
@@ -32,10 +32,11 @@ export function DetectiveGameShell({
   const navItems = [
     { path: '/', label: 'Home', icon: Home },
     { path: '/detective', label: 'Detective', icon: Search },
+    { path: '/outbreak-network', label: 'Network', icon: Users },
+    { path: '/first-response', label: 'Response', icon: Zap },
     { path: '/command', label: 'Command', icon: Target },
-    { path: '/connect', label: 'Connect', icon: Users },
-    { path: '/patient-zero', label: 'Patient 0', icon: Activity },
     { path: '/predict', label: 'Predict', icon: TrendingUp },
+    { path: '/epi-jeopardy', label: 'Jeopardy', icon: Trophy },
   ];
 
   const isActive = (path: string) => {

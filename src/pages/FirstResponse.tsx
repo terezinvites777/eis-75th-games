@@ -104,7 +104,7 @@ export function FirstResponse() {
 
   return (
     <GameShell
-      theme="patient-zero"
+      theme="command"
       heroTitle="First Response"
       heroSubtitle="How fast can you respond?"
       backPath="/"

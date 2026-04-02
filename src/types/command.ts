@@ -11,8 +11,8 @@ export interface Pathogen {
 export interface OutbreakLocation {
   state: string;
   cases: number;
-  lat: number;
-  lng: number;
+  lat?: number;
+  lng?: number;
 }
 
 export interface GameState {

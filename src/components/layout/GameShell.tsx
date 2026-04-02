@@ -4,7 +4,7 @@
 
 import type { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Search, Users, Target, TrendingUp, Zap, Trophy, Grid3X3, Brain, Shield, MapPin } from 'lucide-react';
+import { Home, Search, Users, TrendingUp, Zap, Trophy, Grid3X3, Brain, Shield, MapPin } from 'lucide-react';
 import { AnniversaryLockup } from '../brand/BrandMarks';
 
 type Theme = 'detective' | 'command' | 'connect' | 'patient-zero' | 'predict' | 'scores' | 'tiles' | 'match' | 'fieldops' | 'default';

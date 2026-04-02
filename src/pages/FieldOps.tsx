@@ -1,7 +1,7 @@
 // src/pages/FieldOps.tsx
 // Field Ops — Two-phase triage + sequencing game
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { GameShell } from '../components/layout/GameShell';
 import { fieldOpsScenarios, investigationSteps, shuffle } from '../data/field-ops-data';
 import type { FieldOpsScenario, FieldOpsPhase, TriageResult } from '../types/field-ops';

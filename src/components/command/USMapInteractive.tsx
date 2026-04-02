@@ -63,10 +63,11 @@ const STATE_CENTERS: Record<string, { x: number; y: number }> = {
 interface USMapInteractiveProps {
   locations: OutbreakLocation[];
   className?: string;
+  style?: React.CSSProperties;
   onStateClick?: (stateId: string) => void;
 }
 
-export function USMapInteractive({ locations, className = '', onStateClick }: USMapInteractiveProps) {
+export function USMapInteractive({ locations, className = '', style, onStateClick }: USMapInteractiveProps) {
   const [hoveredState, setHoveredState] = useState<string | null>(null);
 
   // Create a map of state IDs to case counts
@@ -99,7 +100,7 @@ export function USMapInteractive({ locations, className = '', onStateClick }: US
   };
 
   return (
-    <div className={`relative bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl border border-slate-200 ${className}`} style={{ aspectRatio: '1028 / 746' }}>
+    <div className={`relative bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl border border-slate-200 ${className}`} style={{ aspectRatio: '1028 / 746', ...style }}>
       <svg
         viewBox={MAP_VIEWBOX}
         className="w-full h-full"

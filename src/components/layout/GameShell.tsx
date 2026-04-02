@@ -4,10 +4,10 @@
 
 import type { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Search, Users, Target, TrendingUp, Zap, Trophy } from 'lucide-react';
+import { Home, Search, Users, Target, TrendingUp, Zap, Trophy, Grid3X3, Brain, Shield, MapPin } from 'lucide-react';
 import { AnniversaryLockup } from '../brand/BrandMarks';
 
-type Theme = 'detective' | 'command' | 'connect' | 'patient-zero' | 'predict' | 'scores' | 'default';
+type Theme = 'detective' | 'command' | 'connect' | 'patient-zero' | 'predict' | 'scores' | 'tiles' | 'match' | 'fieldops' | 'default';
 
 interface GameShellProps {
   children: ReactNode;
@@ -35,9 +35,12 @@ export function GameShell({
     { path: '/detective', label: 'Detective', icon: Search },
     { path: '/outbreak-network', label: 'Network', icon: Users },
     { path: '/first-response', label: 'Response', icon: Zap },
-    { path: '/command', label: 'Command', icon: Target },
+    { path: '/command', label: 'Origins', icon: MapPin },
     { path: '/predict', label: 'Predict', icon: TrendingUp },
     { path: '/epi-jeopardy', label: 'Jeopardy', icon: Trophy },
+    { path: '/outbreak-tiles', label: 'Tiles', icon: Grid3X3 },
+    { path: '/epi-match', label: 'Match', icon: Brain },
+    { path: '/field-ops', label: 'Field Ops', icon: Shield },
   ];
 
   const isActive = (path: string) => {

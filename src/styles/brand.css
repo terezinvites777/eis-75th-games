@@ -94,6 +94,39 @@
   --theme-glow: 0 0 30px rgba(220, 38, 38, 0.20);
 }
 
+[data-theme="tiles"] {
+  --theme-primary: #D4AF37;
+  --theme-secondary: #B8860B;
+  --theme-tertiary: #8B6914;
+  --theme-accent: #FBBF24;
+  --theme-surface: rgba(255, 251, 235, 0.88);
+  --theme-surface-solid: #fffbeb;
+  --theme-ink: #1a1207;
+  --theme-glow: 0 0 30px rgba(212, 175, 55, 0.25);
+}
+
+[data-theme="match"] {
+  --theme-primary: #D4920B;
+  --theme-secondary: #A16D07;
+  --theme-tertiary: #7a5205;
+  --theme-accent: #FBBF24;
+  --theme-surface: rgba(255, 251, 235, 0.88);
+  --theme-surface-solid: #fffbeb;
+  --theme-ink: #1a1207;
+  --theme-glow: 0 0 30px rgba(212, 146, 11, 0.25);
+}
+
+[data-theme="fieldops"] {
+  --theme-primary: #475569;
+  --theme-secondary: #334155;
+  --theme-tertiary: #1e293b;
+  --theme-accent: #F59E0B;
+  --theme-surface: rgba(241, 245, 249, 0.88);
+  --theme-surface-solid: #f1f5f9;
+  --theme-ink: #0f172a;
+  --theme-glow: 0 0 30px rgba(71, 85, 105, 0.20);
+}
+
 [data-theme="predict"] {
   --theme-primary: #2563eb;
   --theme-secondary: #3b82f6;
@@ -194,6 +227,15 @@
 }
 [data-theme="predict"] .hero-strip {
   background: linear-gradient(180deg, #3d2b1f 0%, #2a1f15 50%, #1a140d 100%);
+}
+[data-theme="tiles"] .hero-strip {
+  background: linear-gradient(180deg, #3d2b1f 0%, #2a1f15 50%, #1a140d 100%);
+}
+[data-theme="match"] .hero-strip {
+  background: linear-gradient(180deg, #3d2b1f 0%, #2a1f15 50%, #1a140d 100%);
+}
+[data-theme="fieldops"] .hero-strip {
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 50%, #020617 100%);
 }
 
 .hero-strip::before {

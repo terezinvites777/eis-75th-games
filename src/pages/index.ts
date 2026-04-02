@@ -7,3 +7,6 @@ export { FirstResponse } from './FirstResponse';
 export { Command } from './Command';
 export { Predict } from './Predict';
 export { EpiJeopardy } from './EpiJeopardy';
+export { OutbreakTiles } from './OutbreakTiles';
+export { EpiMatch } from './EpiMatch';
+export { FieldOps } from './FieldOps';

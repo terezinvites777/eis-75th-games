@@ -45,12 +45,12 @@ export function Home() {
 
           <PosterPanel
             number={4}
-            title="Outbreak Command"
-            subtitle="Epidemic Response Decisions"
-            description="Lead response operations under pressure."
-            cta="Take Command"
+            title="Outbreak Origins"
+            subtitle="Map Investigation & Deduction"
+            description="Track the outbreak. Find the source."
+            cta="Investigate"
             href="/command"
-            bgImageUrl="./images/exhibits/command.png"
+            bgImageUrl="./images/exhibits/Outbreak Origins.png"
             dataTheme="command"
           />
 
@@ -73,6 +73,39 @@ export function Home() {
             cta="Challenge a Friend"
             href="/epi-jeopardy"
             bgImageUrl="./images/exhibits/epi-jeopardy.png"
+            dataTheme="detective"
+          />
+
+          <PosterPanel
+            number={7}
+            title="Outbreak Tiles"
+            subtitle="Rapid Classification"
+            description="How fast can you classify?"
+            cta="Start Tapping"
+            href="/outbreak-tiles"
+            bgImageUrl="./images/exhibits/Outbreak Tiles.png"
+            dataTheme="detective"
+          />
+
+          <PosterPanel
+            number={8}
+            title="Field Ops"
+            subtitle="Triage & Investigation"
+            description="Triage. Investigate. Solve."
+            cta="Deploy"
+            href="/field-ops"
+            bgImageUrl="./images/exhibits/Field Ops.png"
+            dataTheme="command"
+          />
+
+          <PosterPanel
+            number={9}
+            title="Epi Match"
+            subtitle="Memory Card Matching"
+            description="Match the science. Beat the clock."
+            cta="Play Now"
+            href="/epi-match"
+            bgImageUrl="./images/exhibits/Epi Match.png"
             dataTheme="detective"
           />
         </div>

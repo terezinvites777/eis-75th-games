@@ -10,6 +10,9 @@ import {
   Command,
   Predict,
   EpiJeopardy,
+  OutbreakTiles,
+  EpiMatch,
+  FieldOps,
 } from './pages';
 
 function App() {
@@ -26,6 +29,9 @@ function App() {
           <Route path="/command" element={<Command />} />
           <Route path="/predict" element={<Predict />} />
           <Route path="/epi-jeopardy" element={<EpiJeopardy />} />
+          <Route path="/outbreak-tiles" element={<OutbreakTiles />} />
+          <Route path="/epi-match" element={<EpiMatch />} />
+          <Route path="/field-ops" element={<FieldOps />} />
         </Routes>
       </KioskIdleReset>
     </Router>

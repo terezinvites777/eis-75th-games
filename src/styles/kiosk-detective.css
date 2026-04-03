@@ -159,6 +159,11 @@
 
 .kiosk-dd__clue-card.revealed {
   border-color: rgba(212, 175, 55, 0.5);
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+  overflow-y: auto;
+  gap: 6px;
 }
 
 .kiosk-dd__clue-card.locked {
@@ -188,11 +193,36 @@
   font-weight: 600;
 }
 
-.kiosk-dd__clue-card-peek {
-  font-size: 12px;
-  color: #5a4a3a;
-  line-height: 1.4;
-  opacity: 0.8;
+.kiosk-dd__clue-card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.kiosk-dd__clue-card-header-icon {
+  color: #d4af37;
+  flex-shrink: 0;
+}
+
+.kiosk-dd__clue-card-header .kiosk-dd__clue-card-title {
+  font-size: 13px;
+}
+
+.kiosk-dd__clue-card-evidence {
+  font-size: 13px;
+  color: #3a2e1e;
+  line-height: 1.5;
+  white-space: pre-line;
+  width: 100%;
+}
+
+.kiosk-dd__clue-card-source {
+  font-size: 11px;
+  color: #8b7355;
+  font-style: italic;
+  width: 100%;
+  margin-top: auto;
 }
 
 /* ===== Right Column ===== */

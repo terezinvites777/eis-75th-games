@@ -205,10 +205,10 @@ export const QUESTIONS: TriviaQuestion[] = [
     category: 'outbreak-history',
     difficulty: 'medium',
     points: 300,
-    question: 'EIS officer Dr. Alice Wang\'s investigation of what crisis confirmed dangerous lead exposure in children?',
+    question: 'An EIS officer\'s investigation of what crisis confirmed dangerous lead exposure in children?',
     options: ['East Palestine, Ohio train derailment', 'Flint, Michigan water crisis', 'Camp Lejeune water contamination', 'Newark, New Jersey lead pipes'],
     correctIndex: 1,
-    explanation: 'Dr. Wang confirmed that thousands of Flint children were exposed to lead after the city switched water sources without corrosion control treatment in 2014.',
+    explanation: 'An EIS officer confirmed that thousands of Flint children were exposed to lead after the city switched water sources without corrosion control treatment in 2014.',
   },
   {
     id: 'oh-10',

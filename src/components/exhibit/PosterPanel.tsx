@@ -16,6 +16,12 @@ type PosterPanelProps = {
   dataTheme?: 'detective' | 'command' | 'connect' | 'default';
   className?: string;
   children?: ReactNode;
+  /**
+   * If true, renders an <a> tag for navigation outside the React Router app
+   * (e.g. linking to a static HTML page in /public). Defaults to false,
+   * which uses React Router's <Link> for in-app navigation.
+   */
+  external?: boolean;
 };
 
 export function PosterPanel(props: PosterPanelProps) {
@@ -29,19 +35,15 @@ export function PosterPanel(props: PosterPanelProps) {
     dataTheme = 'default',
     className = '',
     children,
+    external = false,
   } = props;
 
   const bgStyle: CSSProperties = {
     backgroundImage: `url("${bgImageUrl}")`,
   };
 
-  return (
-    <Link
-      to={href}
-      className={`posterTile ${className}`}
-      data-theme={dataTheme}
-      aria-label={`${number}. ${title}`}
-    >
+  const innerContent = (
+    <>
       {/* Full-bleed exhibit plate background */}
       <div className="posterTile__bg" style={bgStyle} />
 
@@ -64,6 +66,32 @@ export function PosterPanel(props: PosterPanelProps) {
         </div>
 
       </div>
+    </>
+  );
+
+  // External link: full page navigation (used for static HTML pages in /public)
+  if (external) {
+    return (
+      <a
+        href={href}
+        className={`posterTile ${className}`}
+        data-theme={dataTheme}
+        aria-label={`${number}. ${title}`}
+      >
+        {innerContent}
+      </a>
+    );
+  }
+
+  // Internal route: React Router navigation
+  return (
+    <Link
+      to={href}
+      className={`posterTile ${className}`}
+      data-theme={dataTheme}
+      aria-label={`${number}. ${title}`}
+    >
+      {innerContent}
     </Link>
   );
 }

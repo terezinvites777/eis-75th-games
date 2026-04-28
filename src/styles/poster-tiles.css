@@ -285,6 +285,12 @@
   .eis-exhibitGrid {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  /* Center special tiles (e.g. the 75th Timeline) in the middle column
+     so a single trailing tile sits under tile #8 instead of left-aligning. */
+  .posterTile--centered {
+    grid-column: 2;
+  }
 }
 
 @media (max-width: 720px) {

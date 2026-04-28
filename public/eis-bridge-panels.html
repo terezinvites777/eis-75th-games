@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EIS 75th Anniversary — Bridge Panels</title>
+<title>EIS 75th Anniversary · Disease Detective Timeline</title>
+<meta name="description" content="Celebrating 75 years of the CDC Epidemic Intelligence Service. Eighteen panels chronicling the disease detectives who shaped modern public health, 1951–2026.">
+<meta property="og:title" content="EIS 75th Anniversary · Disease Detective Timeline">
+<meta property="og:description" content="75 years. 18 stories. The disease detectives who shaped modern public health.">
+<meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -12,18 +16,31 @@ body {
   background-color: #1a0f06;
   background-image: url('images/textures/dark-brown-leather-texture-can-be-use-as-background.jpg');
   background-size: cover; background-attachment: fixed; background-position: center;
-  padding: 48px 16px 80px; min-height: 100vh; position: relative;
+  padding: 32px 16px 80px; min-height: 100vh; position: relative;
 }
 body::before { content:''; position:fixed; inset:0; background:rgba(6,3,1,0.60); z-index:0; pointer-events:none; }
 .container { position:relative; z-index:1; max-width:1080px; margin:0 auto; }
+
+/* ── Back-to-Games link ── */
+.back-link {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:'Libre Baskerville',serif; font-size:0.7rem; color:#b09050;
+  text-decoration:none; letter-spacing:0.18em; text-transform:uppercase; font-style:italic;
+  margin-bottom:32px; padding:8px 14px;
+  border:1px solid rgba(176,144,80,0.35); border-radius:2px;
+  background:rgba(20,10,2,0.35);
+  transition:color 0.2s, border-color 0.2s, background 0.2s;
+}
+.back-link:hover { color:#e8c060; border-color:rgba(232,192,96,0.6); background:rgba(40,22,4,0.5); }
+.back-link .arrow { font-size:0.85rem; line-height:1; }
+
 .page-title { font-family:'Playfair Display',serif; font-size:1.35rem; font-weight:900; color:#d4aa5a; letter-spacing:0.22em; text-transform:uppercase; text-align:center; margin-bottom:6px; text-shadow:0 2px 12px rgba(0,0,0,0.9); }
 .page-sub { font-size:0.58rem; color:#b09050; letter-spacing:0.18em; text-transform:uppercase; text-align:center; margin-bottom:52px; font-style:italic; }
 .bay-section { margin-bottom:64px; }
-.bay-label { font-family:'Playfair Display',serif; font-size:0.68rem; color:#b09050; letter-spacing:0.25em; text-transform:uppercase; text-align:center; margin-bottom:22px; display:flex; align-items:center; gap:16px; }
-.bay-label::before, .bay-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(200,160,50,0.55),transparent); }
+.bay-label { font-family:'Playfair Display',serif; font-size:0.78rem; color:#d4aa5a; letter-spacing:0.22em; text-transform:uppercase; text-align:center; margin-bottom:26px; display:flex; align-items:center; gap:18px; font-weight:700; }
+.bay-label::before, .bay-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(212,170,90,0.55),transparent); }
 .bay-pair { display:flex; gap:32px; justify-content:center; flex-wrap:wrap; }
 .panel-wrap { display:flex; flex-direction:column; align-items:center; }
-.wall-tag { font-size:0.5rem; color:#b09050; letter-spacing:0.15em; text-transform:uppercase; text-align:center; margin-bottom:9px; font-style:italic; }
 .panel { width:233px; height:556px; position:relative; flex-shrink:0; }
 .panel-parchment { position:absolute; inset:0; background-image:url('images/textures/parchment.jpg'); background-size:cover; background-position:center; overflow:hidden; border:2px solid #8a6018; box-shadow:0 12px 50px rgba(0,0,0,0.85),0 4px 16px rgba(0,0,0,0.65),0 0 0 1px rgba(160,120,30,0.4); }
 .panel-parchment::before { content:''; position:absolute; inset:0; z-index:1; pointer-events:none; box-shadow:inset 0 0 24px rgba(40,18,2,0.22); }
@@ -128,34 +145,66 @@ body::before { content:''; position:fixed; inset:0; background:rgba(6,3,1,0.60);
 .ann-t { font-size:0.33rem; color:#6a4808; letter-spacing:0.2em; text-transform:uppercase; text-align:center; font-weight:700; display:block; border-top:1px solid rgba(106,72,8,0.35); padding-top:2px; }
 .panel-lbl { font-size:0.5rem; color:#b09050; text-align:center; margin-top:11px; font-style:italic; letter-spacing:0.07em; }
 .divider { width:100%; max-width:800px; margin:0 auto 64px; height:1px; background:linear-gradient(90deg,transparent,rgba(200,155,50,0.45),transparent); }
+
+/* ── Footer ── */
+.page-footer {
+  margin-top:64px; padding-top:32px;
+  border-top:1px solid rgba(176,144,80,0.25);
+  text-align:center;
+}
+.page-footer p {
+  font-family:'Libre Baskerville',serif; font-size:0.7rem; color:#b09050;
+  font-style:italic; letter-spacing:0.08em; line-height:1.8;
+}
+.page-footer .footer-credit {
+  font-size:0.6rem; color:#8a6f3c; margin-top:8px;
+}
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="page-title">EIS 75th Anniversary — Bridge Timeline Installation</div>
-  <div class="page-sub">Archival Edition · All 18 Panels · 33.5" × 80"</div>
+  <a href="/" class="back-link"><span class="arrow">←</span> Back to the Games</a>
+  <div class="page-title">EIS 75th Anniversary · Disease Detective Timeline</div>
+  <div class="page-sub">75 Years · 18 Stories · 1951&nbsp;—&nbsp;2026</div>
   <div id="root"></div>
+  <div class="page-footer">
+    <p>Celebrating 75 years of the Epidemic Intelligence Service<br>
+    Centers for Disease Control and Prevention · 1951&nbsp;—&nbsp;2026</p>
+    <p class="footer-credit">Originally installed as an 18-panel exhibit at the EIS 75th Anniversary Conference, Atlanta.</p>
+  </div>
 </div>
 <script>
+const eras = {
+  1: "1950s · The Founding Era",
+  2: "1960s · Vaccines & Eradication",
+  3: "1970s · New Pathogens",
+  4: "1980s · Emerging Diseases",
+  5: "1990s · Outbreaks Decoded",
+  6: "2000s · Bioterror & SARS",
+  7: "2009–2014 · Global Pandemics",
+  8: "2015–2018 · Public Health Frontiers",
+  9: "2020–2026 · The Modern Era",
+};
+
 const panels = [
-  {bay:1,wall:"Left",num:1,decade:"1951 — 1960",title:"The Founding of the Disease Detectives",img:"panel_01_founding.jpg",credit:"Dr. Alexander Langmuir with EIS officers, CDC Atlanta, c. 1955",desc:"In 1951, Dr. Alexander Langmuir established the Epidemic Intelligence Service as a sentinel program against biological warfare threats. Within two years, EIS officers were deploying nationwide, bringing epidemiologic rigor to outbreaks that had long gone unexplained. The 'shoe-leather' era of American public health had begun."},
-  {bay:1,wall:"Right",num:2,decade:"1955",title:"The Cutter Incident",img:"panel_02_cutter.jpg",credit:"Vaccination program in the era of the Cutter Incident, United States, c. 1955",desc:"When 40,000 children developed paralytic polio after vaccination, EIS officers traced the outbreak to improperly inactivated vaccine batches from Cutter Laboratories. Their investigation, completed in weeks, established the federal vaccine safety standards still in use today — and put CDC's Disease Detectives on the national stage."},
-  {bay:2,wall:"Left",num:3,decade:"1961 — 1966",title:"Joining the Fight Against Smallpox",img:"panel_03_smallpox_field.jpg",credit:"EIS officers conducting smallpox surveillance, West Africa, c. 1967",desc:"EIS officers joined the global campaign to eradicate smallpox, pioneering the surveillance-containment strategy that replaced mass vaccination campaigns. Working through remote villages in Africa and Asia, they proved that targeted response was the key to stopping the disease for good."},
-  {bay:2,wall:"Right",num:4,decade:"1969",title:"Rubella Vaccine Field Trials",img:"panel_04_rubella.jpg",credit:"Rubella vaccination program, United States, c. 1969",desc:"EIS officers conducted the field trials that validated the newly licensed rubella vaccine, coordinating one of the largest preventive health campaigns in American history. Their work protected millions of pregnancies from the devastation of congenital rubella syndrome."},
-  {bay:3,wall:"Left",num:5,decade:"1976",title:"Legionnaires' Disease",img:"Legionnaire's Disease.jpg",credit:"CDC laboratory investigators identifying Legionella pneumophila, Atlanta, 1976",desc:"In summer 1976, 221 American Legion convention attendees fell ill in Philadelphia — 34 died. EIS officers launched a landmark investigation, and months later CDC microbiologist Dr. Joseph McDade isolated an entirely new bacterium: Legionella pneumophila. The first new pathogen ever identified by CDC."},
-  {bay:3,wall:"Right",num:6,decade:"1979",title:"Smallpox Eradicated",img:"panel_06_smallpox_eradicated.jpg",credit:"Last naturally occurring smallpox case confirmed, Somalia, 1977",memorial:true,desc:"On October 26, 1977, Ali Maow Maalin became the last person to contract naturally occurring smallpox. Two years later, WHO declared the disease eradicated — the only human disease ever eliminated from the earth. EIS officers played a central role in the final containment campaigns."},
-  {bay:4,wall:"Left",num:7,decade:"1981 — 1987",title:"AIDS — The Early Days",img:"panel_07_aids.jpg",credit:"CDC epidemiologists reviewing AIDS case reports, Atlanta, c. 1983",desc:"When a mysterious immune deficiency began killing young men in 1981, EIS officers were among the first to characterize the syndrome. Their epidemiologic work — painstaking case interviews, cluster analysis, and risk factor studies — laid the foundation for understanding HIV transmission and shaped the global AIDS response."},
-  {bay:4,wall:"Right",num:8,decade:"1988",title:"Folic Acid & Neural Tube Defects",img:"panel_08_folic_acid.jpg",credit:"CDC researchers, Atlanta, c. 1988",desc:"CDC investigators discovered that folic acid could reduce the risk of neural tube defects — including spina bifida — by up to 70%. One of the most consequential preventive health findings of the century, it led directly to the fortification of grain products across the United States."},
-  {bay:5,wall:"Left",num:9,decade:"1993",title:"Hantavirus — Four Corners",img:"panel_09_hantavirus.jpg",credit:"Field investigation, Four Corners region, New Mexico, 1993",desc:"A cluster of mysterious respiratory deaths in the Southwest United States led EIS officers to discover Sin Nombre virus — a previously unknown hantavirus carried by deer mice. Their investigation established the surveillance framework now used globally for emerging rodent-borne diseases."},
-  {bay:5,wall:"Right",num:10,decade:"1993",title:"E. coli O157:H7",img:"panel_10_ecoli.jpg",credit:"CDC field investigation, Pacific Northwest, 1993",desc:"EIS officers traced a deadly outbreak of E. coli O157:H7 to undercooked hamburgers from a fast food chain, sickening hundreds and killing four children. Their investigation fundamentally transformed food safety regulations in the United States."},
-  {bay:6,wall:"Left",num:11,decade:"2001",title:"Anthrax Letters",img:"panel_11_anthrax.jpg",credit:"CDC response team, Washington D.C., October 2001",desc:"In the weeks following the September 11 attacks, letters containing anthrax spores were mailed to news organizations and congressional offices. EIS officers conducted the first-ever bioterrorism investigation in CDC history, developing protocols that remain the national standard."},
-  {bay:6,wall:"Right",num:12,decade:"2003",title:"SARS",img:"panel_12_sars.jpg",credit:"CDC SARS response team, 2003",desc:"When Severe Acute Respiratory Syndrome emerged from China in 2003, EIS officers deployed globally within days. Their contact tracing and quarantine protocols helped contain the outbreak before it became a true pandemic — and directly informed global preparedness frameworks built in the years that followed."},
-  {bay:7,wall:"Left",num:13,decade:"2009",title:"H1N1 Influenza Pandemic",img:"panel_13_h1n1.jpg",credit:"H1N1 vaccination program, United States, 2009",desc:"When a novel H1N1 influenza virus emerged in Mexico in April 2009, EIS officers deployed within 24 hours. Their early epidemiologic data enabled the fastest influenza vaccine development in history, protecting millions before the second wave arrived."},
-  {bay:7,wall:"Right",num:14,decade:"2014 — 2016",title:"Ebola — West Africa",img:"panel_14_ebola.jpg",credit:"CDC Ebola response team, Sierra Leone, 2014",desc:"The largest Ebola outbreak in history killed more than 11,000 people across West Africa. EIS officers were among the first responders, spending months in Sierra Leone, Liberia, and Guinea conducting contact tracing, training local health workers, and building the surveillance systems that ended the epidemic."},
-  {bay:8,wall:"Left",num:15,decade:"2016",title:"Flint Water Crisis",img:"panel_15_flint.jpg",credit:"Flint, Michigan — lead water investigation, 2016",desc:"An EIS officer deployed to Flint, Michigan, conducting the investigation that confirmed dangerous levels of lead exposure in thousands of children. Their work provided the scientific foundation for a federal emergency declaration and reshaped national water safety standards."},
-  {bay:8,wall:"Right",num:16,decade:"2016 — 2018",title:"Zika — A New Threat",img:"zika.jpg",imgClass:"zika-img",credit:"CDC Zika health advisory, U.S. airport, 2016",desc:"As Zika virus spread through the Americas, EIS officers led the investigation that confirmed the link between maternal infection and microcephaly. Their work in Puerto Rico, Brazil, and the continental U.S. defined the global response to an emerging neurological threat."},
-  {bay:9,wall:"Left",num:17,decade:"2020 — 2022",title:"COVID-19 Pandemic",img:"panel_17_covid.jpg",credit:"CDC Emergency Operations Center, Atlanta, 2020",desc:"When SARS-CoV-2 emerged, EIS officers joined the largest emergency response in CDC's history — deploying to hospitals, nursing homes, and communities across the country. From the first cluster investigations in Washington State to vaccine effectiveness studies, Disease Detectives shaped every phase of the pandemic response."},
-  {bay:9,wall:"Right",num:18,decade:"1951 — 2026",title:"75 Years of Disease Detection",img:"TIMELINE",credit:"",desc:""},
+  {bay:1,num:1,decade:"1951 — 1960",title:"The Founding of the Disease Detectives",img:"panel_01_founding.jpg",credit:"Dr. Alexander Langmuir with EIS officers, CDC Atlanta, c. 1955",desc:"In 1951, Dr. Alexander Langmuir established the Epidemic Intelligence Service as a sentinel program against biological warfare threats. Within two years, EIS officers were deploying nationwide, bringing epidemiologic rigor to outbreaks that had long gone unexplained. The 'shoe-leather' era of American public health had begun."},
+  {bay:1,num:2,decade:"1955",title:"The Cutter Incident",img:"panel_02_cutter.jpg",credit:"Vaccination program in the era of the Cutter Incident, United States, c. 1955",desc:"When 40,000 children developed paralytic polio after vaccination, EIS officers traced the outbreak to improperly inactivated vaccine batches from Cutter Laboratories. Their investigation, completed in weeks, established the federal vaccine safety standards still in use today — and put CDC's Disease Detectives on the national stage."},
+  {bay:2,num:3,decade:"1961 — 1966",title:"Joining the Fight Against Smallpox",img:"panel_03_smallpox_field.jpg",credit:"EIS officers conducting smallpox surveillance, West Africa, c. 1967",desc:"EIS officers joined the global campaign to eradicate smallpox, pioneering the surveillance-containment strategy that replaced mass vaccination campaigns. Working through remote villages in Africa and Asia, they proved that targeted response was the key to stopping the disease for good."},
+  {bay:2,num:4,decade:"1969",title:"Rubella Vaccine Field Trials",img:"panel_04_rubella.jpg",credit:"Rubella vaccination program, United States, c. 1969",desc:"EIS officers conducted the field trials that validated the newly licensed rubella vaccine, coordinating one of the largest preventive health campaigns in American history. Their work protected millions of pregnancies from the devastation of congenital rubella syndrome."},
+  {bay:3,num:5,decade:"1976",title:"Legionnaires' Disease",img:"panel_05_legionnaires.jpg",credit:"CDC laboratory investigators identifying Legionella pneumophila, Atlanta, 1976",desc:"In summer 1976, 221 American Legion convention attendees fell ill in Philadelphia — 34 died. EIS officers launched a landmark investigation, and months later CDC microbiologist Dr. Joseph McDade isolated an entirely new bacterium: Legionella pneumophila. The first new pathogen ever identified by CDC."},
+  {bay:3,num:6,decade:"1979",title:"Smallpox Eradicated",img:"panel_06_smallpox_eradicated.jpg",credit:"Last naturally occurring smallpox case confirmed, Somalia, 1977",memorial:true,desc:"On October 26, 1977, Ali Maow Maalin became the last person to contract naturally occurring smallpox. Two years later, WHO declared the disease eradicated — the only human disease ever eliminated from the earth. EIS officers played a central role in the final containment campaigns."},
+  {bay:4,num:7,decade:"1981 — 1987",title:"AIDS — The Early Days",img:"panel_07_aids.jpg",credit:"CDC epidemiologists reviewing AIDS case reports, Atlanta, c. 1983",desc:"When a mysterious immune deficiency began killing young men in 1981, EIS officers were among the first to characterize the syndrome. Their epidemiologic work — painstaking case interviews, cluster analysis, and risk factor studies — laid the foundation for understanding HIV transmission and shaped the global AIDS response."},
+  {bay:4,num:8,decade:"1988",title:"Folic Acid & Neural Tube Defects",img:"panel_08_folic_acid.jpg",credit:"CDC researchers, Atlanta, c. 1988",desc:"CDC investigators discovered that folic acid could reduce the risk of neural tube defects — including spina bifida — by up to 70%. One of the most consequential preventive health findings of the century, it led directly to the fortification of grain products across the United States."},
+  {bay:5,num:9,decade:"1993",title:"Hantavirus — Four Corners",img:"panel_09_hantavirus.jpg",credit:"Field investigation, Four Corners region, New Mexico, 1993",desc:"A cluster of mysterious respiratory deaths in the Southwest United States led EIS officers to discover Sin Nombre virus — a previously unknown hantavirus carried by deer mice. Their investigation established the surveillance framework now used globally for emerging rodent-borne diseases."},
+  {bay:5,num:10,decade:"1993",title:"E. coli O157:H7",img:"panel_10_ecoli.jpg",credit:"CDC field investigation, Pacific Northwest, 1993",desc:"EIS officers traced a deadly outbreak of E. coli O157:H7 to undercooked hamburgers from a fast food chain, sickening hundreds and killing four children. Their investigation fundamentally transformed food safety regulations in the United States."},
+  {bay:6,num:11,decade:"2001",title:"Anthrax Letters",img:"panel_11_anthrax.jpg",credit:"CDC response team, Washington D.C., October 2001",desc:"In the weeks following the September 11 attacks, letters containing anthrax spores were mailed to news organizations and congressional offices. EIS officers conducted the first-ever bioterrorism investigation in CDC history, developing protocols that remain the national standard."},
+  {bay:6,num:12,decade:"2003",title:"SARS",img:"panel_12_sars.jpg",credit:"CDC SARS response team, 2003",desc:"When Severe Acute Respiratory Syndrome emerged from China in 2003, EIS officers deployed globally within days. Their contact tracing and quarantine protocols helped contain the outbreak before it became a true pandemic — and directly informed global preparedness frameworks built in the years that followed."},
+  {bay:7,num:13,decade:"2009",title:"H1N1 Influenza Pandemic",img:"panel_13_h1n1.jpg",credit:"H1N1 vaccination program, United States, 2009",desc:"When a novel H1N1 influenza virus emerged in Mexico in April 2009, EIS officers deployed within 24 hours. Their early epidemiologic data enabled the fastest influenza vaccine development in history, protecting millions before the second wave arrived."},
+  {bay:7,num:14,decade:"2014 — 2016",title:"Ebola — West Africa",img:"panel_14_ebola.jpg",credit:"CDC Ebola response team, Sierra Leone, 2014",desc:"The largest Ebola outbreak in history killed more than 11,000 people across West Africa. EIS officers were among the first responders, spending months in Sierra Leone, Liberia, and Guinea conducting contact tracing, training local health workers, and building the surveillance systems that ended the epidemic."},
+  {bay:8,num:15,decade:"2016",title:"Flint Water Crisis",img:"panel_15_flint.jpg",credit:"Flint, Michigan — lead water investigation, 2016",desc:"An EIS officer deployed to Flint, Michigan, conducting the investigation that confirmed dangerous levels of lead exposure in thousands of children. Their work provided the scientific foundation for a federal emergency declaration and reshaped national water safety standards."},
+  {bay:8,num:16,decade:"2016 — 2018",title:"Zika — A New Threat",img:"panel_16_zika.jpg",imgClass:"zika-img",credit:"CDC Zika health advisory, U.S. airport, 2016",desc:"As Zika virus spread through the Americas, EIS officers led the investigation that confirmed the link between maternal infection and microcephaly. Their work in Puerto Rico, Brazil, and the continental U.S. defined the global response to an emerging neurological threat."},
+  {bay:9,num:17,decade:"2020 — 2022",title:"COVID-19 Pandemic",img:"panel_17_covid.jpg",credit:"CDC Emergency Operations Center, Atlanta, 2020",desc:"When SARS-CoV-2 emerged, EIS officers joined the largest emergency response in CDC's history — deploying to hospitals, nursing homes, and communities across the country. From the first cluster investigations in Washington State to vaccine effectiveness studies, Disease Detectives shaped every phase of the pandemic response."},
+  {bay:9,num:18,decade:"1951 — 2026",title:"75 Years of Disease Detection",img:"TIMELINE",credit:"",desc:""},
 ];
 
 const tlEvents = [
@@ -264,19 +313,18 @@ panels.forEach((p,i) => {
     if(i>0){const d=document.createElement('div');d.className='divider';root.appendChild(d);}
     bay=p.bay;
     const sec=document.createElement('div');sec.className='bay-section';
-    const lbl=document.createElement('div');lbl.className='bay-label';lbl.textContent=`Bay ${p.bay} · Alternating Bay`;
+    const lbl=document.createElement('div');lbl.className='bay-label';lbl.textContent=eras[p.bay] || '';
     sec.appendChild(lbl);
     bayPair=document.createElement('div');bayPair.className='bay-pair';sec.appendChild(bayPair);root.appendChild(sec);
   }
   const w=document.createElement('div');w.className='panel-wrap';
   w.innerHTML=`
-    <div class="wall-tag">${p.wall} Wall</div>
     <div class="panel">
       <div class="panel-parchment">
         <div class="panel-inner">${buildPanelInner(p)}</div>
       </div>
     </div>
-    <div class="panel-lbl">Panel ${p.num} of 18 · Bay ${p.bay} (${p.wall} Wall)</div>`;
+    <div class="panel-lbl">Panel ${p.num} of 18</div>`;
   bayPair.appendChild(w);
 });
 </script>

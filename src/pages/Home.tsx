@@ -116,7 +116,7 @@ export function Home() {
             description="75 years. 18 stories. Walk the timeline."
             cta="Explore"
             href="/eis-bridge-panels.html"
-            bgImageUrl="./images/exhibits/75th Timeline card.png"
+            bgImageUrl="./images/exhibits/75th-Timeline-card.png"
             dataTheme="default"
             external={true}
             className="posterTile--centered"
